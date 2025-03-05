@@ -49,10 +49,10 @@
 
       <nav id="navmenu" class="navmenu">
       <ul>
-          <li><a href="#" class="active">Início</a></li>
-          <li><a href="#">Sobre</a></li>
-          <li><a href="#">Obras</a></li>
-          <li><a href="#">Legado</a></li>
+          <li><a href="index.php" class="active">Início</a></li>
+          <li><a href="sobre.php">Sobre</a></li>
+          <li><a href="obras.php">Obras</a></li>
+          <li><a href="legado.php">Legado</a></li>
           <li class="dropdown">
             <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
