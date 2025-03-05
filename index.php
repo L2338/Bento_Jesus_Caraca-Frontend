@@ -48,34 +48,42 @@
       </a>
 
       <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.php" class="active">Home<br></a></li>
-          <li><a href="about.php">About</a></li>
-          <li><a href="courses.php">Courses</a></li>
-          <li><a href="events.php">Events</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+      <ul>
+          <li><a href="#" class="active">Início</a></li>
+          <li><a href="#">Sobre</a></li>
+          <li><a href="#">Obras</a></li>
+          <li><a href="#">Legado</a></li>
+          <li class="dropdown">
+            <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <li class="dropdown">
+                <a href="#"><span>Fotos Históricas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
+                  <li><a href="#">Imagens de Arquivo</a></li>
+                  <li><a href="#">Documentos Raros</a></li>
                 </ul>
               </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
+              <li class="dropdown">
+                <a href="#"><span>Eventos Importantes</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Palestras e Conferências</a></li>
+                  <li><a href="#">Participações Acadêmicas</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#"><span>Publicações e Contribuições</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Livros e Artigos</a></li>
+                  <li><a href="#">Contribuições Científicas</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Acervo Digital</a></li>
             </ul>
-          </li>
-          <li><a href="contact.php">Contact</a></li>
-        </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+
       </nav>
 
-      <a class="btn-getstarted" href="courses.php">Get Started</a>
+      <a class="btn-getstarted" href="courses.php">Entrar</a>
 
     </div>
   </header>
@@ -85,13 +93,13 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
-      <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in">
+      <img src="assets/img/hero-bn.jpg" alt="" data-aos="fade-in">
 
       <div class="container">
-        <h2 data-aos="fade-up" data-aos-delay="100">Learning Today,<br>Leading Tomorrow</h2>
-        <p data-aos="fade-up" data-aos-delay="200">We are team of talented designers making websites with Bootstrap</p>
+        <h2 data-aos="fade-up" data-aos-delay="100">Conhecimento,<br> Liberdade e Transformação</h2>
+        <p data-aos="fade-up" data-aos-delay="200">Bento de Jesus Caraça deixou um legado inestimável para a educação e cultura. <br>Explore sua história e impacto.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="courses.html" class="btn-get-started">Get Started</a>
+          <a href="courses.html" class="btn-get-started">Saber Mais</a>
         </div>
       </div>
 
