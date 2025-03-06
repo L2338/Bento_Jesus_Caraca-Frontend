@@ -46,41 +46,9 @@
         
       </a>
 
-      <nav id="navmenu" class="navmenu">
-      <ul>
-          <li><a href="index.php" >Início</a></li>
-          <li><a href="sobre.php" class="active">Sobre</a></li>
-          <li><a href="obras.php">Obras</a></li>
-          <li><a href="legado.php">Legado</a></li>
-          <li class="dropdown">
-            <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li class="dropdown">
-                <a href="#"><span>Fotos Históricas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Imagens de Arquivo</a></li>
-                  <li><a href="#">Documentos Raros</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#"><span>Eventos Importantes</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Palestras e Conferências</a></li>
-                  <li><a href="#">Participações Acadêmicas</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#"><span>Publicações e Contribuições</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Livros e Artigos</a></li>
-                  <li><a href="#">Contribuições Científicas</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Acervo Digital</a></li>
-            </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-
-      </nav>
+      <?php
+      include('Menu.php');
+      ?>
 
       <a class="btn-getstarted" href="courses.php">Entrar</a>
 

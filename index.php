@@ -44,41 +44,9 @@
         <img src="assets/img/epbjc-logo.png" alt="Logo EPBJC" >     
       </a>
 
-      <nav id="navmenu" class="navmenu">
-      <ul>
-          <li><a href="index.php" class="active">Início</a></li>
-          <li><a href="sobre.php">Sobre</a></li>
-          <li><a href="obras.php">Obras</a></li>
-          <li><a href="legado.php">Legado</a></li>
-          <li class="dropdown">
-            <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li class="dropdown">
-                <a href="#"><span>Fotos Históricas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Imagens de Arquivo</a></li>
-                  <li><a href="#">Documentos Raros</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#"><span>Eventos Importantes</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Palestras e Conferências</a></li>
-                  <li><a href="#">Participações Acadêmicas</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#"><span>Publicações e Contribuições</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Livros e Artigos</a></li>
-                  <li><a href="#">Contribuições Científicas</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Acervo Digital</a></li>
-            </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-
-      </nav>
+      <?php
+      include('Menu.php');
+      ?>
 
       <a class="btn-getstarted" href="courses.php">Entrar</a>
 
@@ -116,7 +84,7 @@
             <li class="mb-3"><i class="bi bi-check-circle text-success"></i> <span>Autor de obras fundamentais, foi responsável por democratizar o acesso à ciência e à matemática em Portugal.</span></li>
             <li class="mb-3"><i class="bi bi-check-circle text-success"></i> <span>Criou a <strong>Biblioteca Cosmos</strong>, que distribuiu quase <strong>800.000 exemplares</strong>, tornando o saber acessível a milhares de leitores.</span></li>
           </ul>
-          <a href="#" class="btn px-4 py-2" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border-radius: 30px; border: none;">Saber Mais</a>
+          <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </section>
