@@ -623,6 +623,16 @@ h6 {
   margin-bottom: 5px;
 }
 
+.footer .footer-contact p a {
+  color: color-mix(in srgb, var(--default-color),);
+  display: inline-block;
+  line-height: 1;
+}
+.footer .footer-contact p a:hover {
+  color: var(--accent-color);
+}
+
+
 .footer .footer-newsletter .newsletter-form {
   margin-top: 30px;
   margin-bottom: 15px;
