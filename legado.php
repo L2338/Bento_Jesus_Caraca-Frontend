@@ -42,7 +42,7 @@
 
       <a href="index.php" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets/img/epbjc-logo.jpg" alt="" > 
+        <img src="assets/img/epbjc-logo.png" alt="Logo Epbjc" > 
         
       </a>
 
