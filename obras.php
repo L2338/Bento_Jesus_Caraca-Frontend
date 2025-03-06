@@ -38,46 +38,52 @@
 
 <body class="courses-page">
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
+<header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
       <a href="index.html" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Mentor</h1>
+        <img src="assets/img/epbjc-logo.jpg" alt="" > 
+        
       </a>
 
       <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html">Home<br></a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="courses.html" class="active">Courses</a></li>
-          <li><a href="trainers.html">Trainers</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+      <ul>
+          <li><a href="index.php" class="active">Início</a></li>
+          <li><a href="sobre.php">Sobre</a></li>
+          <li><a href="obras.php">Obras</a></li>
+          <li><a href="legado.php">Legado</a></li>
+          <li class="dropdown">
+            <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <li class="dropdown">
+                <a href="#"><span>Fotos Históricas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
+                  <li><a href="#">Imagens de Arquivo</a></li>
+                  <li><a href="#">Documentos Raros</a></li>
                 </ul>
               </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
+              <li class="dropdown">
+                <a href="#"><span>Eventos Importantes</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Palestras e Conferências</a></li>
+                  <li><a href="#">Participações Acadêmicas</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#"><span>Publicações e Contribuições</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Livros e Artigos</a></li>
+                  <li><a href="#">Contribuições Científicas</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Acervo Digital</a></li>
             </ul>
-          </li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+
       </nav>
 
-      <a class="btn-getstarted" href="courses.html">Get Started</a>
+      <a class="btn-getstarted" href="courses.php">Entrar</a>
 
     </div>
   </header>
@@ -90,7 +96,7 @@
         <div class="container">
           <div class="row d-flex justify-content-center text-center">
             <div class="col-lg-8">
-              <h1>Courses</h1>
+              <h1>Obras</h1>
               <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
             </div>
           </div>
@@ -99,8 +105,8 @@
       <nav class="breadcrumbs">
         <div class="container">
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Courses</li>
+            <li><a href="index.php">Início</a></li>
+            <li class="current">Obras</li>
           </ol>
         </div>
       </nav>
