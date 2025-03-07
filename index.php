@@ -203,8 +203,8 @@
 <section id="escolas" class="section">
   <div class="container">
     <div class="section-title text-center">
-      <h2>As Escolas do Agrupamento</h2>
-      <p>Conheça as nossas localizações e descubra onde estamos presentes.</p>
+      <h2>As nossas escolas profissionais</h2>
+      <p>Descubra onde estamos presentes.</p>
     </div>
 
     <div class="row gy-4">
@@ -214,9 +214,23 @@
             <h3>BARREIRO</h3>
           </div>
           <div class="card-body">
-            <p>Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</p>
-            <p><strong>Telefone:</strong> 212 064 790</p>
-            <a href="#" class="btn btn-primary">Saber Mais</a>
+          <p><a href="#" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a></p>
+            <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
+            <p>geral.barreiro@epbjc.pt</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row gy-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card escola-card">
+          <div class="card-header barreiro">
+            <h3>Porto</h3>
+          </div>
+          <div class="card-body">
+          <p><a href="#" target="_blank">Rua do Bonjardim, nº 497-1º4000 – 126 Porto</a></p>
+            <p style="margin-top: 120px;"><strong>Tel:</strong> 222 054 713</p>
+            <p>geral.porto@epbjc.pt</p>
           </div>
         </div>
       </div>
@@ -227,9 +241,9 @@
             <h3>BEJA</h3>
           </div>
           <div class="card-body">
-            <p>Rua D. Manuel I, nº19, 1º, 7800-306 Beja</p>
-            <p><strong>Telefone:</strong> 284 329 110</p>
-            <a href="#" class="btn btn-primary">Saber Mais</a>
+          <p><a href="https://www.google.com/maps/dir//epbjc+beja/@38.0168785,-7.8665451,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0xd1a74841d5386d1:0xf1908ba5cc0643a9!2m2!1d-7.8660289!2d38.0166724?entry=ttu" target="_blank">Rua D. Manuel I, nº19, 1º, 7800-306 Beja</a></p>
+            <p style="margin-top: 120px;"><strong>Tel:</strong> <span>213 255 326</span></p>
+            <p>geral.beja@epbjc.pt</p>
           </div>
         </div>
       </div>
@@ -240,9 +254,9 @@
             <h3>LISBOA</h3>
           </div>
           <div class="card-body">
-            <p>Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</p>
-            <p><strong>Telefone:</strong> 213 255 353</p>
-            <a href="#" class="btn btn-primary">Saber Mais</a>
+          <p><a href="#" target="_blank">Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</a></p>
+          <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
+          <p>geral.lisboa@epbjc.pt</p>
           </div>
         </div>
       </div>
@@ -251,14 +265,17 @@
         <div class="card escola-card">
           <div class="card-header seixal">
             <h3>SEIXAL</h3>
-          </div>
-          <div class="card-body">
-            <p>Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</p>
-            <p><strong>Telefone:</strong> 212 275 290</p>
-            <a href="#" class="btn btn-primary">Saber Mais</a>
+            </div>
+            <div class="card-body">
+            <p style="margin-bottom: 20px;">
+            <a href="#" target="_blank">Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</a>
+            </p>
+            <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
+            <p >geral.seixal@epbjc.pt</p>
           </div>
         </div>
       </div>
+      <p style="text-align:center">* Chamada para a rede fixa nacional</p>
     </div>
   </div>
 </section>
