@@ -1910,7 +1910,7 @@ section,
 }
 
 .card-header {
-  padding: 15px;
+  padding: 20px;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
@@ -1923,29 +1923,16 @@ section,
 .seixal { background: #009688; }
 
 .card-body {
-  padding: 20px;
+  padding: 30px;
+  height: 300px;
   text-align: center;
+  margin-top: 130px !important;
 }
 
 .card-body p {
   font-size: 14px;
   color: #333;
 }
-
-.btn-primary {
-  display: inline-block;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  border-radius: 5px;
-  transition: background 0.3s ease-in-out;
-}
-
-.barreiro .btn-primary { background: #007c91; }
-.beja .btn-primary { background: #e65100; }
-.lisboa .btn-primary { background: #2e7d32; }
-.seixal .btn-primary { background: #00695c; }
 
 .escola-card:hover {
   transform: translateY(-5px);
