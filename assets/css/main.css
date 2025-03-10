@@ -1901,39 +1901,62 @@ section,
 /*--------------------------------------------------------------
 # Ajuste para a seção das Escolas
 --------------------------------------------------------------*/
+
+.container {
+  padding: 0 60px; 
+}
+
+.row.gy-4 {
+  display: flex;
+  justify-content: center;
+  gap: 20px; 
+}
+
 .escola-card {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+  width: 230px;
+  min-height: 280px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
 }
 
 .card-header {
-  padding: 20px;
-  font-size: 18px;
+  padding: 15px;
+  font-size: 16px;
   font-weight: bold;
-  text-align: center;
   color: #fff;
+  text-align: center;
+
 }
 
 .barreiro { background: #00bcd4; }
 .beja { background: #ff9800; }
 .lisboa { background: #4caf50; }
 .seixal { background: #009688; }
+.porto { background: #0074cc; }
 
 .card-body {
-  padding: 30px;
-  height: 300px;
-  text-align: center;
-  margin-top: 130px !important;
+  padding: 20px;
+  height: 250px;
 }
 
 .card-body p {
   font-size: 14px;
   color: #333;
+  margin: 10px 0;
 }
 
+.card-header h3 {
+  min-height: 40px;
+}
+
+/* Efeito hover */
 .escola-card:hover {
   transform: translateY(-5px);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);

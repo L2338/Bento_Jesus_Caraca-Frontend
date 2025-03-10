@@ -5,10 +5,11 @@
 
 <nav id="navmenu" class="navmenu">
     <ul>
-      <li><a href="index.php" <?php if ($rootDir == "/Projeto/Bento_Jesus_Caraca-Frontend/index.php"){?> class="active" <?php } ?>>Início</a></li>
-      <li><a href="sobre.php" <?php if ($rootDir == "/Projeto/Bento_Jesus_Caraca-Frontend/sobre.php"){?> class="active" <?php } ?>>Sobre</a></li>
-      <li><a href="obras.php" <?php if ($rootDir == "/Projeto/Bento_Jesus_Caraca-Frontend/obras.php"){?> class="active" <?php } ?>>Obras</a></li>
-      <li><a href="legado.php" <?php if ($rootDir == "/Projeto/Bento_Jesus_Caraca-Frontend/legado.php"){?> class="active" <?php } ?>>Legado</a></li>
+    <li><a href="index.php" <?php if (basename($_SERVER['PHP_SELF']) == "index.php") echo 'class="active"'; ?>>Início</a></li>
+    <li><a href="vida.php" <?php if (basename($_SERVER['PHP_SELF']) == "vida.php") echo 'class="active"'; ?>>Vida</a></li>
+    <li><a href="obras.php" <?php if (basename($_SERVER['PHP_SELF']) == "obras.php") echo 'class="active"'; ?>>Obras</a></li>
+    <li><a href="legado.php" <?php if (basename($_SERVER['PHP_SELF']) == "legado.php") echo 'class="active"'; ?>>Legado</a></li>
+
       <li class="dropdown">
         <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
@@ -32,9 +33,7 @@
                 <li><a href="#">Livros e Artigos</a></li>
                 <li><a href="#">Contribuições Científicas</a></li>
               </ul>
-            </li>
-            <li><a href="#">Acervo Digital</a></li>
-          </ul>
+
     </ul>
     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 </nav>

@@ -123,8 +123,8 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="6" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Obras Escritas</p>
+              <span data-purecounter-start="0" data-purecounter-end="9" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Livros Publicados</p>
             </div>
           </div><!-- End Stats Item -->
 
@@ -195,187 +195,228 @@
         </div>
 
       </div>
-    
-    </section><!-- /Why Us Section -->
+    </section>
 
-    <!-- Features Section -->
-    <!-- Escolas do Agrupamento Bento de Jesus Caraça -->
-<section id="escolas" class="section">
-  <div class="container">
-    <div class="section-title text-center">
-      <h2>As nossas escolas profissionais</h2>
-      <p>Descubra onde estamos presentes.</p>
-    </div>
+    <section id="escolas" class="section">
+      <div class="container">
+        <div class="section-title text-center">
+        <h2>As nossas escolas profissionais</h2>
+        <p>Descubra onde estamos presentes.</p>
+      </div>
 
-    <div class="row gy-4">
-      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4 justify-content-center">
+
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
         <div class="card escola-card">
           <div class="card-header barreiro">
             <h3>BARREIRO</h3>
           </div>
           <div class="card-body">
-          <p><a href="#" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a></p>
-            <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
+            <p class="morada">
+              <a href="#" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a>
+            </p>
+            <p><strong>Tel:</strong> 212 064 790</p>
             <p>geral.barreiro@epbjc.pt</p>
           </div>
         </div>
       </div>
 
-      <div class="row gy-4">
-      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
         <div class="card escola-card">
-          <div class="card-header barreiro">
-            <h3>Porto</h3>
+          <div class="card-header porto">
+            <h3>PORTO</h3>
           </div>
           <div class="card-body">
-          <p><a href="#" target="_blank">Rua do Bonjardim, nº 497-1º4000 – 126 Porto</a></p>
-            <p style="margin-top: 120px;"><strong>Tel:</strong> 222 054 713</p>
+            <p class="morada">
+              <a href="#" target="_blank">Rua do Bonjardim, nº 497-1º, 4000 – 126 Porto</a>
+            </p>
+            <p><strong>Tel:</strong> 222 054 713</p>
             <p>geral.porto@epbjc.pt</p>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
         <div class="card escola-card">
           <div class="card-header beja">
             <h3>BEJA</h3>
           </div>
           <div class="card-body">
-          <p><a href="https://www.google.com/maps/dir//epbjc+beja/@38.0168785,-7.8665451,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0xd1a74841d5386d1:0xf1908ba5cc0643a9!2m2!1d-7.8660289!2d38.0166724?entry=ttu" target="_blank">Rua D. Manuel I, nº19, 1º, 7800-306 Beja</a></p>
-            <p style="margin-top: 120px;"><strong>Tel:</strong> <span>213 255 326</span></p>
+            <p class="morada">
+              <a href="#" target="_blank">Rua D. Manuel I, nº19, 1º, 7800-306 Beja</a>
+            </p>
+            <p><strong>Tel:</strong> 213 255 326</p>
             <p>geral.beja@epbjc.pt</p>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="400">
         <div class="card escola-card">
           <div class="card-header lisboa">
             <h3>LISBOA</h3>
           </div>
           <div class="card-body">
-          <p><a href="#" target="_blank">Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</a></p>
-          <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
-          <p>geral.lisboa@epbjc.pt</p>
+            <p class="morada">
+              <a href="#" target="_blank">Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</a>
+            </p>
+            <p><strong>Tel:</strong> 212 064 790</p>
+            <p>geral.lisboa@epbjc.pt</p>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="500">
         <div class="card escola-card">
           <div class="card-header seixal">
             <h3>SEIXAL</h3>
-            </div>
-            <div class="card-body">
-            <p style="margin-bottom: 20px;">
-            <a href="#" target="_blank">Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</a>
+          </div>
+          <div class="card-body">
+            <p class="morada">
+              <a href="#" target="_blank">Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</a>
             </p>
-            <p style="margin-top: 120px;"><strong>Tel:</strong> 212 064 790</p>
-            <p >geral.seixal@epbjc.pt</p>
+            <p><strong>Tel:</strong> 212 064 790</p>
+            <p>geral.seixal@epbjc.pt</p>
           </div>
         </div>
       </div>
-      <p style="text-align:center">* Chamada para a rede fixa nacional</p>
-    </div>
-  </div>
-</section>
+
+      </div>
+
+      <p style="text-align:center; margin-top: 20px;">* Chamada para a rede fixa nacional</p>
+      </div>
+      
+    </section>
 
     <!-- Courses Section -->
     <section id="courses" class="courses section">
 
-      <!-- Section Title -->
+     <!-- Título da Seção -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Courses</h2>
-        <p>Popular Courses</p>
+      <h2>Cursos</h2>
+      <p>Cursos Populares</p>
       </div><!-- End Section Title -->
 
       <div class="container">
 
-        <div class="row">
+      <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="course-item">
-              <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Web Development</p>
-                  <p class="price">$169</p>
-                </div>
+      <!-- Curso 1 - Gestão e Programação de Sistemas Informáticos -->
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+        <div class="course-item">
+          <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
+          <div class="course-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="category">Gestão e Programação de Sistemas Informáticos</p>
+            </div>
 
-                <h3><a href="course-details.html">Website Design</a></h3>
-                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Antonio</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;50
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;65
-                  </div>
-                </div>
+            <h3>Desenvolve, otimiza e protege sistemas digitais</h3>
+            <p class="description">
+              Torna-te especialista na criação e gestão de sistemas informáticos. Aprende sobre linguagens de programação, bases de dados e segurança cibernética, garantindo uma carreira sólida na tecnologia.
+            </p>
+
+            <!-- Estrelas de Avaliação e Tempo -->
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="rating">
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i> (4.7)
+              </div>
+              <div class="duration">
+                <i class="bi bi-clock"></i> 3 anos
               </div>
             </div>
-          </div> <!-- End Course Item-->
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-            <div class="course-item">
-              <img src="assets/img/course-2.jpg" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Marketing</p>
-                  <p class="price">$250</p>
-                </div>
-
-                <h3><a href="course-details.html">Search Engine Optimization</a></h3>
-                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="assets/img/trainers/trainer-2-2.jpg" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Lana</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;35
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;42
-                  </div>
-                </div>
+            <div class="trainer d-flex justify-content-between align-items-center mt-3">
+              <div class="trainer-profile d-flex align-items-center">
+                <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
+                <a href="" class="trainer-link">Saber mais</a>
               </div>
             </div>
-          </div> <!-- End Course Item-->
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
-            <div class="course-item">
-              <img src="assets/img/course-3.jpg" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Content</p>
-                  <p class="price">$180</p>
-                </div>
-
-                <h3><a href="course-details.html">Copywriting</a></h3>
-                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="assets/img/trainers/trainer-3-2.jpg" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Brandon</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;20
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;85
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
-
+          </div>
         </div>
+      </div> <!-- End Course Item -->
 
-      </div>
+      <!-- Curso 2 - Gestão de Comunicação, Marketing e Publicidade -->
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+        <div class="course-item">
+          <img src="assets/img/course-2.jpg" class="img-fluid" alt="...">
+          <div class="course-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="category">Gestão de Comunicação, Marketing e Publicidade</p>
+            </div>
 
-    </section><!-- /Courses Section -->
+            <h3>Domina estratégias de comunicação e marketing digital</h3>
+            <p class="description">
+              Aprende a criar campanhas eficazes, gerenciar redes sociais e otimizar a presença digital de marcas. Inclui módulos de SEO, branding e análise de mercado para garantir o sucesso das estratégias.
+            </p>
+
+            <!-- Estrelas de Avaliação e Tempo -->
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="rating">
+              <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i>(4.5)
+              </div>
+              <div class="duration">
+                <i class="bi bi-clock"></i> 3 anos
+              </div>
+            </div>
+
+            <div class="trainer d-flex justify-content-between align-items-center mt-3">
+              <div class="trainer-profile d-flex align-items-center">
+                <img src="assets/img/trainers/trainer-2-2.jpg" class="img-fluid" alt="">
+                <a href="" class="trainer-link">Saber Mais</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Course Item -->
+
+      <!-- Curso 3 - Técnica de Gestão de Equipamento Informático -->
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
+        <div class="course-item">
+          <img src="assets/img/course-3.jpg" class="img-fluid" alt="...">
+          <div class="course-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="category">Técnica de Gestão de Equipamentos Informáticos</p>
+            </div>
+
+            <h3>Mantém e otimiza infraestruturas tecnológicas</h3>
+            <p class="description">
+              Aprende a instalar, reparar e configurar equipamentos informáticos e redes. O curso inclui formação em diagnóstico de falhas, segurança digital e suporte técnico, essencial para qualquer empresa.
+            </p>
+
+            <!-- Estrelas de Avaliação e Tempo -->
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="rating">
+              <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i> (4.5)
+              </div>
+              <div class="duration">
+                <i class="bi bi-clock"></i> 3 anos
+              </div>
+            </div>
+
+            <div class="trainer d-flex justify-content-between align-items-center mt-3">
+              <div class="trainer-profile d-flex align-items-center">
+                <img src="assets/img/trainers/trainer-3-2.jpg" class="img-fluid" alt="">
+                <a href="" class="trainer-link">Saber Mais</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Course Item -->
+    </div>
+  </section><!-- /Courses Section -->
+
     
   </main>
 
