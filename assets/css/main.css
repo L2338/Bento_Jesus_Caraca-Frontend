@@ -1909,7 +1909,6 @@ section,
 .row.gy-4 {
   display: flex;
   justify-content: center;
-  gap: 20px; 
 }
 
 .escola-card {
