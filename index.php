@@ -198,7 +198,7 @@
     </section>
 
     <section id="escolas" class="section">
-      <div class="container">
+      <div class="card-deck">
         <div class="section-title text-center">
         <h2>As nossas escolas profissionais</h2>
         <p>Descubra onde estamos presentes.</p>
@@ -215,6 +215,9 @@
             <p class="morada">
               <a href="#" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a>
             </p>
+            <br>
+            <br>
+            <br>
             <p><strong>Tel:</strong> 212 064 790</p>
             <p>geral.barreiro@epbjc.pt</p>
           </div>
@@ -230,6 +233,9 @@
             <p class="morada">
               <a href="#" target="_blank">Rua do Bonjardim, nº 497-1º, 4000 – 126 Porto</a>
             </p>
+            <br>
+            <br>
+            <br>
             <p><strong>Tel:</strong> 222 054 713</p>
             <p>geral.porto@epbjc.pt</p>
           </div>
@@ -245,6 +251,9 @@
             <p class="morada">
               <a href="#" target="_blank">Rua D. Manuel I, nº19, 1º, 7800-306 Beja</a>
             </p>
+            <br>
+            <br>
+            <br>
             <p><strong>Tel:</strong> 213 255 326</p>
             <p>geral.beja@epbjc.pt</p>
           </div>
@@ -260,6 +269,9 @@
             <p class="morada">
               <a href="#" target="_blank">Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</a>
             </p>
+            <br>
+            <br>
+            <br>
             <p><strong>Tel:</strong> 212 064 790</p>
             <p>geral.lisboa@epbjc.pt</p>
           </div>
@@ -275,6 +287,9 @@
             <p class="morada">
               <a href="#" target="_blank">Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</a>
             </p>
+            <br>
+            <br>
+            <br>
             <p><strong>Tel:</strong> 212 064 790</p>
             <p>geral.seixal@epbjc.pt</p>
           </div>
@@ -304,7 +319,7 @@
       <!-- Curso 1 - Gestão e Programação de Sistemas Informáticos -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="course-item">
-          <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
+          <img src="assets/img/curso1.jpg" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Gestão e Programação de Sistemas Informáticos</p>
@@ -342,7 +357,7 @@
       <!-- Curso 2 - Gestão de Comunicação, Marketing e Publicidade -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
         <div class="course-item">
-          <img src="assets/img/course-2.jpg" class="img-fluid" alt="...">
+          <img src="assets/img/curso2.jpg" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Gestão de Comunicação, Marketing e Publicidade</p>
@@ -350,7 +365,7 @@
 
             <h3>Domina estratégias de comunicação e marketing digital</h3>
             <p class="description">
-              Aprende a criar campanhas eficazes, gerenciar redes sociais e otimizar a presença digital de marcas. Inclui módulos de SEO, branding e análise de mercado para garantir o sucesso das estratégias.
+              Aprende a criar campanhas eficazes, gerenciar redes sociais e otimizar a presença digital de marcas. Inclui módulos de SEO, branding e análise de mercado.
             </p>
 
             <!-- Estrelas de Avaliação e Tempo -->
@@ -380,7 +395,7 @@
       <!-- Curso 3 - Técnica de Gestão de Equipamento Informático -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="course-item">
-          <img src="assets/img/course-3.jpg" class="img-fluid" alt="...">
+          <img src="assets/img/curso3.png" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Técnica de Gestão de Equipamentos Informáticos</p>
