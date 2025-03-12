@@ -66,7 +66,6 @@
               <h1>Vida<br></h1>
               <p class="mb-0">Pode aceder aqui a informações detalhadas sobre a vida e obra de Bento de Jesus Caraça. 
                 Figura marcante da sua época, destacou-se pelo seu contributo ímpar enquanto intelectual, educador e cidadão empenhado. 
-                Através do ensino inovador da Matemática, da defesa ativa da cultura e da promoção dos valores democráticos, deixou um legado significativo e duradouro na sociedade portuguesa.
             </div>
           </div>
         </div>

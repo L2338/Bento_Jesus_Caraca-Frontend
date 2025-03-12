@@ -294,7 +294,7 @@
      <!-- Título da Seção -->
       <div class="container section-title" data-aos="fade-up">
       <h2>Cursos</h2>
-      <p>Cursos Populares</p>
+      <p>Cursos Profissionais</p>
       </div><!-- End Section Title -->
 
       <div class="container">
