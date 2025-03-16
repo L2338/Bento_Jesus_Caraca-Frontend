@@ -27,9 +27,6 @@ include('ConfigBD.php');
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-  <!--novas bibliotecas -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- =======================================================
   * Template Name: Mentor
@@ -85,90 +82,96 @@ include('ConfigBD.php');
       </nav>
     </div><!-- End Page Title -->
 
-  <!-- Courses Section -->
-  <section id="obras" class="courses section">
-    <div class="container">
-      <div class="row">
+    <!-- Courses Section -->
+    <section id="courses" class="courses section">
 
-        <?php
-          // Consulta todas as obras
-          $sql = "SELECT * FROM obras ORDER BY id ASC";
-          $resultado = mysqli_query($conn, $sql);
+      <div class="container">
 
-          // Verifica se encontrou registros
-          if (mysqli_num_rows($resultado) > 0) {
-              // Loop para cada obra
-              while ($obra = mysqli_fetch_assoc($resultado)) {
-                  ?>
-                  <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="course-item">
-                      <!-- Imagem de capa da obra -->
-                      <img src="<?php echo $obra['Galileo_Galilei.png']; ?>" class="img-fluid" alt="<?php echo $obra['titulo']; ?>">
+        <div class="row">
 
-                      <div class="course-content">
-                        <!-- Se quiser exibir a categoria ou subtítulo -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <p class="category">Obra</p>
-                        </div>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="course-item">
+              <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Web Development</p>
+                  <p class="price">$169</p>
+                </div>
 
-                        <!-- Título da obra -->
-                        <h3><?php echo $obra['titulo']; ?></h3>
-
-                        <!-- Descrição da obra -->
-                        <p class="description"><?php echo $obra['descricao']; ?></p>
-
-                        <div class="trainer d-flex justify-content-between align-items-center">
-                          <div class="trainer-profile d-flex align-items-center">
-                            <!-- Exemplo de imagem fixa para o “autor” (se quiser algo dinâmico, crie outro campo no BD) 
-                            <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="Autor">
-                            -->
-                            <!-- Botão que abre o modal para ver o PDF -->
-                            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#modalObra_<?php echo $obra['id']; ?>">
-                              Ver PDF
-                            </button>
-                          </div>
-                          <div class="trainer-rank d-flex align-items-center">
-                            <!-- Link para baixar o PDF diretamente -->
-                            <img src="<?php echo $obra['imagem_capa']; ?>" class="img-fluid" alt="<?php echo $obra['titulo']; ?>">
-                          </div>
-                        </div>
-                      </div><!-- /course-content -->
-                    </div><!-- /course-item -->
-                  </div><!-- /col-lg-4 -->
-
-                  <!-- Modal para exibir o PDF da obra atual -->
-                  <div class="modal fade" id="modalObra_<?php echo $obra['id']; ?>" tabindex="-1" aria-labelledby="modalObraLabel_<?php echo $obra['id']; ?>" aria-hidden="true">
-                    <div class="modal-dialog modal-xl modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="modalObraLabel_<?php echo $obra['id']; ?>"><?php echo $obra['titulo']; ?></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                        </div>
-                        <div class="modal-body">
-                          <!-- Iframe para visualizar o PDF embutido -->
-                          <iframe src="<?php echo $obra['pdf']; ?>" width="100%" height="600px" style="border:none;"></iframe>
-                        </div>
-                        <div class="modal-footer">
-                          <a href="<?php echo $obra['pdf']; ?>" download class="btn btn-success ms-2">Baixar PDF</a>
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        </div>
-                      </div>
-                    </div>
+                <h3><a href="course-details.html">Website Design</a></h3>
+                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Antonio</a>
                   </div>
-                  <?php
-              }
-          } else {
-              echo "<p>Nenhuma obra cadastrada.</p>";
-          }
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
 
-          // Fecha a conexão
-          mysqli_close($conn);
-        ?>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+            <div class="course-item">
+              <img src="assets/img/course-2.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Marketing</p>
+                  <p class="price">$250</p>
+                </div>
 
-      </div><!-- /row -->
-    </div><!-- /container -->
-  </section><!-- /section -->
+                <h3><a href="course-details.html">Search Engine Optimization</a></h3>
+                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-2-2.jpg" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Lana</a>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;35
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;42
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
 
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
+            <div class="course-item">
+              <img src="assets/img/course-3.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Content</p>
+                  <p class="price">$180</p>
+                </div>
+
+                <h3><a href="course-details.html">Copywriting</a></h3>
+                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-3-2.jpg" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Brandon</a>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;20
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;85
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Courses Section -->
 
   </main>
 
