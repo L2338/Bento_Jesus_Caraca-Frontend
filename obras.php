@@ -52,7 +52,7 @@ include('ConfigBD.php');
       include('Menu.php');
       ?>
       
-      <a class="btn-getstarted" href="courses.php">Entrar</a>
+      <a class="btn-getstarted" href="login.php">Entrar</a>
 
     </div>
   </header>

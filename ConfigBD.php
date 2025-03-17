@@ -28,8 +28,8 @@ $conn = mysqli_connect($host, $usuario, $senha, $banco);
 
 // Verifica a conexão
 if (!$conn) {
-    error_log("Erro na conexão com o banco de dados: " . mysqli_connect_error());
-    die("Erro na conexão com o banco de dados. Por favor, tente novamente mais tarde.");
+    error_log("Erro na conexão com a base de dados: " . mysqli_connect_error());
+    die("Erro na conexão com a base de dados. Por favor, tente novamente mais tarde.");
 }
 
 // Define o charset
