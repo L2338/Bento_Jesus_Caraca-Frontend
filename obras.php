@@ -268,6 +268,7 @@ $obra = mysqli_fetch_assoc($result);
     }
 
     async function renderPages(startPage) {
+<<<<<<< Updated upstream
       if (pageRendering) return;
       
       try {
@@ -289,34 +290,65 @@ $obra = mysqli_fetch_assoc($result);
         
         // Calcular escala
         const scaleW = containerWidth / (startPage === 1 ? 1 : 2) / viewport.width;
+=======
+      try {
+        pageRendering = true;
+        
+        const isCover = startPage === 1;
+        const container = document.querySelector('.pdf-viewer');
+        const containerWidth = container.clientWidth - 80;
+        const containerHeight = container.clientHeight - 60;
+        
+        const firstPage = await pdfDoc.getPage(startPage);
+        const viewport = firstPage.getViewport({ scale: 1.0 });
+        
+        const scaleW = containerWidth / (isCover ? 1 : 2) / viewport.width;
+>>>>>>> Stashed changes
         const scaleH = containerHeight / viewport.height;
         scale = Math.min(scaleW, scaleH, 1.5);
         
         const scaledViewport = firstPage.getViewport({ scale });
         
+<<<<<<< Updated upstream
         // Criar wrapper para as páginas
+=======
+>>>>>>> Stashed changes
         const pageWrapper = document.createElement('div');
         pageWrapper.className = 'page-wrapper';
         
         const pages = [];
         
+<<<<<<< Updated upstream
         // Renderizar capa ou páginas duplas
         if (startPage === 1) {
+=======
+        if (isCover) {
+>>>>>>> Stashed changes
           const coverCanvas = document.createElement('canvas');
           coverCanvas.height = scaledViewport.height;
           coverCanvas.width = scaledViewport.width;
           coverCanvas.classList.add('page', 'cover');
           
+<<<<<<< Updated upstream
           const coverContext = coverCanvas.getContext('2d');
           await firstPage.render({
             canvasContext: coverContext,
+=======
+          await firstPage.render({
+            canvasContext: coverCanvas.getContext('2d'),
+>>>>>>> Stashed changes
             viewport: scaledViewport
           }).promise;
           
           pages.push(coverCanvas);
           document.getElementById('currentPage').textContent = '1';
         } else {
+<<<<<<< Updated upstream
           // Renderizar página esquerda
+=======
+          document.getElementById('currentPage').textContent = `${startPage}-${Math.min(startPage + 1, pdfDoc.numPages)}`;
+          
+>>>>>>> Stashed changes
           const leftCanvas = document.createElement('canvas');
           leftCanvas.height = scaledViewport.height;
           leftCanvas.width = scaledViewport.width;
@@ -329,7 +361,10 @@ $obra = mysqli_fetch_assoc($result);
           
           pages.push(leftCanvas);
           
+<<<<<<< Updated upstream
           // Renderizar página direita se existir
+=======
+>>>>>>> Stashed changes
           if (startPage + 1 <= pdfDoc.numPages) {
             const rightPage = await pdfDoc.getPage(startPage + 1);
             const rightCanvas = document.createElement('canvas');
@@ -344,6 +379,7 @@ $obra = mysqli_fetch_assoc($result);
             
             pages.push(rightCanvas);
           }
+<<<<<<< Updated upstream
           
           document.getElementById('currentPage').textContent = `${startPage}-${Math.min(startPage + 1, pdfDoc.numPages)}`;
         }
@@ -352,11 +388,18 @@ $obra = mysqli_fetch_assoc($result);
         pages.forEach(canvas => pageWrapper.appendChild(canvas));
         
         // Criar e atualizar o container do livro
+=======
+        }
+        
+        pages.forEach(canvas => pageWrapper.appendChild(canvas));
+        
+>>>>>>> Stashed changes
         const book = document.createElement('div');
         book.className = 'book';
         book.appendChild(pageWrapper);
         
         const bookContainer = document.querySelector('.book-container');
+<<<<<<< Updated upstream
         if (bookContainer) {
           bookContainer.innerHTML = '';
           bookContainer.appendChild(book);
@@ -375,6 +418,19 @@ $obra = mysqli_fetch_assoc($result);
         pageNum = startPage;
         
         // Processar página pendente se houver
+=======
+        bookContainer.innerHTML = '';
+        bookContainer.appendChild(book);
+        
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        prevButton.disabled = startPage <= 1;
+        nextButton.disabled = startPage >= pdfDoc.numPages;
+        
+        pageRendering = false;
+        pageNum = startPage;
+        
+>>>>>>> Stashed changes
         if (pageNumPending !== null) {
           renderPages(pageNumPending);
           pageNumPending = null;

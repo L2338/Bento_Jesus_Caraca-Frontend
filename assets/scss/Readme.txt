@@ -1,2 +1,6 @@
-The .scss (Sass) files are only available in the pro version.
-You can buy it from: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+Thanks for downloading this template!
+
+Template Name: Mentor
+Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+Author: BootstrapMade.com
+License: https://bootstrapmade.com/license/
