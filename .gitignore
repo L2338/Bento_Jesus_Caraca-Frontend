@@ -1,0 +1,28 @@
+# Environment variables
+.env
+
+# Dependencies
+/node_modules
+/vendor
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log
+access_log
+
+# Cache
+*.cache
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+
+# Sensitive files
+*.pem
+*.key
+*.cert 
