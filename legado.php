@@ -51,7 +51,7 @@
       include('Menu.php');
       ?>
 
-      <a class="btn-getstarted" href="login.php">Entrar</a>
+      <a class="btn-getstarted" href="login.php">Login</a>
 
     </div>
   </header>
