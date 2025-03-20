@@ -82,7 +82,7 @@ $result=$conn-> query($sql);
   </nav>
 </div><!-- End Page Title -->
 
-<!-- Courses Section -->
+<!-- Obras Section -->
 <section id="courses" class="courses section">
   <div class="container">
     <div class="row">
@@ -95,15 +95,20 @@ $result=$conn-> query($sql);
     </div>
     
     <div class="row">
-      <?php
-        if($result->num_rows>0){
-        while($post=$result->fetch_assoc()){
-      ?>
-        <!-- Item da Obra -->
-        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-          <div class="course-item">
-            <div class="course-image-container">
-              <img src="assets/img/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
+    <?php
+if($result->num_rows>0){
+    while($post=$result->fetch_assoc()){
+
+?>
+      <!-- Item da Obra -->
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+        <div class="course-item">
+          <div class="course-image-container">
+            <img src="assets/img/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
+          </div>
+          <div class="course-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="category">Obra</span>
             </div>
             <div class="course-content">
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -126,8 +131,9 @@ $result=$conn-> query($sql);
             </div>
           </div>
         </div>
+      </div>
       <?php }
-      } ?>
+} ?>
     </div>  
   </div>
 </section>
@@ -159,8 +165,7 @@ $result=$conn-> query($sql);
     </div>
   </div>
 </div>
-<?php }
-} ?>
+
 </main>
 
 <?php
