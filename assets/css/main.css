@@ -2567,24 +2567,6 @@ section,
   }
 }
 
-@media (max-width: 768px) {
-  .pdf-modal-content {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-  }
-  
-  .pdf-controls {
-    gap: 5px;
-  }
-  
-  .btn-control, .btn-nav, .btn-close, .btn-download {
-    width: 35px;
-    height: 35px;
-  }
-}
-
 /* PDF Viewer Styles */
 .pdf-container {
   display: flex;
@@ -2799,6 +2781,7 @@ section,
   transition: all 0.3s ease;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .pdf-controls button:hover:not(:disabled) {
