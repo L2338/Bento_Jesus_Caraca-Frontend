@@ -82,7 +82,7 @@ $result=$conn-> query($sql);
   </nav>
 </div><!-- End Page Title -->
 
-<!-- Courses Section -->
+<!-- Obras Section -->
 <section id="courses" class="courses section">
   <div class="container">
     <div class="row">
@@ -93,12 +93,13 @@ $result=$conn-> query($sql);
         </div>
       </div>
     </div>
+    
+    <div class="row">
     <?php
 if($result->num_rows>0){
     while($post=$result->fetch_assoc()){
 
 ?>
-    <div class="row">
       <!-- Item da Obra -->
       <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
         <div class="course-item">
@@ -126,7 +127,8 @@ if($result->num_rows>0){
           </div>
         </div>
       </div>
-      
+      <?php }
+} ?>
     </div>  
   </div>
 </section>
@@ -158,8 +160,7 @@ if($result->num_rows>0){
     </div>
   </div>
 </div>
-<?php }
-} ?>
+
 </main>
 
 <?php
