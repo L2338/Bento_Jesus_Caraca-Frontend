@@ -114,7 +114,7 @@ if($result->num_rows>0){
               <h4 class="autor-nome"><?php echo $post['autor']; ?></h4>
             </div>
             <h3><?php echo $post['titulo']; ?></h3>
-            <p class="description"><?php $post['descricao'] . '...'; ?></p>
+            <p class="description"><?php echo substr($post['descricao'], 0, 150). '...'; ?></p>
             <div class="obra-footer">
               <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
                 <i class="bi bi-file-pdf"></i>
@@ -129,8 +129,6 @@ if($result->num_rows>0){
       
     </div>  
   </div>
-  <?php }
-} ?>
 </section>
 
 <!-- Modal do PDF -->
@@ -138,7 +136,7 @@ if($result->num_rows>0){
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="pdfModalLabel"><?php echo $obra['titulo']; ?></h5>
+        <h5 class="modal-title" id="pdfModalLabel"><?php echo $post['titulo']; ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
       <div class="modal-body p-0">
@@ -160,7 +158,8 @@ if($result->num_rows>0){
     </div>
   </div>
 </div>
-
+<?php }
+} ?>
 </main>
 
 <?php
