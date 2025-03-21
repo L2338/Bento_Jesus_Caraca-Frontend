@@ -95,40 +95,39 @@ $result=$conn-> query($sql);
     </div>
     
     <div class="row">
-    <?php
-if($result->num_rows>0){
-    while($post=$result->fetch_assoc()){
-
-?>
-      <!-- Item da Obra -->
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-        <div class="course-item">
-          <div class="course-image-container">
-            <img src="assets/img/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
-          </div>
-          <div class="course-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="category">Obra</span>
+      <?php
+        if($result->num_rows>0){
+        while($post=$result->fetch_assoc()){
+      ?>
+        <!-- Item da Obra -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+          <div class="course-item">
+            <div class="course-image-container">
+              <img src="assets/img/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
             </div>
-            <div class="autor-section">
-              <span class="autor-label">Autor</span>
-              <h4 class="autor-nome"><?php echo $post['autor']; ?></h4>
-            </div>
-            <h3><?php echo $post['titulo']; ?></h3>
-            <p class="description"><?php echo substr($post['descricao'], 0, 150). '...'; ?></p>
-            <div class="obra-footer">
-              <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
-                <i class="bi bi-file-pdf"></i>
-              </a>
-              <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>')">
-                Ler
-              </button>
+            <div class="course-content">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="category">Obra</span>
+              </div>
+              <div class="autor-section">
+                <span class="autor-label">Autor</span>
+                <h4 class="autor-nome"><?php echo $post['autor']; ?></h4>
+              </div>
+              <h3><?php echo $post['titulo']; ?></h3>
+              <p class="description"><?php echo substr($post['descricao'], 0, 150). '...'; ?></p>
+              <div class="obra-footer">
+                <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
+                  <i class="bi bi-file-pdf"></i>
+                </a>
+                <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>')">
+                  Ler
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       <?php }
-} ?>
+      } ?>
     </div>  
   </div>
 </section>

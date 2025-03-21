@@ -1,0 +1,25 @@
+# Proteger diretório admin
+AuthType Basic
+AuthName "Área Restrita"
+AuthUserFile /path/to/.htpasswd
+Require valid-user
+
+# Negar acesso direto a arquivos
+<FilesMatch "\.(php|htaccess|htpasswd)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Permitir apenas o acesso ao login.php
+<Files "login.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Prevenir listagem de diretório
+Options -Indexes
+
+# Forçar HTTPS (se disponível)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] 
