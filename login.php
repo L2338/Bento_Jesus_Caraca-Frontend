@@ -83,42 +83,6 @@
                         <h2>Login</h2>
                         <p class="text-muted">Entre na sua conta</p>
                     </div>
-                    
-                    <?php
-                    // Iniciar sessão
-                    session_start();
-                    
-                    // Verificar se há erros de login
-                    if (isset($_SESSION['login_error'])) {
-                        echo '<div class="alert alert-danger">' . $_SESSION['login_error'] . '</div>';
-                        unset($_SESSION['login_error']);
-                    }
-                    
-                    // Verificar se o formulário foi enviado
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-                        
-                        // Aqui você adicionaria sua lógica de verificação de login
-                        // Exemplo simples:
-                        // Substitua esta verificação pela sua lógica de banco de dados
-                        if ($username == "admin" && $password == "senha123") {
-                            // Login bem-sucedido
-                            $_SESSION['logged_in'] = true;
-                            $_SESSION['username'] = $username;
-                            
-                            // Redirecionar para a página principal
-                            header("Location: index.php");
-                            exit();
-                        } else {
-                            // Login falhou
-                            $_SESSION['login_error'] = "Nome de utilizador ou senha incorretos";
-                            header("Location: login.php");
-                            exit();
-                        }
-                    }
-                    ?>
-                    
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <div class="mb-3">
                             <label for="username" class="form-label">Nome de utilizador</label>
@@ -134,8 +98,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
