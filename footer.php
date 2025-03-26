@@ -23,7 +23,7 @@
           <h4>Páginas do site</h4>
           <ul>
             <li><a href="index.php">Início</a></li>
-            <li><a href="sobre.php">Sobre</a></li>
+            <li><a href="vida.php">Vida</a></li>
             <li><a href="obras.php">Obras</a></li>
             <li><a href="legado.php">Legado</a></li>
           </ul>
