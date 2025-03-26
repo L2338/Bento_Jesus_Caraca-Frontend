@@ -3,7 +3,6 @@ include('ConfigBD.php');
 // Consulta SQL para buscar os dados da obra
 $sql = "SELECT id,titulo,descricao,pdf,imagem_capa,autor,Nome_tema FROM obras inner join Temas on obras.id_tema=Temas.id_tema  order by id ";
 $result=$conn-> query($sql);
-//$obra = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="pt">
