@@ -2800,91 +2800,39 @@ section,
 .page-info {
   font-size: 16px;
   color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/*--------------------------------------------------------------
-# Timeline Styles
---------------------------------------------------------------*/
-.timeline-wrapper {
-  position: relative;
-  padding: 50px 0;
-}
-
-.timeline-block {
-  position: relative;
-  margin-bottom: 50px;
-  padding-left: 130px;
-}
-
-.timeline-date {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100px;
-  padding: 10px;
-  background: var(--accent-color);
-  color: white;
-  text-align: center;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.timeline-content {
-  position: relative;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.timeline-content h3 {
-  color: var(--accent-color);
-  margin-bottom: 15px;
-  font-size: 1.25rem;
-}
-
-.timeline-content p {
-  margin-bottom: 0;
-  line-height: 1.6;
-}
-
-.timeline-block:before {
-  content: '';
-  position: absolute;
-  left: 120px;
-  top: 0;
-  height: 100%;
-  width: 2px;
-  background: var(--accent-color);
-}
-
-.timeline-block:after {
-  content: '';
-  position: absolute;
-  left: 113px;
-  top: 15px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent-color);
-}
-
+/* Responsividade do PDF Viewer */
 @media (max-width: 768px) {
-  .timeline-block {
-    padding-left: 70px;
+  .pdf-container {
+    height: 85vh;
   }
-  
-  .timeline-date {
-    width: 60px;
-    font-size: 0.85rem;
-    padding: 5px;
+
+  .modal-dialog {
+    margin: 0.5rem;
   }
-  
-  .timeline-block:before {
-    left: 60px;
+
+  .pdf-viewer {
+    padding: 10px;
+    margin: 5px 10px;
   }
-  
-  .timeline-block:after {
-    left: 53px;
+
+  .page-wrapper {
+    gap: 20px;
+  }
+
+  .pdf-controls {
+    padding: 15px;
+  }
+
+  .pdf-controls button {
+    width: 40px;
+    height: 40px;
   }
 }
+
+.col-lg-3.col-md-6 {
+  margin-bottom: 25px;
+}
+

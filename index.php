@@ -298,7 +298,7 @@
 
       </div>
 
-      <p style="text-align:center; margin-top: 20px;">* Chamada para a rede fixa nacional</p>
+      <p class="call-note">* Chamada para a rede fixa nacional</p>
       </div>
       
     </section>

@@ -1,3 +1,6 @@
+// Configuração do PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 /**
 * Template Name: Mentor
 * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
@@ -135,15 +138,14 @@
   /**
    * PDF Viewer Configuration and Functions
    */
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  let pdfDoc = null;        // Armazena o documento PDF carregado
+  let pageNum = 1;         // Página atual
+  let pageRendering = false; // Flag para controle de renderização
+  let pageNumPending = null; // Página pendente para renderização
+  let scale = 1.0;         // Escala de zoom do PDF
 
-  let pdfDoc = null;
-  let pageNum = 1;
-  let pageRendering = false;
-  let pageNumPending = null;
-  let scale = 1.0;
-
-  window.openPdfModal = async function(pdfPath) {
+  // Função para abrir o modal do PDF
+  async function openPdfModal(pdfPath) {
     try {
       if (!pdfPath.startsWith('assets/pdf/obras/')) {
         pdfPath = 'assets/pdf/obras/' + pdfPath;
@@ -192,6 +194,7 @@
     }
   }
 
+  // Função para renderizar páginas do PDF
   async function renderPages(startPage) {
     try {
       pageRendering = true;
@@ -287,6 +290,7 @@
     }
   }
 
+  // Função para virar as páginas
   async function turnPages(direction) {
     if (pageRendering) return;
     
@@ -350,7 +354,7 @@
     }
   }
 
-  // Event Listeners para o PDF Viewer
+  // Event Listeners
   document.addEventListener('DOMContentLoaded', function() {
     // Prevenir arraste de imagens
     const images = document.querySelectorAll('.course-item img');
@@ -360,6 +364,15 @@
       });
       img.addEventListener('mousedown', function(e) {
         e.preventDefault();
+      });
+    });
+
+    // Event listener para botões de leitura de PDF
+    const pdfButtons = document.querySelectorAll('.btn-ler');
+    pdfButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const pdfPath = this.getAttribute('data-pdf');
+        openPdfModal(pdfPath);
       });
     });
 
