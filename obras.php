@@ -1,7 +1,7 @@
 <?php
 include('ConfigBD.php');
 // Consulta SQL para buscar os dados da obra
-$sql = "SELECT * FROM obras order by id";
+$sql = "SELECT id,titulo,descricao,pdf,imagem_capa,autor,Nome_tema FROM obras inner join Temas on obras.id_tema=Temas.id_tema  order by id ";
 $result=$conn-> query($sql);
 //$obra = mysqli_fetch_assoc($result);
 ?>
@@ -44,7 +44,6 @@ $result=$conn-> query($sql);
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
       <a href="index.php" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="assets/img/epbjc-logo.png" alt="Logo EPBJC" > 
         
       </a>
@@ -108,7 +107,7 @@ if($result->num_rows>0){
           </div>
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="category">Obra</span>
+              <span class="category"><?php echo $post['Nome_tema']; ?></span>
             </div>
             <div class="autor-section">
               <span class="autor-label">Autor</span>
