@@ -156,134 +156,61 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Testimonials</h2>
-        <p>What are they saying</p>
-      </div><!-- End Section Title -->
+        <h2>Linha do Tempo</h2>
+        <p>Sua Jornada</p>
+      </div>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              },
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 1,
-                  "spaceBetween": 40
-                },
-                "1200": {
-                  "slidesPerView": 2,
-                  "spaceBetween": 20
-                }
-              }
-            }
-          </script>
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                  <h3>Saul Goodman</h3>
-                  <h4>Ceo &amp; Founder</h4>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>
-                    <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
-                    <i class="bi bi-quote quote-icon-right"></i>
-                  </p>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="timeline-wrapper" data-aos="fade-up" data-aos-delay="100">
+              <!-- 1901-1918: Primeiros Anos -->
+              <div class="timeline-block">
+                <span class="timeline-date">1901-1918</span>
+                <div class="timeline-content">
+                  <h3>Primeiros Anos</h3>
+                  <p>Nascido em Vila Viçosa, Alentejo, em 18 de abril de 1901. Filho de João António Caraça e Maria do Rosário, iniciou seus estudos primários demonstrando desde cedo uma notável aptidão para a matemática.</p>
                 </div>
               </div>
-            </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                  <h3>Sara Wilsson</h3>
-                  <h4>Designer</h4>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>
-                    <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
-                    <i class="bi bi-quote quote-icon-right"></i>
-                  </p>
+              <!-- 1919-1923: Formação Acadêmica -->
+              <div class="timeline-block">
+                <span class="timeline-date">1919-1923</span>
+                <div class="timeline-content">
+                  <h3>Formação Acadêmica</h3>
+                  <p>Ingressou no Instituto Superior de Comércio, onde se destacou como aluno brilhante. Concluiu sua formação com as mais altas classificações, sendo imediatamente convidado para Professor Assistente.</p>
                 </div>
               </div>
-            </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                  <h3>Jena Karlis</h3>
-                  <h4>Store Owner</h4>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>
-                    <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
-                    <i class="bi bi-quote quote-icon-right"></i>
-                  </p>
+              <!-- 1924-1930: Carreira Inicial -->
+              <div class="timeline-block">
+                <span class="timeline-date">1924-1930</span>
+                <div class="timeline-content">
+                  <h3>Início da Carreira</h3>
+                  <p>Iniciou sua notável carreira docente, publicando seus primeiros trabalhos científicos. Em 1929, tornou-se Professor Catedrático do ISCEF, sendo um dos mais jovens catedráticos de Portugal.</p>
                 </div>
               </div>
-            </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                  <h3>Matt Brandon</h3>
-                  <h4>Freelancer</h4>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>
-                    <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
-                    <i class="bi bi-quote quote-icon-right"></i>
-                  </p>
+              <!-- 1931-1940: Consolidação -->
+              <div class="timeline-block">
+                <span class="timeline-date">1931-1940</span>
+                <div class="timeline-content">
+                  <h3>Anos de Consolidação</h3>
+                  <p>Período marcado por importantes publicações, incluindo "Lições de Álgebra e Análise". Assumiu a direção da Gazeta de Matemática e iniciou o planejamento da Biblioteca Cosmos.</p>
                 </div>
               </div>
-            </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                  <h3>John Larson</h3>
-                  <h4>Entrepreneur</h4>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>
-                    <i class="bi bi-quote quote-icon-left"></i>
-                    <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
-                    <i class="bi bi-quote quote-icon-right"></i>
-                  </p>
+              <!-- 1941-1948: Legado Final -->
+              <div class="timeline-block">
+                <span class="timeline-date">1941-1948</span>
+                <div class="timeline-content">
+                  <h3>Legado e Últimos Anos</h3>
+                  <p>Lançou a Biblioteca Cosmos, publicou "Conceitos Fundamentais da Matemática" e, apesar do afastamento do ensino em 1946, deixou um legado inestimável para a educação portuguesa.</p>
                 </div>
               </div>
-            </div><!-- End testimonial item -->
-
+            </div>
           </div>
-          <div class="swiper-pagination"></div>
         </div>
-
       </div>
 
     </section><!-- /Testimonials Section -->
@@ -308,8 +235,94 @@
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
-  <!-- Main JS File -->
+  <!-- Main File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/css/main.css"></script>
+  <style>
+  .timeline-wrapper {
+    position: relative;
+    padding: 50px 0;
+  }
+
+  .timeline-block {
+    position: relative;
+    margin-bottom: 50px;
+    padding-left: 130px;
+  }
+
+  .timeline-date {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100px;
+    padding: 10px;
+    background: #ac062a;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .timeline-content {
+    position: relative;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .timeline-content h3 {
+    color: #ac062a;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+  }
+
+  .timeline-content p {
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .timeline-block:before {
+    content: '';
+    position: absolute;
+    left: 120px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #ac062a;
+  }
+
+  .timeline-block:after {
+    content: '';
+    position: absolute;
+    left: 113px;
+    top: 15px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ac062a;
+  }
+
+  @media (max-width: 768px) {
+    .timeline-block {
+      padding-left: 70px;
+    }
+    
+    .timeline-date {
+      width: 60px;
+      font-size: 0.85rem;
+      padding: 5px;
+    }
+    
+    .timeline-block:before {
+      left: 60px;
+    }
+    
+    .timeline-block:after {
+      left: 53px;
+    }
+  }
+  </style>
 
 </body>
 
