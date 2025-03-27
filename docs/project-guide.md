@@ -2,38 +2,43 @@
 
 ## 1. Project Overview
 - **Name**: Bento Jesus Caraça Frontend
-- **Type**: Frontend
+- **Type**: Frontend com acesso a banco de dados
 - **Description**: Frontend application for the Bento Jesus Caraça website, showcasing his life, works, and legacy
 - **Version**: 1.0.0
 
 ## 2. Project Structure
 ```
-[Project Root]
-├── admin/
-│   ├── login.php
-│   └── .htaccess
+[Bento_Jesus_Caraca-Frontend]
 ├── assets/
 │   ├── css/
 │   │   └── main.css        # Includes all CSS including PDF viewer styles
 │   ├── img/
-│   │   ├── testimonials/
-│   │   ├── team/
-│   │   ├── tabs/
-│   │   ├── logo.png
-│   │   ├── hero-bn.jpg
-│   │   ├── events-item-2.jpg
-│   │   ├── events-item-1.jpg
-│   │   ├── epbjc-logo.png
-│   │   ├── curso3.png
-│   │   ├── curso2.jpg
-│   │   ├── curso1.jpg
-│   │   ├── course-details.jpg
-│   │   ├── about2.jpg
+│   │   ├── index/          # Imagens da página inicial
+│   │   │   ├── about2.jpg
+│   │   │   ├── curso1.jpg
+│   │   │   ├── curso2.jpg
+│   │   │   ├── curso3.png
+│   │   │   └── hero-bn.jpg
+│   │   ├── obras/          # Imagens relacionadas às obras
+│   │   │   ├── CFM-Vol_1.jpg
+│   │   │   ├── CFM-Vol_2.jpeg
+│   │   │   ├── Galileo_Galilei.png
+│   │   │   ├── obra2.jpg
+│   │   │   └── obra3.jpg
+│   │   ├── retratos/       # Retratos históricos
 │   │   ├── about-2.jpg
-│   │   └── BJC_logo.png
+│   │   ├── BJC_logo.png
+│   │   └── epbjc-logo.png
 │   ├── js/
 │   │   ├── main.js
 │   │   └── pdf-viewer.js
+│   ├── pdf/
+│   │   └── Obras/          # PDFs das obras de Bento Jesus Caraça
+│   │       ├── CFM-Vol_1.pdf
+│   │       ├── CFM-Vol_2.pdf
+│   │       ├── Galileo_Galilei.pdf
+│   │       ├── Obra2.pdf
+│   │       └── Obra3.pdf
 │   ├── scss/
 │   └── vendor/
 │       ├── aos/
@@ -75,8 +80,7 @@
 │       │   │   ├── bootstrap-utilities.rtl.css
 │       │   │   ├── bootstrap-utilities.rtl.css.map
 │       │   │   ├── bootstrap-utilities.rtl.min.css
-│       │   │   ├── bootstrap-utilities.rtl.min.css.map
-│       │   │   └── prb.txt
+│       │   │   └── bootstrap-utilities.rtl.min.css.map
 │       │   └── js/
 │       │       ├── bootstrap.bundle.js
 │       │       ├── bootstrap.bundle.js.map
@@ -91,9 +95,6 @@
 │       │       ├── bootstrap.min.js
 │       │       └── bootstrap.min.js.map
 │       ├── bootstrap-icons/
-│       ├── glightbox/
-│       │   ├── css/
-│       │   └── js/
 │       ├── php-email-form/
 │       ├── purecounter/
 │       └── swiper/
@@ -101,28 +102,29 @@
 │           ├── swiper-bundle.min.js
 │           └── swiper-bundle.min.js.map
 ├── docs/
-│   ├── arquitetura-vibe-coding.md
-│   ├── regras-vibe-coding.md
-│   └── project-guide.md
-├── includes/
-│   └── components/
-│       ├── footer.php
-│       └── Menu.php
-├── pages/
-│   ├── index.php
-│   ├── start-page.php
-│   ├── vida.php
-│   ├── obras.php
-│   ├── legado.php
-│   └── course-details.php
-├── storage/
-│   └── books/
-│       └── pdfs/
-│           └── Obras/
-│               └── Obra3.pdf
+│   ├── arquitetura-vibe-coding.md   # Documentação de arquitetura
+│   ├── fontes-pesquisa.md           # Fontes de pesquisa sobre Bento Jesus Caraça
+│   ├── project-guide.md             # Este guia do projeto
+│   ├── Prompt.md                    # Instruções para AI
+│   └── regras-vibe-coding.md        # Regras de codificação
+├── forms/
+│   ├── contact.php                  # Processador do formulário de contato
+│   ├── newsletter.php               # Processador do formulário de newsletter
+│   └── Readme.txt                   # Instruções sobre os formulários
+├── ConfigBD.php                     # Configuração do banco de dados
+├── contact.php                      # Página de contato
+├── course-details.php               # Detalhes de cursos
+├── footer.php                       # Componente de rodapé
+├── index.php                        # Página inicial
+├── legado.php                       # Página sobre o legado
+├── login.php                        # Página de login
+├── Menu.php                         # Componente de navegação
+├── obras.php                        # Catálogo de obras
+├── starter-page.php                 # Página modelo/inicial
+├── vida.php                         # Biografia de Bento Jesus Caraça
 ├── .gitignore
 ├── package.json
-└── README.md
+└── package-lock.json
 ```
 
 ## 3. Technology Stack
