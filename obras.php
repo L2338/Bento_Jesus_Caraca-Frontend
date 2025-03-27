@@ -138,7 +138,7 @@ if($result->num_rows>0){
       <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
         <div class="course-item">
           <div class="course-image-container">
-            <img src="assets/img/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
+            <img src="assets/img/obras/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
           </div>
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -274,9 +274,9 @@ include("footer.php");
             <div class="page-wrapper">
               <div class="loading text-center p-5 text-white">
                 <div class="spinner-border text-light mb-3" role="status">
-                  <span class="visually-hidden">Carregando...</span>
+                  <span class="visually-hidden">A carregar...</span>
                 </div>
-                <div>Carregando PDF...</div>
+                <div>A carregar PDF...</div>
               </div>
             </div>
           </div>
