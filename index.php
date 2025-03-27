@@ -58,7 +58,7 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
-      <img src="assets/img/hero-bn.jpg" alt="" data-aos="fade-in">
+      <img src="assets/img/index/hero-bn.jpg" alt="" data-aos="fade-in">
 
       <div class="container">
         <h2 data-aos="fade-up" data-aos-delay="100">Conhecimento,<br> Liberdade e Transformação</h2>
@@ -78,7 +78,7 @@
         <div class="row gy-4">
 
           <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-            <img src="assets/img/about2.jpg" class="img-fluid" alt="">
+            <img src="assets/img/index/about2.jpg" class="img-fluid" alt="">
           </div>
 
           <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
@@ -319,7 +319,7 @@
       <!-- Curso 1 - Gestão e Programação de Sistemas Informáticos -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="course-item">
-          <img src="assets/img/curso1.jpg" class="img-fluid" alt="...">
+          <img src="assets/img/index/curso1.jpg" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Gestão e Programação de Sistemas Informáticos</p>
@@ -357,7 +357,7 @@
       <!-- Curso 2 - Gestão de Comunicação, Marketing e Publicidade -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
         <div class="course-item">
-          <img src="assets/img/curso2.jpg" class="img-fluid" alt="...">
+          <img src="assets/img/index/curso2.jpg" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Gestão de Comunicação, Marketing e Publicidade</p>
@@ -395,7 +395,7 @@
       <!-- Curso 3 - Técnica de Gestão de Equipamento Informático -->
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="course-item">
-          <img src="assets/img/curso3.png" class="img-fluid" alt="...">
+          <img src="assets/img/index/curso3.png" class="img-fluid" alt="...">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <p class="category">Técnica de Gestão de Equipamentos Informáticos</p>
