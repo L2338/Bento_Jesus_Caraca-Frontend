@@ -1,5 +1,11 @@
 <?php
 include('ConfigBD.php');
+
+// Buscar todos os temas disponíveis
+$temasSql = "SELECT DISTINCT id_tema, Nome_tema FROM Temas ORDER BY id_tema";
+$temasResult = $conn->query($temasSql);
+
+
 // Consulta SQL para buscar os dados da obra
 $sql = "SELECT id,titulo,descricao,pdf,imagem_capa,autor,Nome_tema FROM obras inner join Temas on obras.id_tema=Temas.id_tema  order by id ";
 $result=$conn-> query($sql);
@@ -91,7 +97,26 @@ $result=$conn-> query($sql);
         </div>
       </div>
     </div>
-    
+    <div class="container">
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="tema-filter">
+                <label class="form-label">Filtrar por Tema:</label>
+                <select id="temaFilter" class="form-select">
+                    <option value="">Todos os Temas</option>
+                    <?php 
+                    if($temasResult->num_rows > 0) {
+                        while($tema = $temasResult->fetch_assoc()) {
+                            echo "<option value='{$tema['id_tema']}'>{$tema['Nome_tema']}</option>";
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="row">
     <?php
 if($result->num_rows>0){
@@ -451,6 +476,34 @@ include("footer.php");
       }
     }, 250);
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const temaFilter = document.getElementById('temaFilter');
+    const obras = document.querySelectorAll('.course-item');
+    const mensagemSemResultados = document.getElementById('semResultados');
+
+    temaFilter.addEventListener('change', function() {
+        const selectedTema = this.value;
+        let encontrouObras = false;
+
+        obras.forEach(function(obra) {
+            const temaDaObra = obra.getAttribute('data-tema');
+            const containerObra = obra.closest('.col-lg-3');
+            
+            if (selectedTema === '' || temaDaObra === selectedTema) {
+                containerObra.style.display = '';
+                encontrouObras = true;
+            } else {
+                containerObra.style.display = 'none';
+            }
+        });
+
+        // Mostrar mensagem se nenhuma obra for encontrada
+        if (mensagemSemResultados) {
+            mensagemSemResultados.style.display = encontrouObras ? 'none' : 'block';
+        }
+    });
+});
 </script>
 
 <style>
@@ -682,6 +735,16 @@ include("footer.php");
   color: white;
   background: 
 }
+.tema-filter {
+  margin-bottom: 20px;
+}
+
+.tema-filter .form-select {
+  max-width: 300px;
+}
+
+
+
 </body>
 
 </html>
