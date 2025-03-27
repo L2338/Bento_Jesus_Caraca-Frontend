@@ -118,7 +118,7 @@ if($result->num_rows>0){
               <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
                 <i class="bi bi-file-pdf"></i>
               </a>
-              <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>')">
+              <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>', '<?php echo htmlspecialchars($post['titulo'], ENT_QUOTES, 'UTF-8'); ?>')">
                 Ler
               </button>
             </div>
@@ -136,7 +136,7 @@ if($result->num_rows>0){
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="pdfModalLabel"><?php echo $post['titulo']; ?></h5>
+        <h5 class="modal-title" id="pdfModalLabel"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
       <div class="modal-body p-0">
@@ -158,7 +158,6 @@ if($result->num_rows>0){
     </div>
   </div>
 </div>
-
 </main>
 
 <?php
