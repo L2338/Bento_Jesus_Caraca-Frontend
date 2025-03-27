@@ -2315,8 +2315,7 @@ section,
 /* Ajustes responsivos com seletor mais específico */
 @media (max-width: 991px) {
   .courses .course-item img.img-fluid {
-    height: 40px !important;
-    max-height: 40px !important;
+    max-height: 250px !important;
     min-height: 40px !important;
   }
 }

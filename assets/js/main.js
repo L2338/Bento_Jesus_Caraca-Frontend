@@ -149,6 +149,8 @@
         pdfPath = 'assets/pdf/obras/' + pdfPath;
       }
       
+      document.getElementById('pdfModalLabel').textContent = titulo;
+      
       const pdfModal = new bootstrap.Modal(document.getElementById('pdfModal'));
       const pdfViewer = document.getElementById('pdfViewer');
       

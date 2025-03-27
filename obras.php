@@ -7,8 +7,18 @@ $temasResult = $conn->query($temasSql);
 
 
 // Consulta SQL para buscar os dados da obra
-$sql = "SELECT id,titulo,descricao,pdf,imagem_capa,autor,Nome_tema FROM obras inner join Temas on obras.id_tema=Temas.id_tema  order by id ";
-$result=$conn-> query($sql);
+$temaSelecionado = isset($_GET['tema']) ? intval($_GET['tema']) : '';
+
+$sql = "SELECT id, titulo, descricao, pdf, imagem_capa, autor, Nome_tema 
+        FROM obras 
+        INNER JOIN Temas ON obras.id_tema = Temas.id_tema";
+
+if (!empty($temaSelecionado)) {
+    $sql .= " WHERE obras.id_tema = $temaSelecionado";
+}
+
+$sql .= " ORDER BY id";
+$result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -102,13 +112,14 @@ $result=$conn-> query($sql);
         <div class="col-lg-12 mb-4">
             <div class="tema-filter">
                 <label class="form-label">Filtrar por Tema:</label>
-                <select id="temaFilter" class="form-select">
+                <select id="temaFilter" class="form-select" onchange="filtrarPorTema()">
                     <option value="">Todos os Temas</option>
                     <?php 
                     if($temasResult->num_rows > 0) {
-                        while($tema = $temasResult->fetch_assoc()) {
-                            echo "<option value='{$tema['id_tema']}'>{$tema['Nome_tema']}</option>";
-                        }
+                      while($tema = $temasResult->fetch_assoc()) {
+                        $selected = ($temaSelecionado == $tema['id_tema']) ? 'selected' : '';
+                        echo "<option value='{$tema['id_tema']}' $selected>{$tema['Nome_tema']}</option>";
+                      }
                     }
                     ?>
                 </select>
@@ -138,7 +149,7 @@ if($result->num_rows>0){
               <h4 class="autor-nome"><?php echo $post['autor']; ?></h4>
             </div>
             <h3><?php echo $post['titulo']; ?></h3>
-            <p class="description"><?php echo substr($post['descricao'], 0, 150). '...'; ?></p>
+            <p class="description"><?php echo substr($post['descricao'], 0, 200). '...'; ?></p>
             <div class="obra-footer">
               <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
                 <i class="bi bi-file-pdf"></i>
@@ -161,9 +172,14 @@ if($result->num_rows>0){
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="pdfModalLabel"><?php echo $post['titulo']; ?></h5>
+      <?php
+if($result->num_rows>0){
+    while($post=$result->fetch_assoc()){
+
+?><h5 class="modal-title" id="pdfModalLabel"><?php echo $post['titulo']; ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
+      </div><?php }
+} ?>
       <div class="modal-body p-0">
         <div class="pdf-container">
           <div id="pdfViewer" class="pdf-viewer"></div>
@@ -183,7 +199,6 @@ if($result->num_rows>0){
     </div>
   </div>
 </div>
-
 </main>
 
 <?php
@@ -504,6 +519,11 @@ include("footer.php");
         }
     });
 });
+
+function filtrarPorTema() {
+    var temaSelecionado = document.getElementById('temaFilter').value;
+    window.location.href = "obras.php?tema=" + temaSelecionado;
+}
 </script>
 
 <style>
