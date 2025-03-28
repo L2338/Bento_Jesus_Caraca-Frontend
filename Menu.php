@@ -13,27 +13,15 @@
       <li class="dropdown">
         <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
-            <li class="dropdown">
-              <a href="#"><span>Fotos Históricas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Imagens de Arquivo</a></li>
-                <li><a href="#">Documentos Raros</a></li>
-              </ul>
+            <li >
+              <a href="#"><span>Retratos</span> </a>             
             </li>
-            <li class="dropdown">
-              <a href="#"><span>Eventos Importantes</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Palestras e Conferências</a></li>
-                <li><a href="#">Participações Acadêmicas</a></li>
-              </ul>
+            <li >
+              <a href="#"><span>Amigos</span> </a>            
             </li>
-            <li class="dropdown">
-              <a href="#"><span>Publicações e Contribuições</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Livros e Artigos</a></li>
-                <li><a href="#">Contribuições Científicas</a></li>
-              </ul>
-
+            <li >
+              <a href="#"><span>Viagens</span> </a>
+            </li>  
     </ul>
     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 </nav>
