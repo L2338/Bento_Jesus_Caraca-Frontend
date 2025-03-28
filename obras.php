@@ -111,7 +111,10 @@ $result = $conn->query($sql);
     <div class="row">
         <div class="col-lg-12 mb-4">
             <div class="tema-filter">
-                <label class="form-label">Filtrar por Tema:</label>
+                <label class="form-label">
+                    <i class="bi bi-filter-circle"></i>
+                    Filtrar por Tema:
+                </label>
                 <select id="temaFilter" class="form-select" onchange="filtrarPorTema()">
                     <option value="">Todos os Temas</option>
                     <?php 
@@ -135,7 +138,7 @@ if($result->num_rows>0){
 
 ?>
       <!-- Item da Obra -->
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-tema="<?php echo $post['Nome_tema']; ?>" data-aos="fade-up">
         <div class="course-item">
           <div class="course-image-container">
             <img src="assets/img/obras/<?php echo htmlspecialchars($post['imagem_capa']); ?>" class="img-fluid obra-imagem" alt="Capa da Obra">
@@ -154,7 +157,7 @@ if($result->num_rows>0){
               <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
                 <i class="bi bi-file-pdf"></i>
               </a>
-              <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>')">
+              <button class="btn btn-ler" onclick="openPdfModal('<?php echo $post['pdf']; ?>', '<?php echo addslashes($post['titulo']); ?>')">
                 Ler
               </button>
             </div>
@@ -172,14 +175,9 @@ if($result->num_rows>0){
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-      <?php
-if($result->num_rows>0){
-    while($post=$result->fetch_assoc()){
-
-?><h5 class="modal-title" id="pdfModalLabel"><?php echo $post['titulo']; ?></h5>
+        <h5 class="modal-title" id="pdfModalLabel"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div><?php }
-} ?>
+      </div>
       <div class="modal-body p-0">
         <div class="pdf-container">
           <div id="pdfViewer" class="pdf-viewer"></div>
@@ -258,7 +256,7 @@ include("footer.php");
   let pageNumPending = null;
   let scale = 1.0;
 
-  async function openPdfModal(pdfPath) {
+  async function openPdfModal(pdfPath, tituloObra) {
     try {
       if (!pdfPath.startsWith('assets/pdf/obras/')) {
         pdfPath = 'assets/pdf/obras/' + pdfPath;
@@ -266,6 +264,9 @@ include("footer.php");
       
       const pdfModal = new bootstrap.Modal(document.getElementById('pdfModal'));
       const pdfViewer = document.getElementById('pdfViewer');
+      
+      // Definir o título no modal
+      document.getElementById('pdfModalLabel').textContent = tituloObra;
       
       // Limpar o visualizador e mostrar loading
       pdfViewer.innerHTML = `
@@ -494,30 +495,31 @@ include("footer.php");
 
   document.addEventListener('DOMContentLoaded', function() {
     const temaFilter = document.getElementById('temaFilter');
-    const obras = document.querySelectorAll('.course-item');
+    const obras = document.querySelectorAll('.col-lg-3.col-md-6[data-tema]');
     const mensagemSemResultados = document.getElementById('semResultados');
 
-    temaFilter.addEventListener('change', function() {
-        const selectedTema = this.value;
-        let encontrouObras = false;
+    if (temaFilter) {
+        temaFilter.addEventListener('change', function() {
+            const selectedTema = this.value;
+            let encontrouObras = false;
 
-        obras.forEach(function(obra) {
-            const temaDaObra = obra.getAttribute('data-tema');
-            const containerObra = obra.closest('.col-lg-3');
-            
-            if (selectedTema === '' || temaDaObra === selectedTema) {
-                containerObra.style.display = '';
-                encontrouObras = true;
-            } else {
-                containerObra.style.display = 'none';
+            obras.forEach(function(obra) {
+                const temaDaObra = obra.getAttribute('data-tema');
+                
+                if (selectedTema === '' || temaDaObra === selectedTema) {
+                    obra.style.display = '';
+                    encontrouObras = true;
+                } else {
+                    obra.style.display = 'none';
+                }
+            });
+
+            // Mostrar mensagem se nenhuma obra for encontrada
+            if (mensagemSemResultados) {
+                mensagemSemResultados.style.display = encontrouObras ? 'none' : 'block';
             }
         });
-
-        // Mostrar mensagem se nenhuma obra for encontrada
-        if (mensagemSemResultados) {
-            mensagemSemResultados.style.display = encontrouObras ? 'none' : 'block';
-        }
-    });
+    }
 });
 
 function filtrarPorTema() {
@@ -558,6 +560,7 @@ function filtrarPorTema() {
   border: none;
   padding: 1rem 1.5rem;
   border-radius: 15px 15px 0 0;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
@@ -569,6 +572,7 @@ function filtrarPorTema() {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -603,6 +607,20 @@ function filtrarPorTema() {
   font-weight: 500;
   font-size: 1.25rem;
   text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-header .modal-title::before {
+  content: "\f56e";
+  font-family: "bootstrap-icons";
+  margin-right: 10px;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .pdf-viewer {
@@ -720,6 +738,7 @@ function filtrarPorTema() {
   padding: 20px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0 0 15px 15px;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 

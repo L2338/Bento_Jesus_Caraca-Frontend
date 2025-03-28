@@ -346,7 +346,6 @@
 
             <div class="trainer d-flex justify-content-between align-items-center mt-3">
               <div class="trainer-profile d-flex align-items-center">
-                <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
                 <a href="" class="trainer-link">Saber mais</a>
               </div>
             </div>
@@ -384,7 +383,6 @@
 
             <div class="trainer d-flex justify-content-between align-items-center mt-3">
               <div class="trainer-profile d-flex align-items-center">
-                <img src="assets/img/trainers/trainer-2-2.jpg" class="img-fluid" alt="">
                 <a href="" class="trainer-link">Saber Mais</a>
               </div>
             </div>
@@ -422,8 +420,7 @@
 
             <div class="trainer d-flex justify-content-between align-items-center mt-3">
               <div class="trainer-profile d-flex align-items-center">
-                <img src="assets/img/trainers/trainer-3-2.jpg" class="img-fluid" alt="">
-                <a href="" class="trainer-link">Saber Mais</a>
+                <a href="#" class="trainer-link">Saber Mais</a>
               </div>
             </div>
           </div>
