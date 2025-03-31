@@ -14,7 +14,7 @@
         <a href="#"><span>Galeria</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
             <li >
-              <a href="#"><span>Retratos</span> </a>             
+              <a href="retratos.php"><span>Retratos</span> </a>             
             </li>
             <li >
               <a href="#"><span>Amigos</span> </a>            

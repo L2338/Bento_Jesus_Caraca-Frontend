@@ -70,8 +70,8 @@ $result = $conn->query($sql);
       <a class="btn-getstarted" href="login.php">Login</a>
 
     </div>
-  </header>
-  <main class="main">
+</header>
+<main class="main">
 
 <!-- Page Title -->
 <div class="page-title" data-aos="fade">
@@ -152,7 +152,7 @@ if($result->num_rows>0){
               <h4 class="autor-nome"><?php echo $post['autor']; ?></h4>
             </div>
             <h3><?php echo $post['titulo']; ?></h3>
-            <p class="description"><?php echo substr($post['descricao'], 0, 200). '...'; ?></p>
+            <p class="description"><?php echo substr($post['descricao'], 0, 200); ?></p>
             <div class="obra-footer">
               <a href="assets/pdf/obras/<?php echo $post['pdf']; ?>" download class="btn-download-direct">
                 <i class="bi bi-file-pdf"></i>
