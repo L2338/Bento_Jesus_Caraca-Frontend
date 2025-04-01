@@ -31,18 +31,17 @@ include('ConfigBD.php');
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
-  <style>
-        <style>
+  <style>       
     .carousel-container {
-        max-width: 400px; /* Largura reduzida do carrossel */
+        max-width: 350px; /* Largura reduzida do carrossel */
         margin: 0 auto; /* Centraliza o carrossel */
         max-height: 500px; /* Altura máxima menor */
         overflow: hidden;
     }
     .carousel-item img {
-        height: 400px; /* Altura muito pequena para as imagens */
-        object-fit: cover;
-        width: 100%;
+        height: 500px; /* Altura muito pequena para as imagens */
+        object-fit: contain;
+        width: 350px;
     }
 
     @media (max-width: 768px) {
@@ -50,8 +49,8 @@ include('ConfigBD.php');
             height: 100px; /* Altura ainda menor em dispositivos móveis */
         }
     }
-</style>
 
+    
   </style>
 
   <!-- =======================================================
