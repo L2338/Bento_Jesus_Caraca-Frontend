@@ -108,7 +108,7 @@ include('ConfigBD.php');
                 <?php
                   
                 // Buscar imagens da base de dados
-                $sql = "SELECT id_imagem, imagem, descricao FROM imagens where id_tema_imagem=1 ORDER BY id_imagem";
+                $sql = "SELECT id_imagem, imagem, descricao FROM imagens where id_tema_imagem=2 ORDER BY id_imagem";
                 $result = $conn->query($sql);
                 
                 $totalImagens = $result->num_rows;
@@ -123,7 +123,7 @@ include('ConfigBD.php');
             
             <!-- Slides -->
             <div class="carousel-inner">
-                <?php                
+                <?php
                 // Resetar o ponteiro do resultado
                 $result->data_seek(0);
                 $descricoes=[];
@@ -209,6 +209,7 @@ include("footer.php");
                 var index = e.to; // Obtém o índice da imagem ativa
                 descricao.textContent = descricoes[index];
             });
+
         });
   </script>
 
