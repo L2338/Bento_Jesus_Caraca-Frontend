@@ -21,8 +21,21 @@ $id = intval($_GET['id']);
 // Incluir conexão com o banco de dados
 $conn = require '../ConfigBD.php';
 
-// Consultar obra por ID
-$query = "SELECT * FROM obras WHERE id = ?";
+// Verificar se a coluna ano existe
+$checkAnoColumn = "SHOW COLUMNS FROM obras LIKE 'ano'";
+$anoColumnResult = mysqli_query($conn, $checkAnoColumn);
+$anoExists = (mysqli_num_rows($anoColumnResult) > 0);
+
+// Construir consulta SQL
+$query = "SELECT o.*";
+if ($anoExists) {
+    // Se a coluna ano existir, incluí-la na consulta
+    $query .= ", t.Nome_tema as categoria FROM obras o LEFT JOIN Temas t ON o.id_tema = t.id_tema WHERE o.id = ?";
+} else {
+    // Se não existir, fazer a consulta sem essa coluna
+    $query .= ", t.Nome_tema as categoria FROM obras o LEFT JOIN Temas t ON o.id_tema = t.id_tema WHERE o.id = ?";
+}
+
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);

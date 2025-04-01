@@ -10,13 +10,31 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Incluir conexão com banco de dados
 $conn = require '../ConfigBD.php';
 
+// Verificar se a coluna ano existe
+$checkAnoColumn = "SHOW COLUMNS FROM obras LIKE 'ano'";
+$anoColumnResult = mysqli_query($conn, $checkAnoColumn);
+$anoExists = (mysqli_num_rows($anoColumnResult) > 0);
+
 // Contar total de obras
-$queryTotalObras = "SELECT COUNT(*) as total FROM obras";
-$resultTotalObras = mysqli_query($conn, $queryTotalObras);
-$totalObras = mysqli_fetch_assoc($resultTotalObras)['total'] ?? 0;
+$queryCount = "SELECT COUNT(*) as total FROM obras";
+$resultCount = mysqli_query($conn, $queryCount);
+$row = mysqli_fetch_assoc($resultCount);
+$totalObras = $row['total'];
 
 // Buscar obras recentes
-$queryObras = "SELECT * FROM obras ORDER BY id DESC LIMIT 10";
+$queryObras = "SELECT 
+                o.id, 
+                o.titulo, 
+                o.autor, ";
+// Adicionar o campo ano apenas se ele existir
+if ($anoExists) {
+    $queryObras .= "o.ano, ";
+}
+$queryObras .= "t.Nome_tema as categoria,
+                o.pdf 
+              FROM obras o
+              LEFT JOIN Temas t ON o.id_tema = t.id_tema
+              ORDER BY o.id DESC";
 $resultObras = mysqli_query($conn, $queryObras);
 ?>
 <!DOCTYPE html>
@@ -398,7 +416,9 @@ $resultObras = mysqli_query($conn, $queryObras);
           $('#obra_id').val(data.id);
           $('#titulo').val(data.titulo);
           $('#autor').val(data.autor);
-          $('#ano').val(data.ano);
+          if (data.ano !== undefined) {
+            $('#ano').val(data.ano);
+          }
           $('#categoria').val(data.categoria);
           $('#descricao').val(data.descricao);
           

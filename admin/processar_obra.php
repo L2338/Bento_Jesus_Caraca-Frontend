@@ -12,10 +12,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Incluir conexão com o banco de dados
     $conn = require '../ConfigBD.php';
     
+    // Verificar se a coluna ano existe na tabela
+    $checkAnoColumn = "SHOW COLUMNS FROM obras LIKE 'ano'";
+    $anoColumnResult = mysqli_query($conn, $checkAnoColumn);
+    $anoExists = (mysqli_num_rows($anoColumnResult) > 0);
+    
     // Obter dados do formulário e sanitizar
     $obraId = isset($_POST['obra_id']) ? intval($_POST['obra_id']) : 0;
     $titulo = mysqli_real_escape_string($conn, $_POST['titulo']);
     $autor = mysqli_real_escape_string($conn, $_POST['autor']);
+    
+    // Processar ano apenas se a coluna existir
+    $ano = null;
+    if ($anoExists && !empty($_POST['ano'])) {
+        $ano = intval($_POST['ano']);
+    }
+    
     $descricao = mysqli_real_escape_string($conn, $_POST['descricao']);
     
     // Iniciar transação
@@ -27,11 +39,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Atualização de obra existente
             $query = "UPDATE obras SET 
                       titulo = ?, 
-                      autor = ?, 
-                      descricao = ?";
+                      autor = ?, ";
             
-            $params = [$titulo, $autor, $descricao];
-            $types = "sss";
+            $params = [$titulo, $autor];
+            $types = "ss";
+            
+            // Adicionar campo ano se existir
+            if ($anoExists) {
+                $query .= "ano = ?, ";
+                $params[] = $ano;
+                $types .= "i";
+            }
+            
+            $query .= "descricao = ?";
+            $params[] = $descricao;
+            $types .= "s";
             
             // Processar arquivo PDF se enviado
             if (!empty($_FILES['arquivo']['name'])) {
@@ -68,9 +90,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mensagem = "Obra atualizada com sucesso!";
         } else {
             // Inserção de nova obra
-            $query = "INSERT INTO obras (titulo, autor, descricao";
-            $params = [$titulo, $autor, $descricao];
-            $types = "sss";
+            $query = "INSERT INTO obras (titulo, autor";
+            
+            // Adicionar campo ano se existir
+            if ($anoExists) {
+                $query .= ", ano";
+            }
+            
+            $query .= ", descricao";
+            
+            $params = [$titulo, $autor];
+            $types = "ss";
+            
+            // Adicionar valor ano se existir a coluna
+            if ($anoExists) {
+                $params[] = $ano;
+                $types .= "i";
+            }
+            
+            $params[] = $descricao;
+            $types .= "s";
             
             // Processar arquivo PDF se enviado
             if (!empty($_FILES['arquivo']['name'])) {
