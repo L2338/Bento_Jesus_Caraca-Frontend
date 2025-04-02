@@ -108,7 +108,7 @@ include('ConfigBD.php');
                 <?php
                   
                 // Buscar imagens da base de dados
-                $sql = "SELECT id_imagem, imagem, descricao FROM imagens where id_tema_imagem=2 ORDER BY id_imagem";
+                $sql = "SELECT id_imagem, imagem, descricao FROM imagens where id_tema_imagem=3 ORDER BY id_imagem";
                 $result = $conn->query($sql);
                 
                 $totalImagens = $result->num_rows;
@@ -123,7 +123,7 @@ include('ConfigBD.php');
             
             <!-- Slides -->
             <div class="carousel-inner">
-                <?php
+                <?php                
                 // Resetar o ponteiro do resultado
                 $result->data_seek(0);
                 $descricoes=[];
@@ -132,7 +132,7 @@ include('ConfigBD.php');
                     $active = ($contador == 0) ? "active" : "";
                     echo '
                     <div class="carousel-item '.$active.'">
-                        <img src="assets/img/amigos/'.$row["imagem"].'" class="d-block w-100" alt="'.$row["descricao"].'">                        
+                        <img src="assets/img/viagens/'.$row["imagem"].'" class="d-block w-100" alt="'.$row["descricao"].'">                        
                     </div>';
 
                     $descricoes[]=$row["descricao"];
@@ -210,7 +210,6 @@ include("footer.php");
                 var index = Array.from(activeItem.parentNode.children).indexOf(activeItem); // Encontra o índice
                 descricao.textContent = descricoes[index]; // Atualiza a descrição
             });
-
         });
   </script>
 

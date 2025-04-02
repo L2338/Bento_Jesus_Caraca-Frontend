@@ -201,13 +201,14 @@ include("footer.php");
                 // Código para executar quando o slide muda
                 console.log('Mudando para o slide: ' + e.to);
             });
-            var carousel = document.querySelector('imageCarousel'); 
+            var carousel = document.getElementById('imageCarousel'); 
             var descricao = document.getElementById("descricao");
             var descricoes = <?php echo json_encode($descricoes); ?>;
 
             carousel.addEventListener("slid.bs.carousel", function (event) {
-                var index = e.to; // Obtém o índice da imagem ativa
-                descricao.textContent = descricoes[index];
+                var activeItem = event.relatedTarget; // Obtém o item ativo do carrossel
+                var index = Array.from(activeItem.parentNode.children).indexOf(activeItem); // Encontra o índice
+                descricao.textContent = descricoes[index]; // Atualiza a descrição
             });
         });
   </script>

@@ -17,10 +17,10 @@
               <a href="retratos.php"><span>Retratos</span> </a>             
             </li>
             <li >
-              <a href="#"><span>Amigos</span> </a>            
+              <a href="amigos.php"><span>Amigos</span> </a>            
             </li>
             <li >
-              <a href="#"><span>Viagens</span> </a>
+              <a href="viagens.php"><span>Viagens</span> </a>
             </li>  
     </ul>
     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
