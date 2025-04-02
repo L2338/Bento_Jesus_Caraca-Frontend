@@ -9,7 +9,7 @@ $temasResult = $conn->query($temasSql);
 // Consulta SQL para buscar os dados da obra
 $temaSelecionado = isset($_GET['tema']) ? intval($_GET['tema']) : '';
 
-$sql = "SELECT id, titulo, descricao, pdf, imagem_capa, autor, Nome_tema 
+$sql = "SELECT id, titulo, descricao, pdf, imagem_capa, autor, Nome_tema, ano 
         FROM obras 
         INNER JOIN Temas ON obras.id_tema = Temas.id_tema";
 
@@ -39,6 +39,23 @@ $result = $conn->query($sql);
   
   <!-- Custom CSS -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .obra-ano {
+      display: inline-block;
+      background-color: #f0f0f0;
+      color: #333;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .obra-ano i {
+      margin-right: 4px;
+      font-size: 0.9rem;
+    }
+  </style>
 
   <!-- jQuery (necessário para Bootstrap e outros plugins) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -146,6 +163,9 @@ if($result->num_rows>0){
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <span class="category"><?php echo $post['Nome_tema']; ?></span>
+              <?php if (isset($post['ano']) && !empty($post['ano'])): ?>
+              <span class="obra-ano"><i class="bi bi-calendar3"></i> <?php echo $post['ano']; ?></span>
+              <?php endif; ?>
             </div>
             <div class="autor-section">
               <span class="autor-label">Autor</span>
