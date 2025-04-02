@@ -269,14 +269,7 @@
           </div>
           <div class="card-body">
             <p class="morada">
-<<<<<<< Updated upstream
-              <a href="https://www.google.com/maps/place/Escola+Profissional+Bento+de+Jesus+Cara%C3%A7a+-+Barreiro/@38.6654096,-9.069486,16z/data=!3m1!4b1!4m6!3m5!1s0xd193647778a26d3:0x4e45f2109164f77c!8m2!3d38.6654096!4d-9.069486!16s%2Fg%2F1tfpwjvc?entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a>
-            </p>
-            <br>
-            <br>
-            <p><strong>Tel:</strong> 212 064 790</p>
-            <p>geral.barreiro@epbjc.pt</p>
-=======
+
               <?php if (!empty($escola['website'])): ?>
                 <a href="<?php echo htmlspecialchars($escola['website']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars($escola['endereco']); ?></a>
               <?php else: ?>
@@ -288,87 +281,14 @@
             <br>
             <p><strong>Tel:</strong> <?php echo htmlspecialchars($escola['telefone']); ?></p>
             <p><?php echo htmlspecialchars($escola['email']); ?></p>
->>>>>>> Stashed changes
           </div>
         </div>
       </div>
       <?php endforeach; ?>
 
-<<<<<<< Updated upstream
-      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="card escola-card">
-          <div class="card-header porto">
-            <h3>PORTO</h3>
-          </div>
-          <div class="card-body">
-            <p class="morada">
-              <a href="https://www.google.com/maps/place/Escola+Profissional+Bento+de+Jesus+Cara%C3%A7a+-+Porto/@41.1515676,-8.611018,17z/data=!3m2!4b1!5s0xd2464fb05f8cf8d:0xfd6d2220124e4588!4m6!3m5!1s0xd2464fb05e09977:0xa10867e6ce213c7a!8m2!3d41.1515636!4d-8.6084431!16s%2Fg%2F1tcxqywk?entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Rua do Bonjardim, nº 497-1º, 4000 – 126 Porto</a>
-            </p>
-            <br>
-            <br>
-            <br>
-            <p><strong>Tel:</strong> 222 054 713</p>
-            <p>geral.porto@epbjc.pt</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="card escola-card">
-          <div class="card-header beja">
-            <h3>BEJA</h3>
-          </div>
-          <div class="card-body">
-            <p class="morada">
-              <a href="https://www.google.com/maps/place/Escola+Profissional+Bento+de+Jesus+Cara%C3%A7a+-+Beja/@38.0166745,-7.8673164,18z/data=!3m1!4b1!4m16!1m9!4m8!1m0!1m6!1m2!1s0xd1a74841d5386d1:0xf1908ba5cc0643a9!2sepbjc+beja!2m2!1d-7.8660289!2d38.0166724!3m5!1s0xd1a74841d5386d1:0xf1908ba5cc0643a9!8m2!3d38.0166724!4d-7.8660289!16s%2Fg%2F1w0j0w68?entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Rua D. Manuel I, nº19, 1º, 7800-306 Beja</a>
-            </p>
-            <br>
-            <br>
-            <br>
-            <p><strong>Tel:</strong> 213 255 326</p>
-            <p>geral.beja@epbjc.pt</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="400">
-        <div class="card escola-card">
-          <div class="card-header lisboa">
-            <h3>LISBOA</h3>
-          </div>
-          <div class="card-body">
-            <p class="morada">
-              <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd193587275608c1:0x28cf86cb9a4d47ee?sa=X&ved=1t:8290&ictx=111" target="_blank">Rua Vitor Cordon, Nº1 – 1º, 1200-482 Lisboa</a>
-            </p>
-            <br>
-            <br>
-            <br>
-            <p><strong>Tel:</strong> 212 064 790</p>
-            <p>geral.lisboa@epbjc.pt</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="500">
-        <div class="card escola-card">
-          <div class="card-header seixal">
-            <h3>SEIXAL</h3>
-          </div>
-          <div class="card-body">
-            <p class="morada">
-              <a href="https://www.google.com/maps/place/Escola+Profissional+Bento+de+Jesus+Cara%C3%A7a+-+Seixal/@38.6223026,-9.0943879,17z/data=!3m1!4b1!4m6!3m5!1s0xd1949f0a2b86717:0xc96f57f3a536b539!8m2!3d38.6223026!4d-9.0943879!16s%2Fg%2F1tnms_bp?entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Rua Júlio Augusto Henriques, nº 53, Arrentela, 2840-212 Seixal</a>
-            </p>
-            <br>
-            <br>
-            <p><strong>Tel:</strong> 212 064 790</p>
-            <p>geral.seixal@epbjc.pt</p>
-          </div>
-        </div>
-=======
       <?php if (empty($escolas)): ?>
       <div class="col-12 text-center">
         <p>Não há escolas disponíveis para exibição no momento. Por favor, volte mais tarde.</p>
->>>>>>> Stashed changes
       </div>
       <?php endif; ?>
 
