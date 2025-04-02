@@ -197,7 +197,40 @@
       </div>
     </section>
 
+    <!-- ======= Professional Schools Section ======= -->
     <section id="escolas" class="section">
+      <?php
+      // Incluir conexão com banco de dados
+      $conn = require 'ConfigBD.php';
+
+      // Verificar se a coluna publicada_site existe
+      $checkColumnExists = "SHOW COLUMNS FROM escolas_profissionais LIKE 'publicada_site'";
+      $columnResult = mysqli_query($conn, $checkColumnExists);
+      $columnExists = (mysqli_num_rows($columnResult) > 0);
+      
+      if (!$columnExists) {
+          // Se a coluna não existir, adicionar automaticamente
+          $alterTableQuery = "ALTER TABLE escolas_profissionais ADD COLUMN publicada_site TINYINT(1) DEFAULT 0";
+          mysqli_query($conn, $alterTableQuery);
+          
+          // Fornecer feedback no log para administradores
+          error_log("Coluna publicada_site adicionada automaticamente à tabela escolas_profissionais");
+      }
+      
+      // Buscar escolas publicadas no site
+      $query = "SELECT id, nome, cidade, endereco, telefone, email, website, ordem 
+                FROM escolas_profissionais 
+                WHERE publicada_site = 1 AND ativa = 1 
+                ORDER BY ordem ASC";
+      $result = mysqli_query($conn, $query);
+      $escolas = array();
+      
+      if ($result && mysqli_num_rows($result) > 0) {
+          while ($row = mysqli_fetch_assoc($result)) {
+              $escolas[] = $row;
+          }
+      }
+      ?>
       <div class="card-deck">
         <div class="section-title text-center">
         <h2>As escolas profissionais com o nome de Bento de Jesus Caraça</h2>
@@ -205,24 +238,63 @@
       </div>
 
       <div class="row gy-4 justify-content-center">
-
-      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+      
+      <?php
+      // Definir classes CSS para os diferentes locais
+      $cssClasses = array(
+          'Barreiro' => 'barreiro',
+          'Porto' => 'porto',
+          'Beja' => 'beja',
+          'Lisboa' => 'lisboa',
+          'Seixal' => 'seixal'
+      );
+      
+      // Definir delays de animação
+      $delays = array(100, 200, 300, 400, 500);
+      
+      // Contador para os delays
+      $count = 0;
+      
+      // Loop através das escolas
+      foreach ($escolas as $escola):
+          $cidade = $escola['cidade'];
+          $cssClass = isset($cssClasses[$cidade]) ? $cssClasses[$cidade] : '';
+          $delay = $delays[$count % count($delays)];
+          $count++;
+      ?>
+      <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
         <div class="card escola-card">
-          <div class="card-header barreiro">
-            <h3>BARREIRO</h3>
+          <div class="card-header <?php echo $cssClass; ?>">
+            <h3><?php echo strtoupper($cidade); ?></h3>
           </div>
           <div class="card-body">
             <p class="morada">
+<<<<<<< Updated upstream
               <a href="https://www.google.com/maps/place/Escola+Profissional+Bento+de+Jesus+Cara%C3%A7a+-+Barreiro/@38.6654096,-9.069486,16z/data=!3m1!4b1!4m6!3m5!1s0xd193647778a26d3:0x4e45f2109164f77c!8m2!3d38.6654096!4d-9.069486!16s%2Fg%2F1tfpwjvc?entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Rua Stinville, nº14, Bairro Santa Bárbara, 2830-144 Barreiro</a>
             </p>
             <br>
             <br>
             <p><strong>Tel:</strong> 212 064 790</p>
             <p>geral.barreiro@epbjc.pt</p>
+=======
+              <?php if (!empty($escola['website'])): ?>
+                <a href="<?php echo htmlspecialchars($escola['website']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars($escola['endereco']); ?></a>
+              <?php else: ?>
+                <a href="#" target="_blank"><?php echo htmlspecialchars($escola['endereco']); ?></a>
+              <?php endif; ?>
+            </p>
+            <br>
+            <br>
+            <br>
+            <p><strong>Tel:</strong> <?php echo htmlspecialchars($escola['telefone']); ?></p>
+            <p><?php echo htmlspecialchars($escola['email']); ?></p>
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>
+      <?php endforeach; ?>
 
+<<<<<<< Updated upstream
       <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
         <div class="card escola-card">
           <div class="card-header porto">
@@ -292,7 +364,13 @@
             <p>geral.seixal@epbjc.pt</p>
           </div>
         </div>
+=======
+      <?php if (empty($escolas)): ?>
+      <div class="col-12 text-center">
+        <p>Não há escolas disponíveis para exibição no momento. Por favor, volte mais tarde.</p>
+>>>>>>> Stashed changes
       </div>
+      <?php endif; ?>
 
       </div>
 

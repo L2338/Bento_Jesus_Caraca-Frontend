@@ -1,470 +1,293 @@
 <?php
-session_start();
+/**
+ * Dashboard do painel administrativo
+ */
 
-// Verificar autenticação
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header('Location: ../login.php');
-    exit();
-}
+// Incluir configurações e funções
+require_once __DIR__ . '/config/app-config.php';
+require_once __DIR__ . '/core/functions.php';
 
-// Incluir conexão com banco de dados
-$conn = require '../ConfigBD.php';
+// Verificar se o usuário está logado
+require_login();
 
-// Verificar se a coluna ano existe
-$checkAnoColumn = "SHOW COLUMNS FROM obras LIKE 'ano'";
-$anoColumnResult = mysqli_query($conn, $checkAnoColumn);
-$anoExists = (mysqli_num_rows($anoColumnResult) > 0);
+// Definir variáveis da página
+$page_title = 'Dashboard';
 
-// Contar total de obras
-$queryCount = "SELECT COUNT(*) as total FROM obras";
-$resultCount = mysqli_query($conn, $queryCount);
-$row = mysqli_fetch_assoc($resultCount);
-$totalObras = $row['total'];
+// Definir breadcrumbs
+$breadcrumbs = [
+    ['url' => 'dashboard.php', 'titulo' => 'Dashboard']
+];
 
-// Buscar obras recentes
-$queryObras = "SELECT 
-                o.id, 
-                o.titulo, 
-                o.autor, ";
-// Adicionar o campo ano apenas se ele existir
-if ($anoExists) {
-    $queryObras .= "o.ano, ";
-}
-$queryObras .= "t.Nome_tema as categoria,
-                o.pdf 
-              FROM obras o
-              LEFT JOIN Temas t ON o.id_tema = t.id_tema
-              ORDER BY o.id DESC";
-$resultObras = mysqli_query($conn, $queryObras);
+// Incluir o cabeçalho
+include_once 'templates/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <title>Painel Administrativo - Obras de Bento Jesus Caraça</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome para ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <style>
-    :root {
-      --primary-color: #ac062a;
-      --primary-hover: #8c0523;
-      --sidebar-bg: #343a40;
-      --sidebar-text: #f8f9fa;
-      --content-bg: #f8f9fa;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--content-bg);
-    }
-    
-    #sidebar {
-      background-color: var(--sidebar-bg);
-      color: var(--sidebar-text);
-      min-height: 100vh;
-      transition: all 0.3s;
-    }
-    
-    #sidebar .sidebar-header {
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-    
-    #sidebar ul.components {
-      padding: 20px 0;
-    }
-    
-    #sidebar ul li a {
-      padding: 10px 20px;
-      font-size: 1.1em;
-      display: block;
-      color: var(--sidebar-text);
-      border-left: 3px solid transparent;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
-    
-    #sidebar ul li a:hover,
-    #sidebar ul li a.active {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-left: 3px solid var(--primary-color);
-    }
-    
-    #sidebar ul li a i {
-      margin-right: 10px;
-    }
-    
-    .dashboard-content {
-      padding: 20px;
-    }
-    
-    .card {
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
-    }
-    
-    .card-header {
-      background-color: rgba(0, 0, 0, 0.03);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      font-weight: 600;
-    }
-    
-    .stats-card {
-      text-align: center;
-      padding: 15px;
-    }
-    
-    .stats-card i {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: var(--primary-color);
-    }
-    
-    .stats-card .number {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    
-    .table-obras th {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-    
-    .action-buttons .btn {
-      padding: .25rem .5rem;
-      font-size: .875rem;
-    }
-    
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-    
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
-    }
-    
-    @media (max-width: 768px) {
-      #sidebar {
-        min-height: auto;
-        margin-bottom: 20px;
-      }
-      
-      .stats-card {
-        margin-bottom: 15px;
-      }
-    }
-  </style>
-</head>
-<body>
 
-<div class="container-fluid">
-  <div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-3 col-lg-2 px-0" id="sidebar">
-      <div class="sidebar-header">
-        <h3>Painel Admin</h3>
-        <p class="mb-0 text-light">Bento Jesus Caraça</p>
-      </div>
-      
-      <ul class="nav flex-column components">
-        <li class="nav-item">
-          <a href="#" class="nav-link active">
-            <i class="fas fa-book"></i> Gerenciar Obras
-          </a>
-        </li>
-        <li class="nav-item mt-5">
-          <a href="../index.php" class="nav-link">
-            <i class="fas fa-home"></i> Voltar ao Site
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="logout.php" class="nav-link text-danger">
-            <i class="fas fa-sign-out-alt"></i> Sair
-          </a>
-        </li>
-      </ul>
+<!-- Cards de estatísticas -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card stats-card-primary h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="stats-card-text mb-1">Obras</div>
+                        <div class="stats-card-number">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-book stats-card-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Page Content -->
-    <div class="col-md-9 col-lg-10 ml-auto dashboard-content">
-      <!-- Header -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gerenciamento de Obras</h1>
-        <div class="user-info">
-          <span class="mr-2"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-          <i class="fas fa-user-circle fa-lg"></i>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card stats-card-success h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="stats-card-text mb-1">Vida</div>
+                        <div class="stats-card-number">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-person-lines-fill stats-card-icon"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <!-- Stats Row -->
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card stats-card">
-            <i class="fas fa-book"></i>
-            <div class="number"><?php echo $totalObras; ?></div>
-            <div class="text-muted">Total de Obras</div>
-          </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card stats-card-info h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="stats-card-text mb-1">Legado</div>
+                        <div class="stats-card-number">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-award stats-card-icon"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-          <div class="card stats-card">
-            <i class="fas fa-file-pdf"></i>
-            <div class="number"><?php echo $totalObras; ?></div>
-            <div class="text-muted">Documentos PDF</div>
-          </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card stats-card-warning h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="stats-card-text mb-1">Galeria</div>
+                        <div class="stats-card-number">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-images stats-card-icon"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-          <div class="card stats-card">
-            <i class="fas fa-eye"></i>
-            <div class="number">--</div>
-            <div class="text-muted">Visualizações</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Main Content Section -->
-      <div class="row mt-4">
-        <!-- Obras Listagem -->
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <span>Catálogo de Obras</span>
-              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#obraModal">
-                <i class="fas fa-plus"></i> Nova Obra
-              </button>
+    </div>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="row">
+    <!-- Coluna principal -->
+    <div class="col-lg-8 mb-4">
+        <!-- Card de boas-vindas -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Bem-vindo ao Painel Administrativo</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="welcomeMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical text-gray-400"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="welcomeMenuLink">
+                        <li><a class="dropdown-item" href="settings.php"><i class="bi bi-gear me-2"></i> Configurações</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-question-circle me-2"></i> Ajuda</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover table-obras">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Título</th>
-                      <th>Autor</th>
-                      <th>Ano</th>
-                      <th>Categoria</th>
-                      <th>Arquivo</th>
-                      <th>Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php if (mysqli_num_rows($resultObras) > 0): ?>
-                      <?php while ($obra = mysqli_fetch_assoc($resultObras)): ?>
-                        <tr>
-                          <td><?php echo $obra['id']; ?></td>
-                          <td><?php echo htmlspecialchars($obra['titulo']); ?></td>
-                          <td><?php echo htmlspecialchars($obra['autor'] ?? 'Bento de Jesus Caraça'); ?></td>
-                          <td><?php echo isset($obra['ano']) ? htmlspecialchars($obra['ano']) : 'N/A'; ?></td>
-                          <td><?php echo isset($obra['categoria']) ? htmlspecialchars($obra['categoria']) : 'N/A'; ?></td>
-                          <td>
-                            <?php if (!empty($obra['pdf'])): ?>
-                              <i class="fas fa-file-pdf text-danger"></i>
-                            <?php else: ?>
-                              <i class="fas fa-times text-muted"></i>
-                            <?php endif; ?>
-                          </td>
-                          <td class="action-buttons">
-                            <button class="btn btn-info btn-sm view-obra" data-id="<?php echo $obra['id']; ?>">
-                              <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-warning btn-sm edit-obra" data-id="<?php echo $obra['id']; ?>">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-obra" data-id="<?php echo $obra['id']; ?>">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      <?php endwhile; ?>
-                    <?php else: ?>
-                      <tr>
-                        <td colspan="7" class="text-center">Nenhuma obra cadastrada.</td>
-                      </tr>
-                    <?php endif; ?>
-                  </tbody>
-                </table>
-              </div>
+                <p class="lead">Olá, <strong><?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Administrador'; ?></strong>!</p>
+                <p>Bem-vindo ao painel administrativo do site Bento de Jesus Caraça. Este painel permite gerenciar todo o conteúdo do site, incluindo:</p>
+                
+                <div class="row mt-4 mb-2">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 me-3">
+                                <i class="bi bi-book"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Obras Literárias</h5>
+                                <p class="mb-0 text-muted">Cadastre e edite obras literárias</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="feature-icon bg-success bg-gradient text-white rounded-3 me-3">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Vida</h5>
+                                <p class="mb-0 text-muted">Gerencie a história de vida</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="feature-icon bg-info bg-gradient text-white rounded-3 me-3">
+                                <i class="bi bi-award"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Legado</h5>
+                                <p class="mb-0 text-muted">Gerencie o legado histórico</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="feature-icon bg-warning bg-gradient text-white rounded-3 me-3">
+                                <i class="bi bi-images"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Galeria</h5>
+                                <p class="mb-0 text-muted">Organize a galeria de imagens</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="mt-3">Use o menu lateral para navegar entre as diferentes seções do painel.</p>
+                
+                <div class="alert alert-info d-flex align-items-center mt-4 mb-0" role="alert">
+                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                    <div>
+                        <strong>Dica:</strong> Você pode personalizar as cores e aparência deste painel na página de <a href="settings.php" class="alert-link">Configurações</a>.
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+
+        <!-- Atividades Recentes -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Atividades Recentes</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical text-gray-400"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Ver Todas</a></li>
+                        <li><a class="dropdown-item" href="#">Limpar Notificações</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item px-4 py-3 list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Sistema Inicializado</h6>
+                                <p class="mb-0 text-muted small">O painel administrativo foi inicializado com sucesso.</p>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">Agora</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item px-4 py-3 list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Login Realizado</h6>
+                                <p class="mb-0 text-muted small">Login bem-sucedido no sistema administrativo.</p>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">Hoje</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- Coluna lateral -->
+    <div class="col-lg-4 mb-4">
+        <!-- Links Rápidos -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Links Rápidos</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <a href="obras/" class="btn btn-primary btn-block w-100">
+                            <i class="bi bi-book me-2"></i> Obras
+                        </a>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <a href="vida/" class="btn btn-success btn-block w-100">
+                            <i class="bi bi-person-lines-fill me-2"></i> Vida
+                        </a>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <a href="legado/" class="btn btn-info btn-block w-100 text-white">
+                            <i class="bi bi-award me-2"></i> Legado
+                        </a>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <a href="../index.php" target="_blank" class="btn btn-secondary btn-block w-100">
+                            <i class="bi bi-eye me-2"></i> Ver Site
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Status do Sistema -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Status do Sistema</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h5 class="small font-weight-bold">Uso de Armazenamento <span class="float-end">20%</span></h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="small font-weight-bold">Cache do Site <span class="float-end">40%</span></h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="small font-weight-bold">Banco de Dados <span class="float-end">60%</span></h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <a href="#" class="btn btn-light btn-sm w-100">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Atualizar
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Modal para adicionar/editar obra -->
-<div class="modal fade" id="obraModal" tabindex="-1" aria-labelledby="obraModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="obraModalLabel">Adicionar Nova Obra</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="obraForm" method="post" action="processar_obra.php" enctype="multipart/form-data">
-          <input type="hidden" name="obra_id" id="obra_id" value="">
-          
-          <div class="row mb-3">
-            <div class="col-md-8">
-              <label for="titulo" class="form-label">Título da Obra</label>
-              <input type="text" class="form-control" id="titulo" name="titulo" required>
-            </div>
-            <div class="col-md-4">
-              <label for="ano" class="form-label">Ano de Publicação</label>
-              <input type="number" class="form-control" id="ano" name="ano" min="1800" max="2030">
-            </div>
-          </div>
-          
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="autor" class="form-label">Autor</label>
-              <input type="text" class="form-control" id="autor" name="autor" value="Bento de Jesus Caraça">
-            </div>
-            <div class="col-md-6">
-              <label for="categoria" class="form-label">Categoria</label>
-              <select class="form-select" id="categoria" name="categoria">
-                <option value="Matemática">Matemática</option>
-                <option value="Filosofia">Filosofia</option>
-                <option value="Educação">Educação</option>
-                <option value="Ciências">Ciências</option>
-                <option value="Outros">Outros</option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <label for="descricao" class="form-label">Descrição</label>
-            <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
-          </div>
-          
-          <div class="mb-3">
-            <label for="arquivo" class="form-label">Arquivo PDF</label>
-            <input type="file" class="form-control" id="arquivo" name="pdf" accept=".pdf">
-            <div id="arquivo_atual" class="form-text d-none">
-              Arquivo atual: <span id="nome_arquivo"></span>
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <label for="imagem" class="form-label">Imagem de Capa</label>
-            <input type="file" class="form-control" id="imagem" name="imagem_capa" accept="image/*">
-            <div id="imagem_atual" class="form-text d-none">
-              Imagem atual: <span id="nome_imagem"></span>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" form="obraForm" class="btn btn-primary">Salvar</button>
-      </div>
-    </div>
-  </div>
-</div>
+<style>
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+</style>
 
-<!-- Modal de confirmação de exclusão -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Tem certeza que deseja excluir esta obra? Esta ação não pode ser desfeita.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <form id="deleteForm" action="excluir_obra.php" method="post">
-          <input type="hidden" name="obra_id" id="delete_obra_id" value="">
-          <button type="submit" class="btn btn-danger">Excluir</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bootstrap JS e dependências -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-  $(document).ready(function() {
-    // Editar obra
-    $('.edit-obra').on('click', function() {
-      const id = $(this).data('id');
-      
-      // Limpar formulário
-      $('#obraForm')[0].reset();
-      
-      // Alterar título do modal
-      $('#obraModalLabel').text('Editar Obra');
-      
-      // Carregar dados da obra via AJAX
-      $.ajax({
-        url: 'obter_obra.php',
-        type: 'GET',
-        data: { id: id },
-        dataType: 'json',
-        success: function(data) {
-          // Preencher formulário
-          $('#obra_id').val(data.id);
-          $('#titulo').val(data.titulo);
-          $('#autor').val(data.autor);
-          if (data.ano !== undefined) {
-            $('#ano').val(data.ano);
-          }
-          $('#categoria').val(data.categoria);
-          $('#descricao').val(data.descricao);
-          
-          // Mostrar arquivos atuais se existirem
-          if (data.pdf) {
-            $('#arquivo_atual').removeClass('d-none');
-            $('#nome_arquivo').text(data.pdf);
-          }
-          
-          if (data.imagem_capa) {
-            $('#imagem_atual').removeClass('d-none');
-            $('#nome_imagem').text(data.imagem_capa);
-          }
-          
-          // Abrir modal
-          $('#obraModal').modal('show');
-        },
-        error: function() {
-          alert('Erro ao carregar dados da obra');
-        }
-      });
-    });
-    
-    // Nova obra
-    $('.btn-primary[data-bs-target="#obraModal"]').on('click', function() {
-      // Limpar formulário
-      $('#obraForm')[0].reset();
-      $('#obra_id').val('');
-      $('#obraModalLabel').text('Adicionar Nova Obra');
-      $('#arquivo_atual').addClass('d-none');
-      $('#imagem_atual').addClass('d-none');
-    });
-    
-    // Visualizar obra
-    $('.view-obra').on('click', function() {
-      const id = $(this).data('id');
-      window.open(`visualizar_obra.php?id=${id}`, '_blank');
-    });
-    
-    // Confirmar exclusão
-    $('.delete-obra').on('click', function() {
-      const id = $(this).data('id');
-      $('#delete_obra_id').val(id);
-      $('#deleteModal').modal('show');
-    });
-  });
-</script>
-</body>
-</html> 
+<?php
+// Incluir o rodapé
+include_once 'templates/footer.php';
+?> 

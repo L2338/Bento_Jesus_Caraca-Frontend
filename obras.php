@@ -40,23 +40,6 @@ $result = $conn->query($sql);
   <!-- Custom CSS -->
   <link href="assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .obra-ano {
-      display: inline-block;
-      background-color: #f0f0f0;
-      color: #333;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-    
-    .obra-ano i {
-      margin-right: 4px;
-      font-size: 0.9rem;
-    }
-  </style>
-
   <!-- jQuery (necessário para Bootstrap e outros plugins) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
@@ -274,7 +257,6 @@ include("footer.php");
   let pageNum = 1;
   let pageRendering = false;
   let pageNumPending = null;
-  let scale = 1.0;
 
   async function openPdfModal(pdfPath, tituloObra) {
     try {
@@ -337,10 +319,14 @@ include("footer.php");
       const containerWidth = container.clientWidth - 80;
       const containerHeight = container.clientHeight - 60;
       
+      // Verificar se é dispositivo móvel (largura < 768px)
+      const isMobile = window.innerWidth < 768;
+      
       const firstPage = await pdfDoc.getPage(startPage);
       const viewport = firstPage.getViewport({ scale: 1.0 });
       
-      const scaleW = containerWidth / (isCover ? 1 : 2) / viewport.width;
+      // Ajustar escala dependendo se é mobile ou desktop
+      const scaleW = containerWidth / ((isCover || isMobile) ? 1 : 2) / viewport.width;
       const scaleH = containerHeight / viewport.height;
       scale = Math.min(scaleW, scaleH, 1.5);
       
@@ -352,6 +338,7 @@ include("footer.php");
       const pages = [];
       
       if (isCover) {
+        // Página de capa (primeira página)
         const coverCanvas = document.createElement('canvas');
         coverCanvas.height = scaledViewport.height;
         coverCanvas.width = scaledViewport.width;
@@ -364,27 +351,55 @@ include("footer.php");
         
         pages.push(coverCanvas);
         document.getElementById('currentPage').textContent = '1';
+      } else if (isMobile) {
+        // No mobile, mostrar apenas uma página por vez
+        const singleCanvas = document.createElement('canvas');
+        singleCanvas.height = scaledViewport.height;
+        singleCanvas.width = scaledViewport.width;
+        singleCanvas.classList.add('page', 'single-page');
+        
+        await firstPage.render({
+          canvasContext: singleCanvas.getContext('2d'),
+          viewport: scaledViewport
+        }).promise;
+        
+        pages.push(singleCanvas);
+        document.getElementById('currentPage').textContent = startPage.toString();
       } else {
+        // No desktop, mostrar duas páginas lado a lado
         document.getElementById('currentPage').textContent = `${startPage}-${Math.min(startPage + 1, pdfDoc.numPages)}`;
         
+        // Garantir que a página da esquerda seja sempre par e a da direita sempre ímpar
+        // Se startPage for ímpar (exceto capa), ajustar para exibir a página par anterior à esquerda
+        let leftPageNum = startPage;
+        if (startPage > 1 && startPage % 2 !== 0) {
+          leftPageNum = startPage - 1;
+        }
+        
+        // Página esquerda (sempre número par, exceto para a capa)
+        const leftPage = await pdfDoc.getPage(leftPageNum);
         const leftCanvas = document.createElement('canvas');
         leftCanvas.height = scaledViewport.height;
         leftCanvas.width = scaledViewport.width;
         leftCanvas.classList.add('page', 'left');
+        leftCanvas.dataset.pageNum = leftPageNum.toString();
         
-        await firstPage.render({
+        await leftPage.render({
           canvasContext: leftCanvas.getContext('2d'),
           viewport: scaledViewport
         }).promise;
         
         pages.push(leftCanvas);
         
-        if (startPage + 1 <= pdfDoc.numPages) {
-          const rightPage = await pdfDoc.getPage(startPage + 1);
+        // Página direita (sempre número ímpar, exceto quando leftPageNum é a última página)
+        const rightPageNum = leftPageNum + 1;
+        if (rightPageNum <= pdfDoc.numPages) {
+          const rightPage = await pdfDoc.getPage(rightPageNum);
           const rightCanvas = document.createElement('canvas');
           rightCanvas.height = scaledViewport.height;
           rightCanvas.width = scaledViewport.width;
           rightCanvas.classList.add('page', 'right');
+          rightCanvas.dataset.pageNum = rightPageNum.toString();
           
           await rightPage.render({
             canvasContext: rightCanvas.getContext('2d'),
@@ -393,6 +408,16 @@ include("footer.php");
           
           pages.push(rightCanvas);
         }
+        
+        // Atualizar o pageNum para o valor correto (primeira página exibida)
+        pageNum = leftPageNum;
+      }
+      
+      // Ajustar o gap entre as páginas dependendo do dispositivo
+      if (!isMobile && !isCover && pages.length > 1) {
+        pageWrapper.style.gap = '40px';
+      } else {
+        pageWrapper.style.gap = '0';
       }
       
       pages.forEach(canvas => pageWrapper.appendChild(canvas));
@@ -407,11 +432,10 @@ include("footer.php");
       
       const prevButton = document.getElementById('prevPage');
       const nextButton = document.getElementById('nextPage');
-      prevButton.disabled = startPage <= 1;
-      nextButton.disabled = startPage >= pdfDoc.numPages;
+      prevButton.disabled = pageNum <= 1;
+      nextButton.disabled = pageNum >= pdfDoc.numPages || (pages.length > 1 && parseInt(pages[pages.length-1].dataset.pageNum) >= pdfDoc.numPages);
       
       pageRendering = false;
-      pageNum = startPage;
       
       if (pageNumPending !== null) {
         renderPages(pageNumPending);
@@ -424,58 +448,66 @@ include("footer.php");
   }
 
   async function turnPages(direction) {
-    if (pageRendering) return;
-    
+    // Prevenir múltiplas chamadas durante animação
+    if (pageRendering || document.querySelector('.page-wrapper.turning')) {
+        return;
+    }
+
     const currentWrapper = document.querySelector('.page-wrapper');
     if (!currentWrapper) return;
+
+    // Verificar se é dispositivo móvel
+    const isMobile = window.innerWidth < 768;
     
-    currentWrapper.classList.add('turning');
-    
-    if (direction === 'next') {
-      currentWrapper.classList.add('turning-forward');
-      const leftPage = currentWrapper.querySelector('.page.left');
-      if (leftPage) {
-        leftPage.style.transformOrigin = 'right center';
-        leftPage.style.boxShadow = '-15px 0 35px rgba(0,0,0,0.4)';
-      }
-    } else {
-      currentWrapper.classList.add('turning-backward');
-      const rightPage = currentWrapper.querySelector('.page.right');
-      if (rightPage) {
-        rightPage.style.transformOrigin = 'left center';
-        rightPage.style.boxShadow = '15px 0 35px rgba(0,0,0,0.4)';
-      }
+    // Gerenciamento especial para a capa
+    if (pageNum === 1 && direction === 'next') {
+        pageNum = 2;
+        await renderPages(pageNum);
+        return;
     }
     
-    if (direction === 'next' && pageNum < pdfDoc.numPages) {
-      setTimeout(() => {
-        pageNum = Math.min(pageNum + (pageNum === 1 ? 1 : 2), pdfDoc.numPages);
-        queueRenderPages(pageNum);
-        
-        setTimeout(() => {
-          currentWrapper.classList.remove('turning', 'turning-forward', 'turning-backward');
-          const pages = currentWrapper.querySelectorAll('.page');
-          pages.forEach(page => {
-            page.style.boxShadow = '';
-            page.style.transformOrigin = '';
-          });
-        }, 700);
-      }, 350);
-    } else if (direction === 'prev' && pageNum > 1) {
-      setTimeout(() => {
-        pageNum = Math.max(pageNum - 2, 1);
-        queueRenderPages(pageNum);
-        
-        setTimeout(() => {
-          currentWrapper.classList.remove('turning', 'turning-forward', 'turning-backward');
-          const pages = currentWrapper.querySelectorAll('.page');
-          pages.forEach(page => {
-            page.style.boxShadow = '';
-            page.style.transformOrigin = '';
-          });
-        }, 700);
-      }, 350);
+    if (pageNum === 2 && direction === 'prev') {
+        pageNum = 1;
+        await renderPages(pageNum);
+        return;
     }
+
+    // Comportamento mobile
+    if (isMobile) {
+        if (direction === 'next' && pageNum < pdfDoc.numPages) {
+            pageNum++;
+        } else if (direction === 'prev' && pageNum > 1) {
+            pageNum--;
+        }
+        await renderPages(pageNum);
+        return;
+    }
+
+    // Comportamento desktop com animação
+    const isForward = direction === 'next';
+    const animationClass = isForward ? 'turning-forward' : 'turning-backward';
+    
+    // Calcular próxima página
+    const nextPageNum = isForward ? 
+        Math.min(pageNum + 2, pdfDoc.numPages) : 
+        Math.max(pageNum - 2, 1);
+
+    // Verificar se podemos avançar/retroceder
+    if (nextPageNum === pageNum) return;
+
+    // Iniciar animação
+    currentWrapper.classList.add('turning', animationClass);
+
+    // Usar Promise para garantir sequência correta
+    await new Promise(resolve => setTimeout(resolve, 350));
+    
+    // Atualizar página e renderizar
+    pageNum = nextPageNum;
+    await renderPages(pageNum);
+
+    // Remover classes de animação após renderização completa
+    await new Promise(resolve => setTimeout(resolve, 50));
+    currentWrapper.classList.remove('turning', animationClass);
   }
 
   document.getElementById('prevPage').addEventListener('click', () => {
@@ -488,28 +520,37 @@ include("footer.php");
     turnPages('next');
   });
 
-  function queueRenderPages(num) {
-    if (pageRendering) {
-      pageNumPending = num;
-    } else {
-      renderPages(num);
-    }
-  }
-
   document.getElementById('pdfModal').addEventListener('hidden.bs.modal', () => {
     const pdfViewer = document.getElementById('pdfViewer');
+    // Limpeza completa de recursos
+    const canvases = pdfViewer.querySelectorAll('canvas');
+    canvases.forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = canvas.height = 0;
+    });
     pdfViewer.innerHTML = '';
     pdfDoc = null;
     pageNum = 1;
+    pageRendering = false;
+    pageNumPending = null;
   });
 
   let resizeTimeout;
   window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      if (pdfDoc) {
-        renderPages(pageNum);
-      }
+    if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+    }
+    resizeTimeout = setTimeout(async () => {
+        if (!pdfDoc) return;
+        
+        const wasMobile = document.querySelector('.page.single-page') !== null;
+        const isMobile = window.innerWidth < 768;
+        
+        // Recarregar apenas se houver mudança de modo
+        if (wasMobile !== isMobile) {
+            await renderPages(pageNum);
+        }
     }, 250);
   });
 
@@ -547,262 +588,6 @@ function filtrarPorTema() {
     window.location.href = "obras.php?tema=" + temaSelecionado;
 }
 </script>
-
-<style>
-.pdf-container {
-  display: flex;
-  flex-direction: column;
-  height: 92vh;
-  position: relative;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg,
-    rgba(94, 37, 99, 0.98) 0%,
-    rgba(196, 18, 48, 0.98) 100%
-  );
-  margin: 0;
-}
-
-.modal-dialog {
-  max-width: 95vw !important;
-  margin: 1rem auto;
-}
-
-.modal-content {
-  background: transparent;
-  border: none;
-  height: 95vh;
-}
-
-.modal-header {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  padding: 1rem 1.5rem;
-  border-radius: 15px 15px 0 0;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-}
-
-.modal-header .btn-close {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-header .btn-close:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(90deg);
-}
-
-.modal-header .btn-close::before,
-.modal-header .btn-close::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 2px;
-  background: white;
-  transform-origin: center;
-}
-
-.modal-header .btn-close::before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.modal-header .btn-close::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.modal-header .modal-title {
-  color: white;
-  font-weight: 500;
-  font-size: 1.25rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  margin-right: 20px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.modal-header .modal-title::before {
-  content: "\f56e";
-  font-family: "bootstrap-icons";
-  margin-right: 10px;
-  font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.pdf-viewer {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  perspective: 3000px;
-  min-height: calc(100vh - 200px);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  margin: 10px 20px;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
-}
-
-.book-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 4000px;
-}
-
-.book {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.page-wrapper {
-  position: relative;
-  transform-origin: center;
-  transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transform-style: preserve-3d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-}
-
-.page-wrapper.turning {
-  transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.page {
-  background: white;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  transform-origin: center;
-  transition: all 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
-  backface-visibility: hidden;
-  position: relative;
-}
-
-.page::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.page.left::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, transparent 20%);
-}
-
-.page.right::after {
-  left: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, transparent 20%);
-}
-
-.page.cover {
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-  transform: translateZ(1px);
-}
-
-.page.left {
-  transform-origin: right center;
-  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
-}
-
-.page.right {
-  transform-origin: left center;
-  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
-}
-
-.page-wrapper.turning-forward .page.left {
-  transform: rotateY(-180deg);
-  transform-origin: right center;
-}
-
-.page-wrapper.turning-backward .page.right {
-  transform: rotateY(180deg);
-  transform-origin: left center;
-}
-
-.pdf-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0 0 15px 15px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-}
-
-.pdf-controls button {
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.pdf-controls button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.pdf-controls button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.page-info {
-  font-size: 16px;
-  color: white;
-  background: 
-}
-.tema-filter {
-  margin-bottom: 20px;
-}
-
-.tema-filter .form-select {
-  max-width: 300px;
-}
-
-
 
 </body>
 

@@ -1,0 +1,235 @@
+/**
+ * Arquivo CSS para personalização do tema
+ * Este arquivo contém variáveis que serão substituídas dinamicamente
+ */
+
+/* Variáveis customizáveis para o tema */
+:root {
+    --primary-color: {{PRIMARY_COLOR}};
+    --sidebar-gradient-start: {{GRADIENT_START}};
+    --sidebar-gradient-end: {{GRADIENT_END}};
+    --background-color: {{BACKGROUND_COLOR}};
+    --text-color: {{TEXT_COLOR}};
+    --card-bg: {{CARD_BG}};
+    --card-text: {{CARD_TEXT}};
+    --border-color: {{BORDER_COLOR}};
+    --input-bg: {{INPUT_BG}};
+    --input-text: {{INPUT_TEXT}};
+}
+
+/* Aplicação das cores ao tema */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--primary-color);
+    background-image: linear-gradient(180deg, var(--sidebar-gradient-start) 10%, var(--sidebar-gradient-end) 100%);
+}
+
+/* Botões primários */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--sidebar-gradient-end);
+    border-color: var(--sidebar-gradient-end);
+}
+
+/* Texto em negrito colorido */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--sidebar-gradient-end);
+}
+
+/* Cards */
+.card {
+    background-color: var(--card-bg);
+    color: var(--card-text);
+    border-color: var(--border-color);
+}
+
+.card-header {
+    background-color: var(--card-bg);
+    border-bottom-color: var(--border-color);
+}
+
+/* Formulários */
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border-color: var(--border-color);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.navbar .nav-link {
+    color: var(--card-text);
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.dropdown-item {
+    color: var(--card-text);
+}
+
+.dropdown-item:hover, 
+.dropdown-item:focus {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background-color: var(--card-bg);
+}
+
+.breadcrumb-item {
+    color: var(--card-text);
+}
+
+.breadcrumb-item.active {
+    color: var(--primary-color);
+}
+
+/* Table */
+.table {
+    color: var(--card-text);
+}
+
+.table-bordered {
+    border-color: var(--border-color);
+}
+
+.table th, .table td {
+    border-color: var(--border-color);
+}
+
+/* Ajustes para temas específicos */
+.theme-dark .text-muted {
+    color: #a0aec0 !important;
+}
+
+.theme-dark .dropdown-divider {
+    border-top-color: var(--border-color);
+}
+
+.theme-dark .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.theme-dark .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.theme-dark .btn-light {
+    background-color: #4a5568;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.theme-dark .list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--card-text);
+}
+
+.theme-dark .progress {
+    background-color: #4a5568;
+}
+
+/* Corrigir cor dos ícones característicos */
+.feature-icon.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+/* Badge cores */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+/* Temas de fundo escuro */
+.theme-dark {
+    color: #e2e8f0;
+}
+
+.theme-dark .card {
+    background-color: #2d3748;
+    color: #e2e8f0;
+}
+
+.theme-dark .card-header {
+    background-color: #2d3748;
+    border-bottom-color: #4a5568;
+}
+
+.theme-dark .navbar {
+    background-color: #1a202c;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark .dropdown-menu {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+.theme-dark .dropdown-item {
+    color: #e2e8f0;
+}
+
+.theme-dark .dropdown-item:hover,
+.theme-dark .dropdown-item:focus {
+    background-color: #4a5568;
+    color: #fff;
+}
+
+.theme-dark .form-control, 
+.theme-dark .form-select {
+    background-color: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+}
+
+/* Temas com fundo cinza */
+.theme-gray .card {
+    background-color: #fff;
+}
+
+.theme-gray .navbar {
+    background-color: #fff;
+} 

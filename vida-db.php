@@ -16,16 +16,17 @@ if (mysqli_num_rows($result) > 0) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Vida</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+
+  <title>Vida e Obra - Bento de Jesus Caraça</title>
+  <meta content="Página dedicada à vida e obra de Bento de Jesus Caraça" name="description">
+  <meta content="Bento de Jesus Caraça, matemática, Portugal, ciência, cultura" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/BJC_logo.png" rel="icon">
+  <link href="assets/img/BJC_logo.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -41,16 +42,7 @@ if (mysqli_num_rows($result) > 0) {
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: Mentor
-  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
-
 <body class="about-page">
 
 <header id="header" class="header d-flex align-items-center sticky-top">
@@ -79,7 +71,7 @@ if (mysqli_num_rows($result) > 0) {
         <div class="container">
           <div class="row d-flex justify-content-center text-center">
             <div class="col-lg-8">
-              <h1>Vida<br></h1>
+              <h1>Vida e Obra<br></h1>
               <p class="mb-0">Pode aceder aqui a informações detalhadas sobre a vida e obra de Bento de Jesus Caraça. 
                 Figura marcante da sua época, destacou-se pelo seu contributo ímpar enquanto intelectual, educador e cidadão empenhado. 
             </div>
@@ -90,7 +82,7 @@ if (mysqli_num_rows($result) > 0) {
         <div class="container">
           <ol>
             <li><a href="index.php">Início</a></li>
-            <li class="current">Sobre<br></li>
+            <li class="current">Vida e Obra<br></li>
           </ol>
         </div>
       </nav>
@@ -167,8 +159,8 @@ if (mysqli_num_rows($result) > 0) {
 
     </section><!-- /Counts Section -->
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section">
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -177,7 +169,6 @@ if (mysqli_num_rows($result) > 0) {
       </div>
 
       <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Vida e Obra</h2>
         <p class="section-description" data-aos="fade-up" data-aos-delay="100">
           Bento de Jesus Caraça (1901-1948) foi um matemático, professor, pensador e ativista português cuja vida e obra deixaram um legado duradouro na educação, matemática e na luta pela democratização da cultura em Portugal. Nascido em uma família humilde, alcançou os mais altos patamares acadêmicos por seu brilhantismo intelectual, tornando-se Professor Catedrático aos 28 anos. Sua vida foi marcada pela dedicação incansável à democratização do conhecimento e pela oposição ao regime salazarista, o que lhe custou a carreira universitária e, possivelmente, contribuiu para sua morte prematura aos 47 anos. A cronologia a seguir apresenta os momentos mais significativos de sua notável trajetória.
         </p>
@@ -228,7 +219,7 @@ if (mysqli_num_rows($result) > 0) {
         </div>
       </div>
 
-    </section><!-- /Testimonials Section -->
+    </section><!-- /Timeline Section -->
 
   </main>
 
@@ -254,5 +245,4 @@ if (mysqli_num_rows($result) > 0) {
   <script src="assets/js/main.js"></script>
 
 </body>
-
-</html>
+</html> 
