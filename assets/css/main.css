@@ -2233,7 +2233,13 @@ section,
   display: flex;
   justify-content: center;
 }
-
+#escolas a{
+  color: color-mix(in srgb, var(--default-color), );
+  display: inline-block;
+}
+#escolas a:hover {
+  color: var(--accent-color)
+}
 .escola-card {
   background: #fff;
   border-radius: 8px;

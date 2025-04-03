@@ -1,39 +1,35 @@
 <?php
-  /**
-  * Requires the "PHP Email Form" library
-  * The "PHP Email Form" library is available only in the pro version of the template
-  * The library should be uploaded to: vendor/php-email-form/php-email-form.php
-  * For more info and help: https://bootstrapmade.com/php-email-form/
-  */
+// Configuração do banco de dados
+$host = "db4free.net";
+$user = "julismosilva";
+$pass = "FarinhaJulismo";
+$dbname = "escolaepbjc3";
 
-  // Replace contact@example.com with your real receiving email address
-  $receiving_email_address = 'contact@example.com';
+// Conectar à base de dados
+$conn = new mysqli($host, $user, $pass, $dbname);
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
-  } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
+// Verificar conexão
+if ($conn->connect_error) {
+    die("Erro de conexão: " . $conn->connect_error);
+}
 
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
-  
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['email'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject ="New Subscription: " . $_POST['email'];
+// Verificar se o formulário foi enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
 
-  // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-  /*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
+    // Prevenir SQL Injection
+    $email = $conn->real_escape_string($email);
 
-  $contact->add_message( $_POST['email'], 'Email');
+    // Inserir na base de dados
+    $sql = "INSERT INTO newsletter (email) VALUES ('$email')";
 
-  echo $contact->send();
+    if ($conn->query($sql) === TRUE) {
+        echo "Subscrição realizada com sucesso!";
+    } else {
+        echo "Erro ao subscrever: " . $conn->error;
+    }
+}
+
+// Fechar conexão
+$conn->close();
 ?>

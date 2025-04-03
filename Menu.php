@@ -66,7 +66,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </ul>
         </li>
     </ul>
+    <!-- Botão de menu mobile -->
+<i class="mobile-nav-toggle d-lg-none bi bi-list"></i>
 </nav>
 
-<!-- Botão de menu mobile -->
-<i class="mobile-nav-toggle d-lg-none bi bi-list"></i>
+
+
