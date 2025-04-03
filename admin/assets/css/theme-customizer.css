@@ -29,6 +29,10 @@ body {
     background-color: var(--primary-color);
     background-image: linear-gradient(180deg, var(--sidebar-gradient-start) 10%, var(--sidebar-gradient-end) 100%);
     width: 230px;
+    position: sticky;
+    top: 0; /* Fixa no topo ao rolar */
+    height: calc(100vh - 20px); /* Ajusta a altura para evitar cortes */
+    overflow-y: auto; /* Permite rolagem interna se necessário */
 }
 
 /* Botões primários */
