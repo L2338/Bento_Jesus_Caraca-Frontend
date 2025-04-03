@@ -68,7 +68,7 @@ $conn = require 'ConfigBD.php';
         <h2 data-aos="fade-up" data-aos-delay="100">Conhecimento,<br> Liberdade e Transformação</h2>
         <p data-aos="fade-up" data-aos-delay="200">Bento de Jesus Caraça deixou um legado inestimável para a educação e cultura. <br>Explore sua história e impacto.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="courses.html" class="btn-get-started">Saber Mais</a>
+          <a href="vida.php" class="btn-get-started">Saber Mais</a>
         </div>
       </div>
 

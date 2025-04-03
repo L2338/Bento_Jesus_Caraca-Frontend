@@ -90,21 +90,22 @@ $conn = require 'ConfigBD.php';
         <div class="row gy-4">
 
           <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-            <img src="assets/img/index/about2.jpg" class="img-fluid" alt="">
+            <img src="assets/img/LogoCosmos.png" class="img-fluid" alt="">
           </div>
 
           <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-            <h2>O Legado de Bento de Jesus Caraça</h2>
+            <h2>Biblioteca Cosmos</h2>
             <p class="fst-italic">
-             Conhecimento para Todos, Transformação para o Futuro.
+             Um projeto revolucionário que democratizou o saber em Portugal.
             </p>
             <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Defensor incansável da educação e da cultura, acreditava no poder do conhecimento para transformar vidas.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Autor de obras fundamentais, foi responsável por democratizar o acesso à ciência e à matemática em Portugal.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Criou a <strong>Biblioteca Cosmos</strong>, que distribuiu quase <strong>800.000 exemplares</strong>, tornando o saber acessível a milhares de leitores.</span></li>
+            <li><i class="bi bi-check-circle"></i> <span>Fundada em <strong>1941</strong> por Bento de Jesus Caraça, a <strong>Biblioteca Cosmos</strong> foi uma das iniciativas editoriais mais ambiciosas da época.</span></li>
+          <li><i class="bi bi-check-circle"></i> <span>Com o objetivo de levar cultura e ciência ao povo, publicou mais de <strong>114 títulos</strong> em <strong>145 Volumes</strong> cobrindo temas como matemática, literatura, história, filosofia e ciências naturais.</span></li>
+          <li><i class="bi bi-check-circle"></i> <span>A coleção teve uma circulação massiva, distribuindo quase <strong>800.000 exemplares</strong> e tornando-se referência na divulgação do conhecimento.</span></li>
+          <li><i class="bi bi-check-circle"></i> <span>Mesmo enfrentando censura durante o Estado Novo, a Biblioteca Cosmos marcou gerações e influenciou o pensamento crítico em Portugal.</span></li>
             </ul>
+            <a href="http://www.bibliotecacosmos.com/" target="_blank" class="read-more"><span>Saber Mais</span><i class="bi bi-arrow-right"></i></a>
           </div>
-
         </div>
 
       </div>
@@ -117,9 +118,9 @@ $conn = require 'ConfigBD.php';
 
         <div class="row gy-4">
 
-          <?php
+        <?php
           // Buscar estatísticas do banco de dados
-          $query_stats = "SELECT  FROM ORDER BY id ASC";
+          $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
           $result_stats = mysqli_query($conn, $query_stats);
           
           if ($result_stats && mysqli_num_rows($result_stats) > 0) {
