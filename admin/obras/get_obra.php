@@ -22,46 +22,20 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = (int)$_GET['id'];
 
-// Conectar ao banco de dados e criar a classe Obra
+// Conectar ao banco de dados
 $conn = require_once '../../ConfigBD.php';
 
-/**
- * Classe para operações de obras - versão simplificada apenas para get_obra.php
- */
-class ObraGet {
-    private $conn;
-    
-    public function __construct($conn) {
-        $this->conn = $conn;
-    }
-    
-    public function buscarPorId($id) {
-        $id = (int)$id;
-        $sql = "SELECT o.*, t.Nome_tema 
-                FROM obras o 
-                LEFT JOIN Temas t ON o.id_tema = t.id_tema 
-                WHERE o.id = $id";
-        
-        $result = $this->conn->query($sql);
-        
-        if ($result && $result->num_rows > 0) {
-            return $result->fetch_assoc();
-        }
-        
-        return null;
-    }
-}
+// Buscar a obra pelo ID diretamente
+$sql = "SELECT o.*, t.Nome_tema 
+        FROM obras o 
+        LEFT JOIN Temas t ON o.id_tema = t.id_tema 
+        WHERE o.id = $id";
 
-// Criar instância da classe Obra
-$obraModel = new ObraGet($conn);
+$result = $conn->query($sql);
 
-// Buscar a obra pelo ID
-$obra = $obraModel->buscarPorId($id);
-
-if (!$obra) {
+if ($result && $result->num_rows > 0) {
+    $obra = $result->fetch_assoc();
+    echo json_encode($obra);
+} else {
     echo json_encode(['error' => 'Obra não encontrada']);
-    exit;
-}
-
-// Retornar os dados da obra
-echo json_encode($obra); 
+} 

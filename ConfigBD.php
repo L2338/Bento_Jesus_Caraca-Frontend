@@ -1,4 +1,7 @@
 <?php
+// Desativar a exibição de erros para o navegador (serão logados apenas)
+ini_set('display_errors', 0);
+
 // Carrega as variáveis de ambiente do arquivo .env
 function loadEnv() {
     $envFile = __DIR__ . '/.env';
@@ -24,19 +27,31 @@ $banco = $_ENV['DB_DATABASE'] ?? 'escolaepbjc3';
 $charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
 
 // Estabelece a conexão
-$conn = mysqli_connect($host, $usuario, $senha, $banco);
-
-// Verifica a conexão
-if (!$conn) {
-    error_log("Erro na conexão com a base de dados: " . mysqli_connect_error());
-    die("Erro na conexão com a base de dados. Por favor, tente novamente mais tarde.");
+try {
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Isso faz o mysqli lançar exceções em vez de morrer
+    $conn = mysqli_connect($host, $usuario, $senha, $banco);
+    
+    // Define o charset
+    if (!mysqli_set_charset($conn, $charset)) {
+        throw new Exception("Erro ao definir charset: " . mysqli_error($conn));
+    }
+    
+    // Retorna a conexão para uso em outros arquivos
+    return $conn;
+} catch (Exception $e) {
+    // Registrar erro no log
+    error_log("Erro na conexão com a base de dados: " . $e->getMessage());
+    
+    // Em APIs, retorna null para que o chamador possa decidir o que fazer
+    // Em vez de chamar die(), que impediria a resposta JSON
+    if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+        return null;
+    }
+    
+    // Em páginas normais, podemos mostrar uma mensagem de erro mais amigável
+    // Mas sem mostrar detalhes técnicos
+    header('HTTP/1.1 500 Internal Server Error');
+    echo "<div class='alert alert-danger'>Erro ao conectar com o banco de dados. Por favor, tente novamente mais tarde.</div>";
+    exit;
 }
-
-// Define o charset
-if (!mysqli_set_charset($conn, $charset)) {
-    error_log("Erro ao definir charset: " . mysqli_error($conn));
-}
-
-// Retorna a conexão para uso em outros arquivos
-return $conn;
 ?>

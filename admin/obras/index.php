@@ -898,64 +898,46 @@ window.addEventListener('load', function() {
     const btnSalvarObra = document.getElementById('btnSalvarObra');
     if (btnSalvarObra) {
         btnSalvarObra.addEventListener('click', function() {
-            try {
-                const form = document.getElementById('formObra');
-                if (!form) {
-                    console.error('Formulário não encontrado');
-                    alert('Ocorreu um erro: formulário não encontrado.');
-                    return;
-                }
-                
-                if (!form.checkValidity()) {
-                    form.classList.add('was-validated');
-                    return;
-                }
-                
-                const formData = new FormData(form);
-                
-                // Verificar se novos arquivos foram selecionados
-                const pdfInput = document.getElementById('obra_pdf');
-                const imagemInput = document.getElementById('obra_imagem_capa');
-                
-                if (pdfInput && pdfInput.files.length === 0) {
-                    formData.delete('pdf');
-                }
-                
-                if (imagemInput && imagemInput.files.length === 0) {
-                    formData.delete('imagem_capa');
-                }
-                
-                // Enviar dados para o servidor
-                fetch('salvar_obra.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao salvar dados');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Fechar modal e recarregar a página
-                        if (modalObraBS) {
-                            modalObraBS.hide();
-                        }
-                        alert('Obra salva com sucesso!');
-                        window.location.reload();
-                    } else {
-                        alert(data.message || 'Erro ao salvar a obra.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    alert('Não foi possível salvar a obra. Por favor, tente novamente.');
-                });
-            } catch (error) {
-                console.error('Erro ao submeter formulário:', error);
-                alert('Ocorreu um erro ao tentar salvar a obra.');
+            const form = document.getElementById('formObra');
+            if (!form) {
+                alert('Formulário não encontrado.');
+                return;
             }
+            
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+            
+            const formData = new FormData(form);
+            
+            // Enviar dados para o servidor
+            fetch('salvar_obra.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao salvar dados: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Fechar modal e recarregar a página
+                    if (modalObraBS) {
+                        modalObraBS.hide();
+                    }
+                    alert('Obra salva com sucesso!');
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Erro ao salvar a obra.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao salvar: ' + error.message);
+            });
         });
     }
     

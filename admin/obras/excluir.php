@@ -25,64 +25,20 @@ if ($id <= 0) {
 // Conectar ao banco de dados
 $conn = require_once '../../ConfigBD.php';
 
-/**
- * Classe para excluir obras - versão simplificada
- */
-class ObraDelete {
-    private $conn;
-    
-    public function __construct($conn) {
-        $this->conn = $conn;
-    }
-    
-    public function buscarPorId($id) {
-        $id = (int)$id;
-        $sql = "SELECT o.*, t.Nome_tema 
-                FROM obras o 
-                LEFT JOIN Temas t ON o.id_tema = t.id_tema 
-                WHERE o.id = $id";
-        
-        $result = $this->conn->query($sql);
-        
-        if ($result && $result->num_rows > 0) {
-            return $result->fetch_assoc();
-        }
-        
-        return null;
-    }
-    
-    public function excluir($id) {
-        $id = (int)$id;
-        
-        $sql = "DELETE FROM obras WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        
-        if (!$stmt) {
-            error_log("Erro ao preparar consulta: " . $this->conn->error);
-            return false;
-        }
-        
-        $stmt->bind_param("i", $id);
-        $resultado = $stmt->execute();
-        $stmt->close();
-        
-        return $resultado;
-    }
-}
-
-// Criar instância da classe
-$obraModel = new ObraDelete($conn);
-
 // Buscar a obra para verificar existência e obter caminhos dos arquivos
-$obra = $obraModel->buscarPorId($id);
+$sql = "SELECT * FROM obras WHERE id = $id";
+$result = $conn->query($sql);
 
-if (!$obra) {
+if (!$result || $result->num_rows === 0) {
     echo json_encode(['success' => false, 'message' => 'Obra não encontrada']);
     exit;
 }
 
+$obra = $result->fetch_assoc();
+
 // Excluir a obra
-$resultado = $obraModel->excluir($id);
+$sql = "DELETE FROM obras WHERE id = $id";
+$resultado = $conn->query($sql);
 
 if ($resultado) {
     // Se a exclusão foi bem sucedida, remover arquivos associados
@@ -102,6 +58,6 @@ if ($resultado) {
     
     echo json_encode(['success' => true, 'message' => 'Obra excluída com sucesso']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Erro ao excluir obra']);
+    echo json_encode(['success' => false, 'message' => 'Erro ao excluir obra: ' . $conn->error]);
 }
 ?> 
