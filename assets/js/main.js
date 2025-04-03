@@ -34,6 +34,7 @@
   document.addEventListener('scroll', toggleScrolled);
   window.addEventListener('load', toggleScrolled);
 
+  
   /**
    * Toggle do Menu Mobile
    * Controla a exibição do menu em dispositivos móveis

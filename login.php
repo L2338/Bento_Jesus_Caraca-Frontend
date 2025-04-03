@@ -188,8 +188,11 @@ if (isset($_GET['error']) && $_GET['error'] === 'login_required') {
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
-                        <button type="submit" class="btn">Entrar</button>
+                        <button type="submit" class="btn">Entrar</button>                       
                     </form>
+                    <br>
+                    <br>
+                    <button class="btn" onclick="window.location.href='index.php'">Voltar ao site</button>
                 </div>
             </div>
         </div>
@@ -197,5 +200,6 @@ if (isset($_GET['error']) && $_GET['error'] === 'login_required') {
 
     <!-- Bootstrap JS -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
