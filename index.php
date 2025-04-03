@@ -1,3 +1,7 @@
+<?php
+// Incluir conexão com banco de dados
+$conn = require 'ConfigBD.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,33 +111,24 @@
 
         <div class="row gy-4">
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="114" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Títulos Publicados</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="793500" data-purecounter-duration="1" class="purecounter"></span>
-              <p> Exemplares Distribuídos</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Livros Publicados</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Condecorações</p>
-            </div>
-          </div><!-- End Stats Item -->
+          <?php
+          // Buscar estatísticas do banco de dados
+          $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
+          $result_stats = mysqli_query($conn, $query_stats);
+          
+          if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+              while ($stat = mysqli_fetch_assoc($result_stats)) {
+                  ?>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                      <p><?php echo $stat['descricao']; ?></p>
+                    </div>
+                  </div>
+                  <?php
+              }
+          }
+          ?>
 
         </div>
 
@@ -200,9 +195,6 @@
     <!-- ======= Professional Schools Section ======= -->
     <section id="escolas" class="section">
       <?php
-      // Incluir conexão com banco de dados
-      $conn = require 'ConfigBD.php';
-
       // Verificar se a coluna publicada_site existe
       $checkColumnExists = "SHOW COLUMNS FROM escolas_profissionais LIKE 'publicada_site'";
       $columnResult = mysqli_query($conn, $checkColumnExists);

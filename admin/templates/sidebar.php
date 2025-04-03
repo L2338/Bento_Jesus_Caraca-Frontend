@@ -53,6 +53,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
     
     <div class="nav-item">
+        <a class="nav-link <?php echo strpos($current_page, 'conteudos') !== false ? 'active' : ''; ?>" href="<?php echo ADMIN_URL; ?>conteudos/">
+            <i class="bi bi-file-text"></i>
+            <span>Conteúdos</span>
+        </a>
+    </div>
+    
+    <div class="nav-item">
         <a class="nav-link <?php echo strpos($current_page, 'galeria') !== false ? 'active' : ''; ?>" href="<?php echo ADMIN_URL; ?>galeria/">
             <i class="bi bi-images"></i>
             <span>Galeria</span>

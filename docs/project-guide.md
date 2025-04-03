@@ -9,23 +9,46 @@
 ## 2. Project Structure
 ```
 [Bento_Jesus_Caraca-Frontend]
+├── admin/                           # Área administrativa
+│   ├── assets/                      # Recursos específicos do admin
+│   ├── auth/                        # Autenticação
+│   │   └── logout.php               # Logout da área admin
+│   ├── config/                      # Configurações administrativas
+│   ├── core/                        # Funcionalidades principais
+│   │   └── functions.php            # Funções utilitárias do admin
+│   ├── docs/                        # Documentações específicas admin
+│   ├── escolas/                     # Gestão de escolas
+│   ├── galeria/                     # Gestão de galerias
+│   ├── legado/                      # Gestão de conteúdo sobre legado
+│   ├── obras/                       # Gestão de obras literárias
+│   │   ├── debug_save.log           # Log de depuração
+│   │   ├── excluir.php              # Exclusão de obras
+│   │   ├── get_obra.php             # Obtenção de dados de obras
+│   │   ├── index.php                # Interface principal de obras
+│   │   └── salvar_obra.php          # Cadastro e edição de obras
+│   ├── templates/                   # Templates para área admin
+│   ├── vida/                        # Gestão de conteúdo biográfico
+│   ├── dashboard.php                # Painel administrativo
+│   ├── README.md                    # Documentação do admin
+│   ├── settings.php                 # Configurações gerais
+│   └── theme.php                    # Definições de tema
 ├── assets/
 │   ├── css/
-│   │   └── main.css        # Includes all CSS including PDF viewer styles
+│   │   └── main.css                 # Includes all CSS including PDF viewer styles
 │   ├── img/
-│   │   ├── index/          # Imagens da página inicial
+│   │   ├── index/                   # Imagens da página inicial
 │   │   │   ├── about2.jpg
 │   │   │   ├── curso1.jpg
 │   │   │   ├── curso2.jpg
 │   │   │   ├── curso3.png
 │   │   │   └── hero-bn.jpg
-│   │   ├── obras/          # Imagens relacionadas às obras
+│   │   ├── obras/                   # Imagens relacionadas às obras
 │   │   │   ├── CFM-Vol_1.jpg
 │   │   │   ├── CFM-Vol_2.jpeg
 │   │   │   ├── Galileo_Galilei.png
 │   │   │   ├── obra2.jpg
 │   │   │   └── obra3.jpg
-│   │   ├── retratos/       # Retratos históricos
+│   │   ├── retratos/                # Retratos históricos
 │   │   ├── about-2.jpg
 │   │   ├── BJC_logo.png
 │   │   └── epbjc-logo.png
@@ -33,7 +56,7 @@
 │   │   ├── main.js
 │   │   └── pdf-viewer.js
 │   ├── pdf/
-│   │   └── Obras/          # PDFs das obras de Bento Jesus Caraça
+│   │   └── Obras/                   # PDFs das obras de Bento Jesus Caraça
 │   │       ├── CFM-Vol_1.pdf
 │   │       ├── CFM-Vol_2.pdf
 │   │       ├── Galileo_Galilei.pdf
@@ -111,20 +134,28 @@
 │   ├── contact.php                  # Processador do formulário de contato
 │   ├── newsletter.php               # Processador do formulário de newsletter
 │   └── Readme.txt                   # Instruções sobre os formulários
+├── node_modules/                    # Dependências npm
+├── amigos.php                       # Página sobre amigos de BJC
+├── check_tables.php                 # Verificação de tabelas no BD
 ├── ConfigBD.php                     # Configuração do banco de dados
 ├── contact.php                      # Página de contato
-├── course-details.php               # Detalhes de cursos
 ├── footer.php                       # Componente de rodapé
+├── header.php                       # Componente de cabeçalho
 ├── index.php                        # Página inicial
 ├── legado.php                       # Página sobre o legado
-├── login.php                        # Página de login
+├── login.php                        # Página de login de administrador
 ├── Menu.php                         # Componente de navegação
 ├── obras.php                        # Catálogo de obras
+├── reorganize_timeline.php          # Script para reorganizar timeline
+├── retratos.php                     # Página de retratos históricos
 ├── starter-page.php                 # Página modelo/inicial
+├── viagens.php                      # Página sobre viagens de BJC
 ├── vida.php                         # Biografia de Bento Jesus Caraça
-├── .gitignore
-├── package.json
-└── package-lock.json
+├── vida-db.php                      # Dados biográficos no BD
+├── .gitignore                       # Configuração do Git
+├── .hintrc                          # Configuração de hints
+├── package.json                     # Definição de pacotes npm
+└── package-lock.json                # Versões específicas de pacotes
 ```
 
 ## 3. Technology Stack
@@ -252,5 +283,10 @@
 - Content management
 - User management
 - File upload handling
+- Obra (Works) management with CRUD operations
+- Vida (Biography) content management
+- Legado (Legacy) content management
+- Gallery management for images and media
+- School/Institution management related to BJC
 
 Remember to maintain the established structure and follow security best practices when making any modifications to the project. 

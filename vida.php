@@ -13,6 +13,15 @@ if (mysqli_num_rows($result) > 0) {
         $timeline_blocks[] = $row;
     }
 }
+
+// Buscar o texto introdutório
+$query_intro = "SELECT conteudo FROM textos_secoes WHERE id = 1";
+$result_intro = mysqli_query($conn, $query_intro);
+$intro_text = "";
+if ($result_intro && mysqli_num_rows($result_intro) > 0) {
+    $intro_row = mysqli_fetch_assoc($result_intro);
+    $intro_text = $intro_row['conteudo'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -133,33 +142,24 @@ if (mysqli_num_rows($result) > 0) {
 
         <div class="row gy-4">
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="114" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Títulos Publicados</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="793500" data-purecounter-duration="1" class="purecounter"></span>
-              <p> Exemplares Distribuídos</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="9" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Livros Publicados</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Condecorações</p>
-            </div>
-          </div><!-- End Stats Item -->
+          <?php
+          // Buscar estatísticas do banco de dados
+          $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
+          $result_stats = mysqli_query($conn, $query_stats);
+          
+          if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+              while ($stat = mysqli_fetch_assoc($result_stats)) {
+                  ?>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                      <p><?php echo $stat['descricao']; ?></p>
+                    </div>
+                  </div>
+                  <?php
+              }
+          }
+          ?>
 
         </div>
 
@@ -179,7 +179,7 @@ if (mysqli_num_rows($result) > 0) {
       <div class="container">
         <h2 class="section-title" data-aos="fade-up">Vida e Obra</h2>
         <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-          Bento de Jesus Caraça (1901-1948) foi um matemático, professor, pensador e ativista português cuja vida e obra deixaram um legado duradouro na educação, matemática e na luta pela democratização da cultura em Portugal. Nascido em uma família humilde, alcançou os mais altos patamares acadêmicos por seu brilhantismo intelectual, tornando-se Professor Catedrático aos 28 anos. Sua vida foi marcada pela dedicação incansável à democratização do conhecimento e pela oposição ao regime salazarista, o que lhe custou a carreira universitária e, possivelmente, contribuiu para sua morte prematura aos 47 anos. A cronologia a seguir apresenta os momentos mais significativos de sua notável trajetória.
+          <?php echo $intro_text; ?>
         </p>
         <div class="timeline-container" data-aos="fade-up" data-aos-delay="100">
           <?php 

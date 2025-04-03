@@ -1,3 +1,7 @@
+<?php
+// Incluir conexão com banco de dados
+$conn = require 'ConfigBD.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,42 +83,64 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <!-- Events Section -->
-    <section id="events" class="events section">
+    <section id="about" class="about section">
 
-      <div class="container" data-aos="fade-up">
+      <div class="container">
 
-        <div class="row">
-          <div class="col-md-6 d-flex align-items-stretch">
-            <div class="card">
-              <div class="card-img">
-                <img src="assets/img/events-item-1.jpg" alt="...">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title"><a href="">Introduction to webdesign</a></h5>
-                <p class="fst-italic text-center">Sunday, September 26th at 7:00 pm</p>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
-              </div>
-            </div>
+        <div class="row gy-4">
+
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+            <img src="assets/img/index/about2.jpg" class="img-fluid" alt="">
           </div>
-          <div class="col-md-6 d-flex align-items-stretch">
-            <div class="card">
-              <div class="card-img">
-                <img src="assets/img/events-item-2.jpg" alt="...">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title"><a href="">Marketing Strategies</a></h5>
-                <p class="fst-italic text-center">Sunday, November 15th at 7:00 pm</p>
-                <p class="card-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-              </div>
-            </div>
 
+          <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+            <h2>O Legado de Bento de Jesus Caraça</h2>
+            <p class="fst-italic">
+             Conhecimento para Todos, Transformação para o Futuro.
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> <span>Defensor incansável da educação e da cultura, acreditava no poder do conhecimento para transformar vidas.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Autor de obras fundamentais, foi responsável por democratizar o acesso à ciência e à matemática em Portugal.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Criou a <strong>Biblioteca Cosmos</strong>, que distribuiu quase <strong>800.000 exemplares</strong>, tornando o saber acessível a milhares de leitores.</span></li>
+            </ul>
           </div>
+
         </div>
 
       </div>
 
-    </section><!-- /Events Section -->
+    </section><!-- /About Section -->
+
+    <section id="counts" class="section counts light-background">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <?php
+          // Buscar estatísticas do banco de dados
+          $query_stats = "SELECT  FROM ORDER BY id ASC";
+          $result_stats = mysqli_query($conn, $query_stats);
+          
+          if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+              while ($stat = mysqli_fetch_assoc($result_stats)) {
+                  ?>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                      <p><?php echo $stat['descricao']; ?></p>
+                    </div>
+                  </div>
+                  <?php
+              }
+          }
+          ?>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Counts Section -->
 
   </main>
 
