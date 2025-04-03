@@ -16,19 +16,19 @@ $page_title = isset($page_title) ? $page_title . ' - Admin' : 'Painel Administra
     <title><?php echo htmlspecialchars($page_title); ?></title>
     
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../assets/img/BJC_logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo SITE_URL; ?>assets/img/BJC_logo.png" type="image/x-icon">
     
     <!-- Bootstrap CSS -->
-    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo SITE_URL; ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
-    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="<?php echo SITE_URL; ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Admin CSS -->
-    <link href="assets/css/admin-style.css" rel="stylesheet">
+    <link href="<?php echo ADMIN_URL; ?>assets/css/admin-style.css" rel="stylesheet">
     
     <!-- Tema personalizado -->
-    <link href="theme.php?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="<?php echo ADMIN_URL; ?>theme.php?v=<?php echo time(); ?>" rel="stylesheet">
     
     <!-- CSS Adicional específico de página, se houver -->
     <?php if(isset($extra_css)): ?>
@@ -38,7 +38,7 @@ $page_title = isset($page_title) ? $page_title . ' - Admin' : 'Painel Administra
 <body class="<?php echo isset($_COOKIE['admin_theme_background']) && $_COOKIE['admin_theme_background'] !== 'light' ? 'theme-' . $_COOKIE['admin_theme_background'] : ''; ?>">
     <div class="d-flex">
         <!-- Sidebar (incluída separadamente) -->
-        <?php include_once 'templates/sidebar.php'; ?>
+        <?php include_once __DIR__ . '/sidebar.php'; ?>
         
         <!-- Conteúdo principal -->
         <div class="page-content">

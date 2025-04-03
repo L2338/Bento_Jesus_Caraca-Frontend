@@ -288,6 +288,5 @@ include_once 'templates/header.php';
 </style>
 
 <?php
-// Incluir o rodapé
 include_once 'templates/footer.php';
 ?> 
