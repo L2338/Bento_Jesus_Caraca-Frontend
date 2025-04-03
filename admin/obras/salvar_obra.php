@@ -20,8 +20,142 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Incluir arquivo index para ter acesso à classe Obra
-require_once 'index.php';
+// Conectar ao banco de dados
+$conn = require_once '../../ConfigBD.php';
+
+/**
+ * Classe para operações com obras
+ */
+class ObraSave {
+    private $conn;
+    
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+    
+    public function buscarPorId($id) {
+        $id = (int)$id;
+        $sql = "SELECT o.*, t.Nome_tema 
+                FROM obras o 
+                LEFT JOIN Temas t ON o.id_tema = t.id_tema 
+                WHERE o.id = $id";
+        
+        $result = $this->conn->query($sql);
+        
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc();
+        }
+        
+        return null;
+    }
+    
+    public function adicionar($dados) {
+        // Validar dados obrigatórios
+        if (empty($dados['titulo']) || empty($dados['pdf'])) {
+            return false;
+        }
+        
+        // Preparar a query
+        $sql = "INSERT INTO obras (titulo, descricao, pdf, imagem_capa, autor, id_tema, ano) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sssssii", 
+                $dados['titulo'],
+                $dados['descricao'] ?? '',
+                $dados['pdf'],
+                $dados['imagem_capa'] ?? '',
+                $dados['autor'] ?? '',
+                $dados['id_tema'] ? (int)$dados['id_tema'] : null,
+                $dados['ano'] ? (int)$dados['ano'] : null
+            );
+            
+            $result = $stmt->execute();
+            if ($result) {
+                return $this->conn->insert_id;
+            }
+            
+            return false;
+        } catch (Exception $e) {
+            error_log("Erro ao adicionar obra: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function atualizar($id, $dados) {
+        $id = (int)$id;
+        
+        // Validar dados obrigatórios
+        if (empty($dados['titulo']) || empty($dados['pdf'])) {
+            return false;
+        }
+        
+        // Preparar a query
+        $sql = "UPDATE obras SET 
+                titulo = ?, 
+                descricao = ?, 
+                pdf = ?, 
+                imagem_capa = ?, 
+                autor = ?, 
+                id_tema = ?, 
+                ano = ? 
+                WHERE id = ?";
+        
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sssssiii", 
+                $dados['titulo'],
+                $dados['descricao'] ?? '',
+                $dados['pdf'],
+                $dados['imagem_capa'] ?? '',
+                $dados['autor'] ?? '',
+                $dados['id_tema'] ? (int)$dados['id_tema'] : null,
+                $dados['ano'] ? (int)$dados['ano'] : null,
+                $id
+            );
+            
+            return $stmt->execute();
+        } catch (Exception $e) {
+            error_log("Erro ao atualizar obra: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Função auxiliar para processar upload de arquivo
+     */
+    public function processarUpload($file, $diretorio, $tipos_permitidos = [], $tamanho_max = 5242880) {
+        // Verificar se o upload foi bem-sucedido
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return false;
+        }
+        
+        // Verificar tamanho
+        if ($file['size'] > $tamanho_max) {
+            return false;
+        }
+        
+        // Verificar tipo, se especificado
+        if (!empty($tipos_permitidos) && !in_array($file['type'], $tipos_permitidos)) {
+            return false;
+        }
+        
+        // Gerar nome único para o arquivo
+        $nome_arquivo = uniqid() . '_' . basename($file['name']);
+        $caminho_completo = $diretorio . '/' . $nome_arquivo;
+        
+        // Mover o arquivo para o diretório de destino
+        if (move_uploaded_file($file['tmp_name'], $caminho_completo)) {
+            return $nome_arquivo;
+        }
+        
+        return false;
+    }
+}
+
+// Criar instância da classe
+$obraModel = new ObraSave($conn);
 
 try {
     // Verificar se é uma atualização ou inserção

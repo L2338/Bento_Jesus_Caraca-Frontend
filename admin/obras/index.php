@@ -621,9 +621,6 @@ echo $mensagem;
     </div>
 </div>
 
-<?php
-// Adicionar JavaScript personalizado
-$extra_js = <<<HTML
 <script>
 // Aguardar o carregamento completo do DOM e das bibliotecas
 window.addEventListener('load', function() {
@@ -660,39 +657,66 @@ window.addEventListener('load', function() {
         }
         
         modalExcluir.addEventListener('show.bs.modal', function(event) {
-            var button = event.relatedTarget;
-            idObraParaExcluir = button.getAttribute('data-id');
-            var titulo = button.getAttribute('data-titulo');
-            
-            document.getElementById('tituloObra').textContent = titulo;
+            try {
+                const button = event.relatedTarget;
+                if (!button) {
+                    console.error('Botão que acionou o modal não encontrado!');
+                    return;
+                }
+                
+                idObraParaExcluir = button.getAttribute('data-id');
+                const titulo = button.getAttribute('data-titulo');
+                
+                console.log('Preparando exclusão da obra:', idObraParaExcluir, titulo);
+                
+                const tituloObraElement = document.getElementById('tituloObra');
+                if (tituloObraElement) {
+                    tituloObraElement.textContent = titulo || 'obra selecionada';
+                } else {
+                    console.error('Elemento para exibir título da obra não encontrado!');
+                }
+            } catch (error) {
+                console.error('Erro ao configurar modal de exclusão:', error);
+                alert('Ocorreu um erro ao preparar a exclusão. Por favor, tente novamente.');
+            }
         });
         
         // Configurar o botão de exclusão para usar AJAX
-        document.getElementById('btnConfirmarExclusao').addEventListener('click', function() {
-            if (idObraParaExcluir > 0) {
-                fetch('excluir.php?id=' + idObraParaExcluir)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erro ao excluir obra');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        modalExcluirBS.hide();
-                        
-                        if (data.success) {
-                            alert('Obra excluída com sucesso!');
-                            window.location.reload();
-                        } else {
-                            alert(data.message || 'Erro ao excluir obra');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao excluir obra. Por favor, tente novamente.');
-                    });
-            }
-        });
+        const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
+        if (btnConfirmarExclusao) {
+            btnConfirmarExclusao.addEventListener('click', function() {
+                if (idObraParaExcluir > 0) {
+                    fetch('excluir.php?id=' + idObraParaExcluir)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao excluir obra');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (modalExcluirBS) {
+                                modalExcluirBS.hide();
+                            }
+                            
+                            if (data.success) {
+                                alert('Obra excluída com sucesso!');
+                                window.location.reload();
+                            } else {
+                                alert(data.message || 'Erro ao excluir obra');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao excluir obra. Por favor, tente novamente.');
+                        });
+                } else {
+                    console.error('ID da obra para exclusão inválido:', idObraParaExcluir);
+                    alert('Ocorreu um erro: ID da obra inválido.');
+                }
+            });
+        } else {
+            console.error('Botão de confirmar exclusão não encontrado!');
+        }
         
         // Modal de obra (visualização e edição)
         let modalObra = document.getElementById('modalObra');
@@ -710,45 +734,71 @@ window.addEventListener('load', function() {
             // Vincular evento ao modal
             modalObra.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
-                const id = button.getAttribute('data-id');
-                const mode = button.getAttribute('data-mode') || 'view'; // 'view' ou 'edit'
+                
+                // Garantir que o ID seja tratado como string ou null para evitar erros
+                const id = button && button.getAttribute ? button.getAttribute('data-id') : null;
+                const mode = button && button.getAttribute ? (button.getAttribute('data-mode') || 'view') : 'view'; // 'view' ou 'edit'
                 
                 console.log('Abrindo modal com id:', id, 'modo:', mode);
                 
-                // Configurar título do modal
-                document.getElementById('modalObraLabel').textContent = 
-                    mode === 'edit' ? 'Editar Obra' : (id ? 'Visualizar Obra' : 'Adicionar Nova Obra');
-                
-                // Configurar visibilidade dos elementos de edição
-                const editElements = document.querySelectorAll('.edit-only');
-                editElements.forEach(el => {
-                    el.style.display = mode === 'edit' || !id ? 'block' : 'none';
-                });
-                
-                // Tornar os campos editáveis ou somente leitura
-                const formInputs = document.querySelectorAll('#formObra input, #formObra textarea, #formObra select');
-                formInputs.forEach(input => {
-                    input.readOnly = mode !== 'edit' && id;
-                    if (input.tagName === 'SELECT') {
-                        input.disabled = mode !== 'edit' && id;
+                try {
+                    // Configurar título do modal
+                    const modalObraLabel = document.getElementById('modalObraLabel');
+                    if (modalObraLabel) {
+                        modalObraLabel.textContent = mode === 'edit' ? 'Editar Obra' : (id ? 'Visualizar Obra' : 'Adicionar Nova Obra');
                     }
-                });
-                
-                // Se tiver ID, carrega os dados da obra, caso contrário prepara para nova obra
-                if (id) {
-                    // Carregar dados da obra
-                    carregarDadosObra(id);
-                } else {
-                    // Limpar o formulário para nova obra
-                    document.getElementById('formObra').reset();
-                    document.getElementById('obra_id').value = '';
                     
-                    // Resetar arquivos exibidos
-                    document.getElementById('pdf_atual_container').innerHTML = '<span class="text-muted">Nenhum PDF disponível</span>';
-                    document.getElementById('imagem_atual_container').innerHTML = '<span class="text-muted">Nenhuma imagem disponível</span>';
+                    // Configurar visibilidade dos elementos de edição
+                    const editElements = document.querySelectorAll('.edit-only');
+                    editElements.forEach(el => {
+                        el.style.display = mode === 'edit' || !id ? 'block' : 'none';
+                    });
                     
-                    // Marcar PDF como obrigatório para novas obras
-                    document.getElementById('obra_pdf').required = true;
+                    // Tornar os campos editáveis ou somente leitura
+                    const formInputs = document.querySelectorAll('#formObra input, #formObra textarea, #formObra select');
+                    formInputs.forEach(input => {
+                        input.readOnly = mode !== 'edit' && id;
+                        if (input.tagName === 'SELECT') {
+                            input.disabled = mode !== 'edit' && id;
+                        }
+                    });
+                    
+                    // Se tiver ID, carrega os dados da obra, caso contrário prepara para nova obra
+                    if (id) {
+                        // Carregar dados da obra
+                        carregarDadosObra(id);
+                    } else {
+                        // Limpar o formulário para nova obra
+                        const formObra = document.getElementById('formObra');
+                        if (formObra) {
+                            formObra.reset();
+                        }
+                        
+                        const obraIdField = document.getElementById('obra_id');
+                        if (obraIdField) {
+                            obraIdField.value = '';
+                        }
+                        
+                        // Resetar arquivos exibidos
+                        const pdfContainer = document.getElementById('pdf_atual_container');
+                        if (pdfContainer) {
+                            pdfContainer.innerHTML = '<span class="text-muted">Nenhum PDF disponível</span>';
+                        }
+                        
+                        const imagemContainer = document.getElementById('imagem_atual_container');
+                        if (imagemContainer) {
+                            imagemContainer.innerHTML = '<span class="text-muted">Nenhuma imagem disponível</span>';
+                        }
+                        
+                        // Marcar PDF como obrigatório para novas obras
+                        const pdfInput = document.getElementById('obra_pdf');
+                        if (pdfInput) {
+                            pdfInput.required = true;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro ao configurar modal:', error);
+                    alert('Ocorreu um erro ao configurar o modal. Por favor, tente novamente.');
                 }
             });
         }
@@ -767,13 +817,16 @@ window.addEventListener('load', function() {
                     }
                     return response.json();
                 })
-                .then(obra => {
+                .then(data => {
                     // Verificar se a resposta contém uma obra válida
-                    if (!obra || obra.error) {
-                        console.error('Erro:', obra?.error || 'Dados da obra inválidos');
+                    if (!data || data.error) {
+                        console.error('Erro:', data?.error || 'Dados da obra inválidos');
                         alert('Não foi possível carregar os dados da obra.');
                         return;
                     }
+                    
+                    // Salvar em uma variável local para uso no escopo
+                    const obra = data;
                     
                     // Preencher o formulário com os dados
                     const obraIdField = document.getElementById('obra_id');
@@ -972,7 +1025,10 @@ window.addEventListener('load', function() {
     }
 });
 </script>
-HTML;
+
+<?php
+// Adicionar JavaScript personalizado - remover esta linha devido ao script já estar no HTML
+$extra_js = '';
 
 // Carregar o rodapé
 require_once __DIR__ . '/../templates/footer.php';

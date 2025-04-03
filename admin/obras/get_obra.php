@@ -22,8 +22,38 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = (int)$_GET['id'];
 
-// Incluir arquivo index para ter acesso à classe Obra
-require_once 'index.php';
+// Conectar ao banco de dados e criar a classe Obra
+$conn = require_once '../../ConfigBD.php';
+
+/**
+ * Classe para operações de obras - versão simplificada apenas para get_obra.php
+ */
+class ObraGet {
+    private $conn;
+    
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+    
+    public function buscarPorId($id) {
+        $id = (int)$id;
+        $sql = "SELECT o.*, t.Nome_tema 
+                FROM obras o 
+                LEFT JOIN Temas t ON o.id_tema = t.id_tema 
+                WHERE o.id = $id";
+        
+        $result = $this->conn->query($sql);
+        
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc();
+        }
+        
+        return null;
+    }
+}
+
+// Criar instância da classe Obra
+$obraModel = new ObraGet($conn);
 
 // Buscar a obra pelo ID
 $obra = $obraModel->buscarPorId($id);
