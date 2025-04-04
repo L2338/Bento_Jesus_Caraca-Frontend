@@ -84,6 +84,20 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="sidebar-heading">Sistema</div>
     
     <div class="nav-item">
+        <a class="nav-link <?php echo $current_page == 'notifications.php' ? 'active' : ''; ?>" href="<?php echo ADMIN_URL; ?>notifications.php">
+            <i class="bi bi-bell"></i>
+            <span>Notificações</span>
+            <?php 
+            // Mostrar contador na sidebar se houver notificações
+            $notification_count = function_exists('get_notification_count') ? get_notification_count() : 0;
+            if ($notification_count > 0): 
+            ?>
+            <span class="badge bg-danger rounded-pill ms-2"><?php echo $notification_count; ?></span>
+            <?php endif; ?>
+        </a>
+    </div>
+    
+    <div class="nav-item">
         <a class="nav-link <?php echo $current_page == 'users.php' ? 'active' : ''; ?>" href="<?php echo ADMIN_URL; ?>users.php">
             <i class="bi bi-people"></i>
             <span>Usuários</span>

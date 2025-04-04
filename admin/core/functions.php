@@ -202,4 +202,217 @@ function centralizar_conteudo($content) {
     
     return $content;
 }
+
+/**
+ * Obtém notificações não lidas do usuário
+ * 
+ * @param int $limit Limite de notificações a serem retornadas
+ * @return array Notificações não lidas
+ */
+function get_unread_notifications($limit = 5) {
+    global $conn;
+    
+    if (!isset($_SESSION['user_id'])) {
+        return [];
+    }
+    
+    $user_id = (int)$_SESSION['user_id'];
+    
+    // Verificar se a tabela existe
+    $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
+    if ($tableCheck->num_rows === 0) {
+        // Tabela não existe, criar
+        $conn->query("CREATE TABLE IF NOT EXISTS `Notificacoes` (
+            `id_notificacao` int(11) NOT NULL AUTO_INCREMENT,
+            `id_admin` int(11) NOT NULL,
+            `tipo` varchar(50) NOT NULL,
+            `titulo` varchar(100) NOT NULL,
+            `mensagem` text NOT NULL,
+            `link` varchar(255) DEFAULT NULL,
+            `lida` tinyint(1) NOT NULL DEFAULT 0,
+            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`id_notificacao`),
+            KEY `id_admin` (`id_admin`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+    }
+    
+    // Buscar notificações não lidas
+    $query = "SELECT * FROM Notificacoes 
+              WHERE (id_admin = ? OR id_admin = 0) 
+              AND lida = 0 
+              ORDER BY created_at DESC 
+              LIMIT ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $user_id, $limit);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    
+    $notifications = [];
+    while ($row = $result->fetch_assoc()) {
+        $notifications[] = $row;
+    }
+    
+    return $notifications;
+}
+
+/**
+ * Retorna o número de notificações não lidas
+ * 
+ * @return int Número de notificações não lidas
+ */
+function get_notification_count() {
+    global $conn;
+    
+    if (!isset($_SESSION['user_id'])) {
+        return 0;
+    }
+    
+    $user_id = (int)$_SESSION['user_id'];
+    
+    // Verificar se a tabela existe
+    $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
+    if ($tableCheck->num_rows === 0) {
+        return 0;
+    }
+    
+    // Contar notificações não lidas
+    $query = "SELECT COUNT(*) AS total FROM Notificacoes 
+              WHERE (id_admin = ? OR id_admin = 0) 
+              AND lida = 0";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    
+    return (int)$row['total'];
+}
+
+/**
+ * Marca uma notificação como lida
+ * 
+ * @param int $notification_id ID da notificação
+ * @return bool Se a operação foi bem-sucedida
+ */
+function mark_notification_read($notification_id) {
+    global $conn;
+    
+    if (!isset($_SESSION['user_id'])) {
+        return false;
+    }
+    
+    $user_id = (int)$_SESSION['user_id'];
+    $notification_id = (int)$notification_id;
+    
+    $query = "UPDATE Notificacoes SET lida = 1 
+              WHERE id_notificacao = ? 
+              AND (id_admin = ? OR id_admin = 0)";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $notification_id, $user_id);
+    
+    return $stmt->execute();
+}
+
+/**
+ * Marca todas as notificações do usuário como lidas
+ * 
+ * @return bool Se a operação foi bem-sucedida
+ */
+function mark_all_notifications_read() {
+    global $conn;
+    
+    if (!isset($_SESSION['user_id'])) {
+        return false;
+    }
+    
+    $user_id = (int)$_SESSION['user_id'];
+    
+    $query = "UPDATE Notificacoes SET lida = 1 
+              WHERE (id_admin = ? OR id_admin = 0) 
+              AND lida = 0";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    
+    return $stmt->execute();
+}
+
+/**
+ * Adiciona uma nova notificação
+ * 
+ * @param int $user_id ID do usuário (0 para todos os usuários)
+ * @param string $tipo Tipo da notificação (info, success, warning, danger)
+ * @param string $titulo Título da notificação
+ * @param string $mensagem Conteúdo da notificação
+ * @param string $link Link opcional para mais detalhes
+ * @return bool Se a operação foi bem-sucedida
+ */
+function add_notification($user_id, $tipo, $titulo, $mensagem, $link = null) {
+    global $conn;
+    
+    $user_id = (int)$user_id;
+    
+    $query = "INSERT INTO Notificacoes (id_admin, tipo, titulo, mensagem, link) 
+              VALUES (?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("issss", $user_id, $tipo, $titulo, $mensagem, $link);
+    
+    return $stmt->execute();
+}
+
+/**
+ * Obtém ícone correspondente ao tipo de notificação
+ * 
+ * @param string $tipo Tipo da notificação
+ * @return string Classe de ícone Bootstrap
+ */
+function get_notification_icon($tipo) {
+    switch ($tipo) {
+        case 'success':
+            return 'bi-check-circle-fill';
+        case 'warning':
+            return 'bi-exclamation-triangle-fill';
+        case 'danger':
+            return 'bi-x-circle-fill';
+        case 'obra':
+            return 'bi-book-fill';
+        case 'usuario':
+            return 'bi-person-fill';
+        case 'sistema':
+            return 'bi-gear-fill';
+        default:
+            return 'bi-bell-fill';
+    }
+}
+
+/**
+ * Obtém classe de cor correspondente ao tipo de notificação
+ * 
+ * @param string $tipo Tipo da notificação
+ * @return string Classe de cor Bootstrap
+ */
+function get_notification_color($tipo) {
+    switch ($tipo) {
+        case 'success':
+            return 'text-success';
+        case 'warning':
+            return 'text-warning';
+        case 'danger':
+            return 'text-danger';
+        case 'obra':
+            return 'text-primary';
+        case 'usuario':
+            return 'text-info';
+        case 'sistema':
+            return 'text-secondary';
+        default:
+            return 'text-primary';
+    }
+}
 ?> 

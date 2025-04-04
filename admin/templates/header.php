@@ -56,22 +56,59 @@ $page_title = isset($page_title) ? $page_title . ' - Admin' : 'Painel Administra
                     <h1 class="h3 mb-0 text-gray-800 d-none d-md-inline-block"><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Dashboard'; ?></h1>
                     
                     <div class="navbar-nav ms-auto">
-                        <!-- Dropdown de notificações (exemplo) -->
+                        <!-- Dropdown de notificações -->
                         <div class="nav-item dropdown me-3">
+                            <?php 
+                            // Obter contagem de notificações
+                            $notification_count = get_notification_count();
+                            
+                            // Obter notificações recentes
+                            $recent_notifications = get_unread_notifications(5);
+                            ?>
                             <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-bell-fill"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    3
+                                <?php if ($notification_count > 0): ?>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-count">
+                                    <?php echo $notification_count; ?>
                                 </span>
+                                <?php endif; ?>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationsDropdown">
                                 <li><h6 class="dropdown-header">Central de Notificações</h6></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-text me-2 text-primary"></i> Nova obra cadastrada</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2 text-warning"></i> Atualização de sistema</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-person-check me-2 text-success"></i> Novo usuário cadastrado</a></li>
+                                
+                                <?php if (count($recent_notifications) > 0): ?>
+                                    <?php foreach ($recent_notifications as $notification): ?>
+                                    <li>
+                                        <a class="dropdown-item notification-item" href="<?php echo $notification['link'] ? htmlspecialchars($notification['link']) : 'javascript:void(0)'; ?>" data-id="<?php echo $notification['id_notificacao']; ?>">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-2 <?php echo get_notification_color($notification['tipo']); ?>">
+                                                    <i class="bi <?php echo get_notification_icon($notification['tipo']); ?>"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="small fw-bold"><?php echo htmlspecialchars($notification['titulo']); ?></div>
+                                                    <div class="text-truncate" style="max-width: 200px;"><?php echo htmlspecialchars($notification['mensagem']); ?></div>
+                                                    <div class="small text-muted mt-1">
+                                                        <i class="bi bi-clock-history"></i> <?php echo date('d/m H:i', strtotime($notification['created_at'])); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li><a class="dropdown-item text-center" href="#"><i class="bi bi-check-circle me-2"></i> Nenhuma notificação</a></li>
+                                <?php endif; ?>
+                                
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-center small" href="#">Ver todas notificações</a></li>
+                                <li>
+                                    <div class="dropdown-item d-flex justify-content-between">
+                                        <a href="<?php echo ADMIN_URL; ?>notifications.php" class="text-decoration-none">Ver todas</a>
+                                        <?php if ($notification_count > 0): ?>
+                                        <a href="javascript:void(0)" class="text-decoration-none mark-all-read">Marcar como lidas</a>
+                                        <?php endif; ?>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         

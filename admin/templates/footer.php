@@ -20,8 +20,17 @@
     <!-- Scripts Bootstrap e Gerais -->
     <script src="<?php echo SITE_URL; ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Variáveis JavaScript -->
+    <script>
+        const ADMIN_URL = '<?php echo ADMIN_URL; ?>';
+        const SITE_URL = '<?php echo SITE_URL; ?>';
+    </script>
+    
     <!-- Script do Painel Administrativo -->
     <script src="<?php echo ADMIN_URL; ?>assets/js/admin-script.js"></script>
+    
+    <!-- Script de Notificações -->
+    <script src="<?php echo ADMIN_URL; ?>assets/js/notifications.js"></script>
     
     <!-- Scripts específicos da página, se houver -->
     <?php if(isset($extra_js)): ?>
