@@ -142,7 +142,7 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
 
         <div class="row gy-4">
 
-          <?php
+        <?php
           // Buscar estatísticas do banco de dados
           $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
           $result_stats = mysqli_query($conn, $query_stats);

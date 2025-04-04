@@ -1,7 +1,138 @@
 <?php
 // Incluir conexão com banco de dados
 $conn = require 'ConfigBD.php';
+
+// Funções para obter dados
+
+// Função para obter e exibir condecorações
+function obterCondecoracoes($conn) {
+    $output = "";
+    
+    // Verifica se há termo de pesquisa
+    $where = "";
+    if (isset($_GET["search_condecoracoes"]) && !empty($_GET["search_condecoracoes"])) {
+        $termo = $conn->real_escape_string($_GET["search_condecoracoes"]);
+        $where = "WHERE titulo LIKE '%$termo%' OR descricao LIKE '%$termo%'";
+    }
+    
+    // Consulta SQL
+    $sql = "SELECT id, titulo, DATE_FORMAT(data, '%d/%m/%Y') as data_formatada, descricao FROM condecoracoes $where ORDER BY data DESC";
+    $result = $conn->query($sql);
+    
+    if ($result && $result->num_rows > 0) {
+        // Loop através dos resultados
+        while ($row = $result->fetch_assoc()) {
+            $output .= '<div class="card">';
+            $output .= '<h3>' . htmlspecialchars($row["titulo"]) . '</h3>';
+            $output .= '<p><strong>Data:</strong> ' . htmlspecialchars($row["data_formatada"]) . '</p>';
+            $output .= '<p>' . htmlspecialchars($row["descricao"]) . '</p>';
+            $output .= '</div>';
+        }
+    } else {
+        $output = '<p>Nenhuma condecoração encontrada.</p>';
+    }
+    
+    return $output;
+}
+
+// Função para obter e exibir monumentos
+function obterMonumentos($conn) {
+    $output = '<div class="gallery">';
+    
+    // Verifica se há termo de pesquisa
+    $where = "";
+    if (isset($_GET["search_monumentos"]) && !empty($_GET["search_monumentos"])) {
+        $termo = $conn->real_escape_string($_GET["search_monumentos"]);
+        $where = "WHERE nome LIKE '%$termo%' OR local LIKE '%$termo%' OR descricao LIKE '%$termo%'";
+    }
+    
+    // Consulta SQL
+    $sql = "SELECT id, nome, local, DATE_FORMAT(data_inauguracao, '%d/%m/%Y') as data_formatada, descricao, imagem FROM monumentos $where ORDER BY data_inauguracao DESC";
+    $result = $conn->query($sql);
+    
+    if ($result && $result->num_rows > 0) {
+        // Loop através dos resultados
+        while ($row = $result->fetch_assoc()) {
+            $output .= '<div class="gallery-item">';
+            
+            // Imagem (usar placeholder se não houver imagem)
+            if (!empty($row["imagem"]) && file_exists($row["imagem"])) {
+                $output .= '<img src="' . htmlspecialchars($row["imagem"]) . '" alt="' . htmlspecialchars($row["nome"]) . '">';
+            } else {
+                $output .= '<img src="/api/placeholder/250/200" alt="' . htmlspecialchars($row["nome"]) . '">';
+            }
+            
+            $output .= '<div class="gallery-item-info">';
+            $output .= '<h3>' . htmlspecialchars($row["nome"]) . '</h3>';
+            $output .= '<p>' . htmlspecialchars($row["descricao"]) . '</p>';
+            $output .= '<p><strong>Local:</strong> ' . htmlspecialchars($row["local"]) . '</p>';
+            $output .= '<p><strong>Inauguração:</strong> ' . htmlspecialchars($row["data_formatada"]) . '</p>';
+            $output .= '</div></div>';
+        }
+    } else {
+        $output = '<p>Nenhum monumento encontrado.</p>';
+    }
+    
+    $output .= '</div>';
+    return $output;
+}
+
+// Função para obter e exibir toponímia
+function obterToponimia($conn) {
+    $output = "";
+    
+    // Verifica se há termo de pesquisa
+    $where = "";
+    if (isset($_GET["search_toponimia"]) && !empty($_GET["search_toponimia"])) {
+        $termo = $conn->real_escape_string($_GET["search_toponimia"]);
+        $where = "WHERE nome LIKE '%$termo%' OR cidade LIKE '%$termo%' OR categoria LIKE '%$termo%'";
+    }
+    
+    // Consulta SQL agrupada por categoria
+    $sql = "SELECT categoria, GROUP_CONCAT(CONCAT(nome, ' - ', cidade) SEPARATOR '||') as itens 
+            FROM toponimia $where 
+            GROUP BY categoria 
+            ORDER BY categoria";
+    
+    $result = $conn->query($sql);
+    
+    if ($result && $result->num_rows > 0) {
+        // Loop através dos resultados agrupados por categoria
+        while ($row = $result->fetch_assoc()) {
+            $categoria = $row["categoria"];
+            $categorias_nome = array(
+                'rua' => 'Ruas',
+                'avenida' => 'Avenidas',
+                'praca' => 'Praças',
+                'escola' => 'Escolas',
+                'instituicao' => 'Instituições',
+                'outro' => 'Outros'
+            );
+            
+            $titulo_categoria = isset($categorias_nome[$categoria]) ? $categorias_nome[$categoria] : ucfirst($categoria);
+            
+            $output .= '<h3>' . $titulo_categoria . '</h3>';
+            $output .= '<ul>';
+            
+            $itens = explode('||', $row["itens"]);
+            foreach ($itens as $item) {
+                $output .= '<li>' . htmlspecialchars($item) . '</li>';
+            }
+            
+            $output .= '</ul>';
+        }
+    } else {
+        $output = '<p>Nenhuma toponímia encontrada.</p>';
+    }
+    
+    return $output;
+}
+
+// Define a aba ativa (obtém da URL ou define padrão)
+$tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +160,182 @@ $conn = require 'ConfigBD.php';
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ac062a;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background-color: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .tab.active {
+            background-color:#ac062a;
+            color: white;
+        }
+        
+        .tab:not(:last-child) {
+            margin-right: 5px;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color:#ac062a;
+            margin: 20px 0 15px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color:#ac062a;
+            margin: 15px 0 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            list-style-position: inside;
+            margin-bottom: 15px;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            margin-top: 0;
+        }
+        
+        
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gallery-item-info {
+            padding: 15px;
+        }
+
+        .add-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            background-color:#ac062a;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .status-message {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 
   <!-- =======================================================
   * Template Name: Mentor
@@ -83,64 +390,68 @@ $conn = require 'ConfigBD.php';
       </nav>
     </div><!-- End Page Title -->
 
-    <section id="about" class="about section">
+    <section>
+    <div class="container">
+        <?php if (!empty($status_message)): ?>
+            <div class="status-message status-<?php echo $status_type; ?>">
+                <?php echo $status_message; ?>
+            </div>
+        <?php endif; ?>
 
-      <div class="container">
+        <div class="tabs">
+            <button class="tab <?php echo $tab_ativa == 'condecoracoes' ? 'active' : ''; ?>" onclick="location.href='?tab=condecoracoes'">Condecorações</button>
+            <button class="tab <?php echo $tab_ativa == 'monumentos' ? 'active' : ''; ?>" onclick="location.href='?tab=monumentos'">Monumentos</button>
+            <button class="tab <?php echo $tab_ativa == 'toponimia' ? 'active' : ''; ?>" onclick="location.href='?tab=toponimia'">Toponímia</button>
+            <button class="tab <?php echo $tab_ativa == 'biblioteca' ? 'active' : ''; ?>" onclick="location.href='?tab=biblioteca'">Biblioteca Cosmos</button>
+        </div>
+        
+        <div id="condecoracoes" class="tab-content <?php echo $tab_ativa == 'condecoracoes' ? 'active' : ''; ?>">
+            <h2>Condecorações</h2>          
+            <?php echo obterCondecoracoes($conn); ?>
+        </div>
+        
+        <div id="monumentos" class="tab-content <?php echo $tab_ativa == 'monumentos' ? 'active' : ''; ?>">
+            <h2>Monumentos</h2>          
+            <?php echo obterMonumentos($conn); ?>
+        </div>
+        
+        <div id="toponimia" class="tab-content <?php echo $tab_ativa == 'toponimia' ? 'active' : ''; ?>">
+            <h2>Toponímia</h2>         
+            <?php echo obterToponimia($conn); ?>
+        </div>
+        <div id="biblioteca" class="tab-content <?php echo $tab_ativa == 'biblioteca' ? 'active' : ''; ?>">
+            <section id="about" class="about section">
 
-        <div class="row gy-4">
+              <div class="container">
 
-          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-            <img src="assets/img/index/about2.jpg" class="img-fluid" alt="">
-          </div>
+              <div class="row gy-4">
 
-          <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-            <h2>O Legado de Bento de Jesus Caraça</h2>
-            <p class="fst-italic">
-             Conhecimento para Todos, Transformação para o Futuro.
-            </p>
-            <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Defensor incansável da educação e da cultura, acreditava no poder do conhecimento para transformar vidas.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Autor de obras fundamentais, foi responsável por democratizar o acesso à ciência e à matemática em Portugal.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Criou a <strong>Biblioteca Cosmos</strong>, que distribuiu quase <strong>800.000 exemplares</strong>, tornando o saber acessível a milhares de leitores.</span></li>
-            </ul>
-          </div>
+              <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+                <img src="assets/img/LogoCosmos.png" class="img-fluid" alt="">
+              </div>
 
+              <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+                <h2>Biblioteca Cosmos</h2>
+                <p class="fst-italic">
+                 Um projeto revolucionário que democratizou o saber em Portugal.
+                </p>
+                <ul>
+                <li><i class="bi bi-check-circle"></i> <span>Fundada em <strong>1941</strong> por Bento de Jesus Caraça, a <strong>Biblioteca Cosmos</strong> foi uma das iniciativas editoriais mais ambiciosas da época.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Com o objetivo de levar cultura e ciência ao povo, publicou mais de <strong>114 títulos</strong> em <strong>145 Volumes</strong> cobrindo temas como matemática, literatura, história, filosofia e ciências naturais.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>A coleção teve uma circulação massiva, distribuindo quase <strong>800.000 exemplares</strong> e tornando-se referência na divulgação do conhecimento.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Mesmo enfrentando censura durante o Estado Novo, a Biblioteca Cosmos marcou gerações e influenciou o pensamento crítico em Portugal.</span></li>
+                </ul>
+                <a href="http://www.bibliotecacosmos.com/" target="_blank" class="read-more"><span>Saber Mais</span><i class="bi bi-arrow-right"></i></a>
+              </div>
         </div>
 
       </div>
 
-    </section><!-- /About Section -->
-
-    <section id="counts" class="section counts light-background">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-
-          <?php
-          // Buscar estatísticas do banco de dados
-          $query_stats = "SELECT  FROM ORDER BY id ASC";
-          $result_stats = mysqli_query($conn, $query_stats);
-          
-          if ($result_stats && mysqli_num_rows($result_stats) > 0) {
-              while ($stat = mysqli_fetch_assoc($result_stats)) {
-                  ?>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                      <p><?php echo $stat['descricao']; ?></p>
-                    </div>
-                  </div>
-                  <?php
-              }
-          }
-          ?>
-
+    </section>
         </div>
-
-      </div>
-
-    </section><!-- /Counts Section -->
+            
+    </div>
+    </section>
 
   </main>
 
@@ -168,3 +479,6 @@ $conn = require 'ConfigBD.php';
 </body>
 
 </html>
+<?php
+$conn->close();
+?>
