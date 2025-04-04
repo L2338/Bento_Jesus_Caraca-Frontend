@@ -47,7 +47,7 @@ function obterMonumentos($conn) {
     }
     
     // Consulta SQL
-    $sql = "SELECT id, nome, local, DATE_FORMAT(data_inauguracao, '%d/%m/%Y') as data_formatada, descricao, imagem FROM monumentos $where ORDER BY data_inauguracao DESC";
+    $sql = "SELECT id, nome, local, descricao, imagem FROM monumentos $where ORDER BY id ";
     $result = $conn->query($sql);
     
     if ($result && $result->num_rows > 0) {
@@ -66,7 +66,6 @@ function obterMonumentos($conn) {
             $output .= '<h3>' . htmlspecialchars($row["nome"]) . '</h3>';
             $output .= '<p>' . htmlspecialchars($row["descricao"]) . '</p>';
             $output .= '<p><strong>Local:</strong> ' . htmlspecialchars($row["local"]) . '</p>';
-            $output .= '<p><strong>Inauguração:</strong> ' . htmlspecialchars($row["data_formatada"]) . '</p>';
             $output .= '</div></div>';
         }
     } else {
@@ -375,7 +374,7 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
           <div class="row d-flex justify-content-center text-center">
             <div class="col-lg-8">
               <h1>Legado</h1>
-              <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+              <p class="mb-0">Aqui mostramos as várias formas como Bento de Jesus Caraça foi e é homenageado e o que é a Biblioteca Cosmos, criada pelo próprio.</p>
             </div>
           </div>
         </div>
