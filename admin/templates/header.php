@@ -16,7 +16,9 @@ $page_title = isset($page_title) ? $page_title . ' - Admin' : 'Painel Administra
     <title><?php echo htmlspecialchars($page_title); ?></title>
     
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?php echo SITE_URL; ?>assets/img/BJC_logo.png" type="image/x-icon">
+    <link rel="icon" href="<?php echo SITE_URL; ?>assets/img/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="<?php echo SITE_URL; ?>assets/img/favicon.png" type="image/x-icon">
+    <meta name="theme-color" content="#ac062a">
     
     <!-- Bootstrap CSS -->
     <link href="<?php echo SITE_URL; ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

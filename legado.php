@@ -6,7 +6,7 @@ $conn = require 'ConfigBD.php';
 
 // Função para obter e exibir condecorações
 function obterCondecoracoes($conn) {
-    $output = "";
+    $output = '<div class="row" data-aos="fade-up">';
     
     // Verifica se há termo de pesquisa
     $where = "";
@@ -22,22 +22,28 @@ function obterCondecoracoes($conn) {
     if ($result && $result->num_rows > 0) {
         // Loop através dos resultados
         while ($row = $result->fetch_assoc()) {
-            $output .= '<div class="card">';
-            $output .= '<h3>' . htmlspecialchars($row["titulo"]) . '</h3>';
-            $output .= '<p><strong>Data:</strong> ' . htmlspecialchars($row["data_formatada"]) . '</p>';
-            $output .= '<p>' . htmlspecialchars($row["descricao"]) . '</p>';
+            $output .= '<div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">';
+            $output .= '<div class="card border-0 h-100 shadow-sm">';
+            $output .= '<div class="card-body">';
+            $output .= '<div class="d-flex align-items-center mb-3">';
+            $output .= '<i class="bi bi-award text-primary me-2" style="font-size: 1.5rem; color: var(--accent-color) !important;"></i>';
+            $output .= '<h4 class="card-title mb-0">' . htmlspecialchars($row["titulo"]) . '</h4>';
             $output .= '</div>';
+            $output .= '<p class="card-date mb-3"><i class="bi bi-calendar-event me-2"></i>' . htmlspecialchars($row["data_formatada"]) . '</p>';
+            $output .= '<p class="card-text">' . htmlspecialchars($row["descricao"]) . '</p>';
+            $output .= '</div></div></div>';
         }
     } else {
-        $output = '<p>Nenhuma condecoração encontrada.</p>';
+        $output = '<div class="col-12 text-center"><p class="no-results">Nenhuma condecoração encontrada.</p></div>';
     }
     
+    $output .= '</div>';
     return $output;
 }
 
 // Função para obter e exibir monumentos
 function obterMonumentos($conn) {
-    $output = '<div class="gallery">';
+    $output = '<div class="row gallery-container" data-aos="fade-up">';
     
     // Verifica se há termo de pesquisa
     $where = "";
@@ -53,23 +59,39 @@ function obterMonumentos($conn) {
     if ($result && $result->num_rows > 0) {
         // Loop através dos resultados
         while ($row = $result->fetch_assoc()) {
-            $output .= '<div class="gallery-item">';
+            $output .= '<div class="col-lg-4 col-md-6 mb-5" data-aos="zoom-in" data-aos-delay="150">';
+            $output .= '<div class="card monumento-card border-0 h-100 shadow-sm overflow-hidden" style="border-radius: 10px;">';
+            
+            // Container de imagem com proporção fixa e estilo avançado
+            $output .= '<div class="monumento-img-container">';
             
             // Imagem (usar placeholder se não houver imagem)
             if (!empty($row["imagem"]) && file_exists($row["imagem"])) {
-                $output .= '<img src="' . htmlspecialchars($row["imagem"]) . '" alt="' . htmlspecialchars($row["nome"]) . '">';
+                $output .= '<img src="' . htmlspecialchars($row["imagem"]) . '" alt="' . htmlspecialchars($row["nome"]) . '" class="monumento-img">';
             } else {
-                $output .= '<img src="/api/placeholder/250/200" alt="' . htmlspecialchars($row["nome"]) . '">';
+                $output .= '<img src="assets/img/monumentos/monumento-placeholder.jpg" alt="' . htmlspecialchars($row["nome"]) . '" class="monumento-img">';
             }
             
-            $output .= '<div class="gallery-item-info">';
-            $output .= '<h3>' . htmlspecialchars($row["nome"]) . '</h3>';
-            $output .= '<p>' . htmlspecialchars($row["descricao"]) . '</p>';
-            $output .= '<p><strong>Local:</strong> ' . htmlspecialchars($row["local"]) . '</p>';
-            $output .= '</div></div>';
+            // Overlay com gradiente e ação de ampliação
+            $output .= '<div class="monumento-overlay">';
+            $output .= '<a href="' . (!empty($row["imagem"]) && file_exists($row["imagem"]) ? htmlspecialchars($row["imagem"]) : 'assets/img/monumentos/monumento-placeholder.jpg') . '" class="btn-ampliar" data-gallery="monumentos-gallery">';
+            $output .= '<i class="bi bi-search"></i>';
+            $output .= '</a>';
+            $output .= '</div>';
+            
+            $output .= '</div>'; // fim monumento-img-container
+            
+            $output .= '<div class="card-body p-4">';
+            $output .= '<h4 class="card-title fw-bold mb-2">' . htmlspecialchars($row["nome"]) . '</h4>';
+            $output .= '<p class="card-text mb-3">' . htmlspecialchars($row["descricao"]) . '</p>';
+            $output .= '<p class="location d-flex align-items-center mt-3">';
+            $output .= '<i class="bi bi-geo-alt-fill me-2" style="color: var(--accent-color);"></i>';
+            $output .= '<span>' . htmlspecialchars($row["local"]) . '</span>';
+            $output .= '</p>';
+            $output .= '</div></div></div>';
         }
     } else {
-        $output = '<p>Nenhum monumento encontrado.</p>';
+        $output = '<div class="col-12 text-center"><p class="no-results">Nenhum monumento encontrado.</p></div>';
     }
     
     $output .= '</div>';
@@ -78,7 +100,7 @@ function obterMonumentos($conn) {
 
 // Função para obter e exibir toponímia
 function obterToponimia($conn) {
-    $output = "";
+    $output = '<div class="row toponimia-container" data-aos="fade-up">';
     
     // Verifica se há termo de pesquisa
     $where = "";
@@ -108,22 +130,38 @@ function obterToponimia($conn) {
                 'outro' => 'Outros'
             );
             
-            $titulo_categoria = isset($categorias_nome[$categoria]) ? $categorias_nome[$categoria] : ucfirst($categoria);
+            $categorias_icone = array(
+                'rua' => 'bi-signpost-2',
+                'avenida' => 'bi-signpost',
+                'praca' => 'bi-tree',
+                'escola' => 'bi-building',
+                'instituicao' => 'bi-bank',
+                'outro' => 'bi-pin-map'
+            );
             
-            $output .= '<h3>' . $titulo_categoria . '</h3>';
-            $output .= '<ul>';
+            $titulo_categoria = isset($categorias_nome[$categoria]) ? $categorias_nome[$categoria] : ucfirst($categoria);
+            $icone = isset($categorias_icone[$categoria]) ? $categorias_icone[$categoria] : 'bi-pin-map';
+            
+            $output .= '<div class="col-lg-4 col-md-6 mb-4">';
+            $output .= '<div class="toponimia-card">';
+            
+            $output .= '<h3 class="toponimia-title"><i class="bi ' . $icone . ' me-2" aria-hidden="true"></i>' . $titulo_categoria . '</h3>';
+            $output .= '<ul class="toponimia-list">';
             
             $itens = explode('||', $row["itens"]);
             foreach ($itens as $item) {
-                $output .= '<li>' . htmlspecialchars($item) . '</li>';
+                $output .= '<li class="toponimia-item">' . htmlspecialchars($item) . '</li>';
             }
             
             $output .= '</ul>';
+            $output .= '</div>'; // fim toponimia-card
+            $output .= '</div>'; // fim col
         }
     } else {
-        $output = '<p>Nenhuma toponímia encontrada.</p>';
+        $output = '<div class="col-12"><p class="text-center">Nenhuma toponímia encontrada.</p></div>';
     }
     
+    $output .= '</div>'; // fim row
     return $output;
 }
 
@@ -131,19 +169,20 @@ function obterToponimia($conn) {
 $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
 ?>
 
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Legado</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Legado | Bento de Jesus Caraça</title>
+  <meta name="description" content="Legado de Bento de Jesus Caraça - condecorações, monumentos, toponímia e Biblioteca Cosmos">
+  <meta name="keywords" content="Bento de Jesus Caraça, legado, condecorações, monumentos, toponímia, Biblioteca Cosmos">
 
   <!-- Favicons -->
-  <link href="assets/img/BJC_logo.png" rel="icon">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <link rel="shortcut icon" href="assets/img/favicon.png">
+  <meta name="theme-color" content="#ac062a">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -161,200 +200,243 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
   <link href="assets/css/main.css" rel="stylesheet">
 
   <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ac062a;
-        }
-        
-        .tab {
-            padding: 10px 20px;
-            background-color: #e0e0e0;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        .tab.active {
-            background-color:#ac062a;
-            color: white;
-        }
-        
-        .tab:not(:last-child) {
-            margin-right: 5px;
-        }
-        
-        .tab-content {
-            display: none;
-            background-color: white;
-            padding: 20px;
-            border-radius: 0 0 5px 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        h1 {
-            margin-bottom: 20px;
-        }
-        
-        h2 {
-            color:#ac062a;
-            margin: 20px 0 15px 0;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        
-        h3 {
-            color:#ac062a;
-            margin: 15px 0 10px 0;
-        }
-        
-        p {
-            margin-bottom: 15px;
-        }
-        
-        ul {
-            list-style-position: inside;
-            margin-bottom: 15px;
-        }
-        
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card h3 {
-            margin-top: 0;
-        }
-        
-        
+  /* Estilos adicionais para a seção de toponímia */
+  :root {
+      --accent-color-rgb: 172, 6, 42; /* Versão RGB da cor de destaque para uso em rgba() */
+  }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
+  /* Estilos para monumentos */
+  .monumento-card {
+      transition: all 0.3s ease;
+      position: relative;
+  }
 
-        .gallery-item {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+  .monumento-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
 
-        .gallery-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+  .monumento-img-container {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+      margin: -1px;
+      border-radius: 10px 10px 0 0;
+  }
 
-        .gallery-item-info {
-            padding: 15px;
-        }
+  .monumento-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.5s ease;
+  }
 
-        .add-form {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
+  .monumento-card:hover .monumento-img {
+      transform: scale(1.1);
+  }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+  .monumento-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 60%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+  .monumento-card:hover .monumento-overlay {
+      opacity: 1;
+  }
 
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
+  .btn-ampliar {
+      background-color: rgba(var(--accent-color-rgb), 0.8);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease 0.1s;
+  }
 
-        .form-group textarea {
-            height: 100px;
-        }
+  .monumento-card:hover .btn-ampliar {
+      transform: translateY(0);
+      opacity: 1;
+  }
 
-        .btn {
-            padding: 10px 15px;
-            background-color:#ac062a;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
+  .btn-ampliar:hover {
+      background-color: var(--accent-color);
+      color: white;
+  }
 
-        .status-message {
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
+  .monumento-card .card-body {
+      z-index: 1;
+      position: relative;
+  }
 
-        .status-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+  .lista-toponimia {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+  }
 
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+  .item-toponimia {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+      transition: all 0.3s ease;
+  }
 
-  <!-- =======================================================
-  * Template Name: Mentor
-  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  .item-toponimia:hover {
+      color: var(--accent-color);
+  }
+
+  .item-toponimia:last-child {
+      border-bottom: none !important;
+  }
+
+  /* Estilos para as abas */
+  .nav-tabs .nav-link {
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+  }
+
+  .nav-tabs .nav-link i {
+      margin-right: 0.5rem;
+  }
+
+  .nav-tabs .nav-link:hover {
+      background-color: rgba(var(--accent-color-rgb), 0.05);
+  }
+
+  /* Botão Ver Mais */
+  .btn-ver-mais {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  }
+
+  .btn-ver-mais:hover {
+      background: var(--accent-color);
+      color: white;
+      box-shadow: 0 3px 6px rgba(var(--accent-color-rgb), 0.2);
+  }
+
+  .btn-ver-mais .bi {
+      transition: transform 0.3s ease;
+  }
+
+  .btn-ver-mais.active .bi {
+      transform: rotate(180deg);
+  }
+
+  .collapse.show {
+      display: block;
+  }
+
+  .itens-ocultos {
+      overflow: hidden;
+      transition: all 0.3s ease;
+  }
+
+  /* Estilos para a seção de toponímia */
+  .toponimia-container {
+      margin-top: 1.5rem;
+  }
+
+  .toponimia-card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      height: 100%;
+      transition: all 0.3s ease;
+  }
+
+  .toponimia-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  .toponimia-title {
+      color: var(--accent-color);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+  }
+
+  .toponimia-title i {
+      color: var(--accent-color);
+      font-size: 1.2rem;
+  }
+
+  .toponimia-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 0;
+  }
+
+  .toponimia-item {
+      position: relative;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+  }
+
+  .toponimia-item:last-child {
+      border-bottom: none;
+  }
+
+  .toponimia-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 15px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+  }
+
+  .toponimia-item:hover {
+      color: var(--accent-color);
+      transform: translateX(5px);
+  }
+
+  @media (max-width: 768px) {
+      .toponimia-card {
+          margin-bottom: 1rem;
+      }
+  }
+  </style>
 </head>
 
-<body class="events-page">
+<body class="legado-page">
 
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
       <a href="index.php" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="assets/img/epbjc-logo.png" alt="Logo Epbjc" > 
-        
-
       </a>
 
       <?php
@@ -389,67 +471,144 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
       </nav>
     </div><!-- End Page Title -->
 
-    <section>
-    <div class="container">
-        <?php if (!empty($status_message)): ?>
-            <div class="status-message status-<?php echo $status_type; ?>">
-                <?php echo $status_message; ?>
+    <section class="legado-section section">
+        <div class="container">
+            <?php if (!empty($status_message)): ?>
+                <div class="alert alert-<?php echo $status_type == 'success' ? 'success' : 'danger'; ?> mb-4">
+                    <?php echo $status_message; ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Tabs navegação com Bootstrap -->
+            <ul class="nav nav-tabs d-flex justify-content-center mb-5" id="legadoTabs" role="tablist" style="border-bottom: none;">
+                <li class="nav-item" role="presentation">
+                    <a href="?tab=condecoracoes" class="nav-link <?php echo $tab_ativa == 'condecoracoes' ? 'active' : ''; ?>" id="condecoracoes-tab" style="color: <?php echo $tab_ativa == 'condecoracoes' ? 'var(--accent-color)' : '#272828'; ?>; border: none;">
+                        <i class="bi bi-award" style="color: var(--accent-color);"></i> Condecorações
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="?tab=monumentos" class="nav-link <?php echo $tab_ativa == 'monumentos' ? 'active' : ''; ?>" id="monumentos-tab" style="color: <?php echo $tab_ativa == 'monumentos' ? 'var(--accent-color)' : '#272828'; ?>; border: none;">
+                        <i class="bi bi-building-fill" style="color: var(--accent-color);"></i> Monumentos
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="?tab=toponimia" class="nav-link <?php echo $tab_ativa == 'toponimia' ? 'active' : ''; ?>" id="toponimia-tab" style="color: <?php echo $tab_ativa == 'toponimia' ? 'var(--accent-color)' : '#272828'; ?>; border: none;">
+                        <i class="bi bi-pin-map-fill" style="color: var(--accent-color);"></i> Toponímia
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="?tab=biblioteca" class="nav-link <?php echo $tab_ativa == 'biblioteca' ? 'active' : ''; ?>" id="biblioteca-tab" style="color: <?php echo $tab_ativa == 'biblioteca' ? 'var(--accent-color)' : '#272828'; ?>; border: none;">
+                        <i class="bi bi-book-half" style="color: var(--accent-color);"></i> Biblioteca Cosmos
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Conteúdo das abas -->
+            <div class="tab-content" id="legadoTabsContent">
+                <!-- Aba de Condecorações -->
+                <div class="tab-pane fade <?php echo $tab_ativa == 'condecoracoes' ? 'show active' : ''; ?>" 
+                     id="condecoracoes-content" 
+                     role="tabpanel" 
+                     aria-labelledby="condecoracoes-tab">
+                    <div class="section-header" data-aos="fade-up">
+                        <h2>Condecorações</h2>
+                        <p>Honrarias e reconhecimentos concedidos a Bento de Jesus Caraça</p>
+                    </div>
+                    <?php echo obterCondecoracoes($conn); ?>
+                </div>
+                
+                <!-- Aba de Monumentos -->
+                <div class="tab-pane fade <?php echo $tab_ativa == 'monumentos' ? 'show active' : ''; ?>" 
+                     id="monumentos-content" 
+                     role="tabpanel" 
+                     aria-labelledby="monumentos-tab">
+                    <div class="section-header" data-aos="fade-up">
+                        <h2>Monumentos</h2>
+                        <p>Tributos em pedra e bronze à memória de Bento de Jesus Caraça</p>
+                    </div>
+                    <?php echo obterMonumentos($conn); ?>
+                </div>
+                
+                <!-- Aba de Toponímia -->
+                <div class="tab-pane fade <?php echo $tab_ativa == 'toponimia' ? 'show active' : ''; ?>" 
+                     id="toponimia-content" 
+                     role="tabpanel" 
+                     aria-labelledby="toponimia-tab">
+                    <div class="section-header" data-aos="fade-up">
+                        <h2>Toponímia</h2>
+                        <p>Lugares que levam o nome de Bento de Jesus Caraça</p>
+                    </div>
+                    <?php echo obterToponimia($conn); ?>
+                </div>
+                
+                <!-- Aba da Biblioteca Cosmos -->
+                <div class="tab-pane fade <?php echo $tab_ativa == 'biblioteca' ? 'show active' : ''; ?>" 
+                     id="biblioteca-content" 
+                     role="tabpanel" 
+                     aria-labelledby="biblioteca-tab">
+                    <div class="section-header" data-aos="fade-up">
+                        <h2>Biblioteca Cosmos</h2>
+                        <p>O legado literário que democratizou o conhecimento em Portugal</p>
+                    </div>
+                    
+                    <div class="row align-items-center biblioteca-cosmos-section">
+                        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                            <img src="assets/img/LogoCosmos.png" class="img-fluid rounded shadow-sm" alt="Logo Biblioteca Cosmos">
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                            <div class="content ps-lg-5">
+                                <h3>Um projeto revolucionário que democratizou o saber em Portugal</h3>
+                                <ul class="cosmos-features">
+                                    <li><i class="bi bi-check-circle-fill me-2" style="color: var(--accent-color);"></i> <span>Fundada em <strong>1941</strong> por Bento de Jesus Caraça, a <strong>Biblioteca Cosmos</strong> foi uma das iniciativas editoriais mais ambiciosas da época.</span></li>
+                                    <li><i class="bi bi-check-circle-fill me-2" style="color: var(--accent-color);"></i> <span>Com o objetivo de levar cultura e ciência ao povo, publicou mais de <strong>114 títulos</strong> em <strong>145 Volumes</strong> cobrindo temas como matemática, literatura, história, filosofia e ciências naturais.</span></li>
+                                    <li><i class="bi bi-check-circle-fill me-2" style="color: var(--accent-color);"></i> <span>A coleção teve uma circulação massiva, distribuindo quase <strong>800.000 exemplares</strong> e tornando-se referência na divulgação do conhecimento.</span></li>
+                                    <li><i class="bi bi-check-circle-fill me-2" style="color: var(--accent-color);"></i> <span>Mesmo enfrentando censura durante o Estado Novo, a Biblioteca Cosmos marcou gerações e influenciou o pensamento crítico em Portugal.</span></li>
+                                </ul>
+                                <div class="mt-4">
+                                    <a href="http://www.bibliotecacosmos.com/" target="_blank" class="btn-saber-mais">
+                                        Saber Mais
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Estatísticas da Biblioteca Cosmos -->
+                    <div class="cosmos-stats mt-5" data-aos="fade-up">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="stats-item text-center w-100">
+                                        <span data-purecounter-start="0" data-purecounter-end="114" data-purecounter-duration="1" class="purecounter d-block"></span>
+                                        <p>Títulos Publicados</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="stats-item text-center w-100">
+                                        <span data-purecounter-start="0" data-purecounter-end="793500" data-purecounter-duration="1" class="purecounter d-block"></span>
+                                        <p>Exemplares Distribuídos</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="stats-item text-center w-100">
+                                        <span data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter d-block"></span>
+                                        <p>Séries Temáticas</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="stats-item text-center w-100">
+                                        <span data-purecounter-start="0" data-purecounter-end="7" data-purecounter-duration="1" class="purecounter d-block"></span>
+                                        <p>Anos de Atividade</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        <?php endif; ?>
-
-        <div class="tabs">
-            <button class="tab <?php echo $tab_ativa == 'condecoracoes' ? 'active' : ''; ?>" onclick="location.href='?tab=condecoracoes'">Condecorações</button>
-            <button class="tab <?php echo $tab_ativa == 'monumentos' ? 'active' : ''; ?>" onclick="location.href='?tab=monumentos'">Monumentos</button>
-            <button class="tab <?php echo $tab_ativa == 'toponimia' ? 'active' : ''; ?>" onclick="location.href='?tab=toponimia'">Toponímia</button>
-            <button class="tab <?php echo $tab_ativa == 'biblioteca' ? 'active' : ''; ?>" onclick="location.href='?tab=biblioteca'">Biblioteca Cosmos</button>
         </div>
-        
-        <div id="condecoracoes" class="tab-content <?php echo $tab_ativa == 'condecoracoes' ? 'active' : ''; ?>">
-            <h2>Condecorações</h2>          
-            <?php echo obterCondecoracoes($conn); ?>
-        </div>
-        
-        <div id="monumentos" class="tab-content <?php echo $tab_ativa == 'monumentos' ? 'active' : ''; ?>">
-            <h2>Monumentos</h2>          
-            <?php echo obterMonumentos($conn); ?>
-        </div>
-        
-        <div id="toponimia" class="tab-content <?php echo $tab_ativa == 'toponimia' ? 'active' : ''; ?>">
-            <h2>Toponímia</h2>         
-            <?php echo obterToponimia($conn); ?>
-        </div>
-        <div id="biblioteca" class="tab-content <?php echo $tab_ativa == 'biblioteca' ? 'active' : ''; ?>">
-            <section id="about" class="about section">
-
-              <div class="container">
-
-              <div class="row gy-4">
-
-              <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-                <img src="assets/img/LogoCosmos.png" class="img-fluid" alt="">
-              </div>
-
-              <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-                <h2>Biblioteca Cosmos</h2>
-                <p class="fst-italic">
-                 Um projeto revolucionário que democratizou o saber em Portugal.
-                </p>
-                <ul>
-                <li><i class="bi bi-check-circle"></i> <span>Fundada em <strong>1941</strong> por Bento de Jesus Caraça, a <strong>Biblioteca Cosmos</strong> foi uma das iniciativas editoriais mais ambiciosas da época.</span></li>
-                <li><i class="bi bi-check-circle"></i> <span>Com o objetivo de levar cultura e ciência ao povo, publicou mais de <strong>114 títulos</strong> em <strong>145 Volumes</strong> cobrindo temas como matemática, literatura, história, filosofia e ciências naturais.</span></li>
-                <li><i class="bi bi-check-circle"></i> <span>A coleção teve uma circulação massiva, distribuindo quase <strong>800.000 exemplares</strong> e tornando-se referência na divulgação do conhecimento.</span></li>
-                <li><i class="bi bi-check-circle"></i> <span>Mesmo enfrentando censura durante o Estado Novo, a Biblioteca Cosmos marcou gerações e influenciou o pensamento crítico em Portugal.</span></li>
-                </ul>
-                <a href="http://www.bibliotecacosmos.com/" target="_blank" class="read-more"><span>Saber Mais</span><i class="bi bi-arrow-right"></i></a>
-              </div>
-        </div>
-
-      </div>
-
-    </section>
-        </div>
-            
-    </div>
     </section>
 
   </main>
@@ -474,6 +633,78 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    // Ativar animações AOS
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+      });
+      
+      // Ativar contador de estatísticas
+      new PureCounter();
+      
+      // Adicionar animação suave à troca de abas
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          const tabId = this.getAttribute('href').split('=')[1];
+          localStorage.setItem('activeTab', tabId);
+        });
+        
+        // Adicionar efeito hover
+        link.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('active')) {
+            this.style.color = 'var(--accent-color)';
+          }
+        });
+        
+        link.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('active')) {
+            this.style.color = '#272828';
+          }
+        });
+      });
+      
+      // Verificar se há uma aba ativa no localStorage
+      const activeTab = localStorage.getItem('activeTab');
+      if (activeTab) {
+        document.querySelector(`[href="?tab=${activeTab}"]`).classList.add('active');
+      }
+      
+      // Aplicar animação à aba ativa atual
+      setTimeout(function() {
+        const activePane = document.querySelector('.tab-pane.active');
+        if (activePane) {
+          activePane.classList.add('animate-fade-in');
+        }
+      }, 100);
+      
+      // Inicializar GLightbox para as imagens na galeria de monumentos
+      GLightbox({
+        selector: '.btn-ampliar',
+        touchNavigation: true,
+        loop: true,
+        autoplayVideos: true
+      });
+    });
+    
+    // Função para alterar o texto do botão Ver Mais/Ver Menos
+    function toggleVerMais(button, totalItens, itensVisiveis) {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      if (isExpanded) {
+        button.innerHTML = 'Ver menos <i class="bi bi-chevron-up ms-1"></i>';
+        button.classList.add('active');
+      } else {
+        button.innerHTML = 'Ver mais <i class="bi bi-chevron-down ms-1"></i>';
+        button.classList.remove('active');
+      }
+    }
+  </script>
 
 </body>
 

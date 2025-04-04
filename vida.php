@@ -41,7 +41,9 @@ if ($conn) {
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="assets/img/BJC_logo.png" rel="icon">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <link rel="shortcut icon" href="assets/img/favicon.png">
+  <meta name="theme-color" content="#ac062a">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">

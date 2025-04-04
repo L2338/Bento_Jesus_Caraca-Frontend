@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO newsletter (email) VALUES ('$email')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Subscrição realizada com sucesso!";
+        echo "OK";
     } else {
         echo "Erro ao subscrever: " . $conn->error;
     }
