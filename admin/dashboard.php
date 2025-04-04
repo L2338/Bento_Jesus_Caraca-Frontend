@@ -388,9 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <div class="d-grid gap-2">
-                    <a href="../index.php" target="_blank" class="btn btn-outline-primary">
-                        <i class="bi bi-box-arrow-up-right me-2"></i> Visualizar o site publicado
-                    </a>
+                    <!-- Removido o botão "Visualizar o site publicado" -->
                 </div>
             </div>
         </div>
@@ -485,9 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </div>
-                    <a href="docs/" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-book me-1"></i> Ver Documentação Completa
-                    </a>
                 </div>
             </div>
         </div>
@@ -539,14 +534,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <hr>
                 
                 <div class="row g-2 mt-1">
-                    <div class="col-6">
+                    <div class="col-12">
                         <a href="settings.php" class="btn btn-light btn-block w-100 py-2 border">
                             <i class="bi bi-gear me-2"></i> Configurações
-                        </a>
-                    </div>
-                    <div class="col-6">
-                        <a href="../index.php" target="_blank" class="btn btn-secondary btn-block w-100 py-2">
-                            <i class="bi bi-eye me-2"></i> Ver Site
                         </a>
                     </div>
                 </div>
