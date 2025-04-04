@@ -621,6 +621,16 @@ echo $mensagem;
     </div>
 </div>
 
+<!-- Overlay de carregamento -->
+<div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none" style="background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+    <div class="position-absolute top-50 start-50 translate-middle text-white text-center">
+        <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+        <p class="mt-2">Carregando dados...</p>
+    </div>
+</div>
+
 <script>
 // Aguardar o carregamento completo do DOM e das bibliotecas
 window.addEventListener('load', function() {
@@ -810,39 +820,57 @@ window.addEventListener('load', function() {
     // Função para carregar dados da obra
     function carregarDadosObra(id) {
         try {
-            fetch(`get_obra.php?id=${id}`)
+            // Mostrar overlay de carregamento
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('d-none');
+            }
+
+            fetch('get_obra.php?id=' + id)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Erro ao buscar dados da obra');
+                        throw new Error('Erro ao carregar dados da obra');
                     }
                     return response.json();
                 })
-                .then(data => {
-                    // Verificar se a resposta contém uma obra válida
-                    if (!data || data.error) {
-                        console.error('Erro:', data?.error || 'Dados da obra inválidos');
-                        alert('Não foi possível carregar os dados da obra.');
-                        return;
+                .then(obra => {
+                    // Esconder overlay ao concluir o carregamento
+                    if (loadingOverlay) {
+                        loadingOverlay.classList.add('d-none');
+                    }
+
+                    if (obra.error) {
+                        throw new Error(obra.error);
+                    }
+
+                    // Preencher formulário com dados
+                    const tituloInput = document.getElementById('obra_titulo');
+                    const descricaoInput = document.getElementById('obra_descricao');
+                    const autorInput = document.getElementById('obra_autor');
+                    const anoInput = document.getElementById('obra_ano');
+                    const temaSelect = document.getElementById('obra_id_tema');
+                    const obraIdField = document.getElementById('obra_id');
+
+                    if (obraIdField) {
+                        obraIdField.value = obra.id;
                     }
                     
-                    // Salvar em uma variável local para uso no escopo
-                    const obra = data;
+                    if (tituloInput) {
+                        tituloInput.value = obra.titulo || '';
+                    }
                     
-                    // Preencher o formulário com os dados
-                    const obraIdField = document.getElementById('obra_id');
-                    const obraTituloField = document.getElementById('obra_titulo');
-                    const obraAutorField = document.getElementById('obra_autor');
-                    const obraDescricaoField = document.getElementById('obra_descricao');
-                    const obraAnoField = document.getElementById('obra_ano');
+                    if (descricaoInput) {
+                        descricaoInput.value = obra.descricao || '';
+                    }
                     
-                    if (obraIdField) obraIdField.value = obra.id;
-                    if (obraTituloField) obraTituloField.value = obra.titulo;
-                    if (obraAutorField) obraAutorField.value = obra.autor || '';
-                    if (obraDescricaoField) obraDescricaoField.value = obra.descricao || '';
-                    if (obraAnoField) obraAnoField.value = obra.ano || '';
+                    if (autorInput) {
+                        autorInput.value = obra.autor || '';
+                    }
                     
-                    // Selecionar o tema
-                    const temaSelect = document.getElementById('obra_id_tema');
+                    if (anoInput) {
+                        anoInput.value = obra.ano || '';
+                    }
+                    
                     if (temaSelect) {
                         if (obra.id_tema) {
                             temaSelect.value = obra.id_tema;
@@ -885,10 +913,19 @@ window.addEventListener('load', function() {
                     }
                 })
                 .catch(error => {
+                    // Esconder overlay em caso de erro
+                    if (loadingOverlay) {
+                        loadingOverlay.classList.add('d-none');
+                    }
                     console.error('Erro:', error);
                     alert('Não foi possível carregar os dados da obra. Por favor, tente novamente.');
                 });
         } catch (error) {
+            // Esconder overlay em caso de erro
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('d-none');
+            }
             console.error('Erro ao carregar dados da obra:', error);
             alert('Falha ao tentar carregar os dados da obra.');
         }

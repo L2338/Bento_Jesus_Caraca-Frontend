@@ -41,7 +41,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="nav-item">
         <a class="nav-link <?php echo strpos($current_page, 'vida') !== false || strpos($current_page, 'timeline') !== false ? 'active' : ''; ?>" href="<?php echo ADMIN_URL; ?>vida/">
             <i class="bi bi-person-lines-fill"></i>
-            <span>Vida</span>
+            <span>Vida & Timeline</span>
         </a>
     </div>
     

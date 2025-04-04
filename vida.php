@@ -193,7 +193,7 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
           <!-- <?php echo $block['titulo']; ?> -->
           <div class="timeline-item <?php echo $position; ?>">
             <div class="timeline-image">
-              <img class="rounded-circle img-fluid" src="<?php echo $block['imagem']; ?>" alt="<?php echo $block['titulo']; ?>">
+              <img class="rounded-circle img-fluid" src="assets/images/timeline/<?php echo $block['imagem']; ?>?v=<?php echo time(); ?>" alt="<?php echo $block['titulo']; ?>">
             </div>
             <span class="timeline-date"><?php echo $block['data_periodo']; ?></span>
             <div class="timeline-content">

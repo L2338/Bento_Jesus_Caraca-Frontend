@@ -3490,8 +3490,8 @@ section,
 .timeline-image {
   position: relative;
   z-index: 100;
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   margin: 0 auto;
   border: 7px solid #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -3607,8 +3607,8 @@ section,
     position: absolute;
     left: -40px;
     margin: 0;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     order: 1;
   }
   
@@ -3631,8 +3631,8 @@ section,
 @media (max-width: 576px) {
   .timeline-item.left-item .timeline-image,
   .timeline-item.right-item .timeline-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     left: -25px;
   }
   
@@ -3925,8 +3925,8 @@ section,
 @media (max-width: 576px) {
   .timeline-item.left-item .timeline-image,
   .timeline-item.right-item .timeline-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     left: -25px;
   }
   
