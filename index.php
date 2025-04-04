@@ -1,6 +1,28 @@
 <?php
 // Incluir conexão com banco de dados
 $conn = require 'ConfigBD.php';
+
+// Buscar informações de contato
+$query_contato = "SELECT tipo, valor, chave FROM informacoes_contato";
+$result_contato = mysqli_query($conn, $query_contato);
+$contatos = array();
+
+if ($result_contato && mysqli_num_rows($result_contato) > 0) {
+    while ($row = mysqli_fetch_assoc($result_contato)) {
+        $contatos[$row['chave']] = $row['valor'];
+    }
+}
+
+// Buscar redes sociais
+$query_social = "SELECT nome, url, icone FROM redes_sociais WHERE ativo = 1 ORDER BY ordem ASC";
+$result_social = mysqli_query($conn, $query_social);
+$redes_sociais = array();
+
+if ($result_social && mysqli_num_rows($result_social) > 0) {
+    while ($row = mysqli_fetch_assoc($result_social)) {
+        $redes_sociais[] = $row;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -304,116 +326,76 @@ $conn = require 'ConfigBD.php';
 
       <div class="row">
 
-      <!-- Curso 1 - Gestão e Programação de Sistemas Informáticos -->
-      <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+      <?php
+      // Buscar cursos do banco de dados
+      $query_cursos = "SELECT * FROM cursos WHERE ativo = 1 ORDER BY ordem ASC";
+      $result_cursos = mysqli_query($conn, $query_cursos);
+      
+      if ($result_cursos && mysqli_num_rows($result_cursos) > 0) {
+          $delay = 100;
+          while ($curso = mysqli_fetch_assoc($result_cursos)) {
+              // Calcular número de estrelas cheias baseado na avaliação
+              $avaliacao = floatval($curso['avaliacao']);
+              $estrelas_cheias = floor($avaliacao);
+              $estrela_meia = ($avaliacao - $estrelas_cheias) >= 0.5 ? 1 : 0;
+              $estrelas_vazias = 5 - $estrelas_cheias - $estrela_meia;
+      ?>
+      <!-- Curso Item -->
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="<?php echo $delay; ?>">
         <div class="course-item">
-          <img src="assets/img/index/curso1.jpg" class="img-fluid" alt="...">
+          <img src="<?php echo htmlspecialchars($curso['imagem']); ?>" class="img-fluid" alt="Imagem do curso <?php echo htmlspecialchars($curso['titulo']); ?>">
           <div class="course-content">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <p class="category">Gestão e Programação de Sistemas Informáticos</p>
+              <p class="category"><?php echo htmlspecialchars($curso['categoria']); ?></p>
             </div>
 
-            <h3>Desenvolve, otimiza e protege sistemas digitais</h3>
+            <h3><?php echo htmlspecialchars($curso['titulo']); ?></h3>
             <p class="description">
-              Torna-te especialista na criação e gestão de sistemas informáticos. Aprende sobre linguagens de programação, bases de dados e segurança cibernética, garantindo uma carreira sólida na tecnologia.
+              <?php echo htmlspecialchars($curso['descricao']); ?>
             </p>
 
             <!-- Estrelas de Avaliação e Tempo -->
             <div class="d-flex align-items-center justify-content-between">
               <div class="rating">
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-half text-warning"></i> (4.7)
+                <?php 
+                // Estrelas cheias
+                for ($i = 0; $i < $estrelas_cheias; $i++) {
+                    echo '<i class="bi bi-star-fill text-warning"></i>';
+                }
+                // Estrela meia
+                if ($estrela_meia) {
+                    echo '<i class="bi bi-star-half text-warning"></i>';
+                }
+                // Estrelas vazias
+                for ($i = 0; $i < $estrelas_vazias; $i++) {
+                    echo '<i class="bi bi-star text-warning"></i>';
+                }
+                ?>
+                (<?php echo number_format($avaliacao, 1); ?>)
               </div>
               <div class="duration">
-                <i class="bi bi-clock"></i> 3 anos
+                <i class="bi bi-clock"></i> <?php echo htmlspecialchars($curso['duracao']); ?>
               </div>
             </div>
 
             <div class="trainer d-flex justify-content-between align-items-center mt-3">
               <div class="trainer-profile d-flex align-items-center">
-                <a href="" class="trainer-link">Saber mais</a>
+                <a href="<?php echo htmlspecialchars($curso['link']); ?>" class="btn-sm btn-primary mt-2" target="_blank">Saber mais</a>
               </div>
             </div>
           </div>
         </div>
       </div> <!-- End Course Item -->
-
-      <!-- Curso 2 - Gestão de Comunicação, Marketing e Publicidade -->
-      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-        <div class="course-item">
-          <img src="assets/img/index/curso2.jpg" class="img-fluid" alt="...">
-          <div class="course-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <p class="category">Gestão de Comunicação, Marketing e Publicidade</p>
-            </div>
-
-            <h3>Domina estratégias de comunicação e marketing digital</h3>
-            <p class="description">
-              Aprende a criar campanhas eficazes, gerenciar redes sociais e otimizar a presença digital de marcas. Inclui módulos de SEO, branding e análise de mercado.
-            </p>
-
-            <!-- Estrelas de Avaliação e Tempo -->
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="rating">
-              <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-half text-warning"></i>(4.5)
-              </div>
-              <div class="duration">
-                <i class="bi bi-clock"></i> 3 anos
-              </div>
-            </div>
-
-            <div class="trainer d-flex justify-content-between align-items-center mt-3">
-              <div class="trainer-profile d-flex align-items-center">
-                <a href="" class="trainer-link">Saber Mais</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- End Course Item -->
-
-      <!-- Curso 3 - Técnica de Gestão de Equipamento Informático -->
-      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
-        <div class="course-item">
-          <img src="assets/img/index/curso3.png" class="img-fluid" alt="...">
-          <div class="course-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <p class="category">Técnica de Gestão de Equipamentos Informáticos</p>
-            </div>
-
-            <h3>Mantém e otimiza infraestruturas tecnológicas</h3>
-            <p class="description">
-              Aprende a instalar, reparar e configurar equipamentos informáticos e redes. O curso inclui formação em diagnóstico de falhas, segurança digital e suporte técnico, essencial para qualquer empresa.
-            </p>
-
-            <!-- Estrelas de Avaliação e Tempo -->
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="rating">
-              <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-half text-warning"></i> (4.5)
-              </div>
-              <div class="duration">
-                <i class="bi bi-clock"></i> 3 anos
-              </div>
-            </div>
-
-            <div class="trainer d-flex justify-content-between align-items-center mt-3">
-              <div class="trainer-profile d-flex align-items-center">
-                <a href="#" class="trainer-link">Saber Mais</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- End Course Item -->
+      <?php
+              $delay += 100;
+          }
+      } else {
+      ?>
+      <!-- Se não houver cursos cadastrados -->
+      <div class="col-12 text-center">
+        <p>Não há cursos disponíveis para exibição no momento. Por favor, volte mais tarde.</p>
+      </div>
+      <?php } ?>
     </div>
   </section><!-- /Courses Section -->
 

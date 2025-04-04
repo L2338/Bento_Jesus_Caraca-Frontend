@@ -2,26 +2,33 @@
 // Incluir conexão com banco de dados
 $conn = require 'ConfigBD.php';
 
-// Consultar os blocos da timeline que estão ativos
-$query = "SELECT * FROM timeline_blocos WHERE ativo = 1 ORDER BY ordem ASC";
-$result = mysqli_query($conn, $query);
+// Inicializar arrays vazios para garantir que existam mesmo se o banco falhar
 $timeline_blocks = [];
+$intro_text = "";
 
-// Verificar se há resultados
-if (mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $timeline_blocks[] = $row;
+// Verificar se a conexão foi bem-sucedida
+if ($conn) {
+    // Consultar os blocos da timeline que estão ativos
+    $query = "SELECT * FROM timeline_blocos WHERE ativo = 1 ORDER BY ordem ASC";
+    $result = mysqli_query($conn, $query);
+    
+    // Verificar se há resultados
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $timeline_blocks[] = $row;
+        }
+    }
+    
+    // Buscar o texto introdutório
+    $query_intro = "SELECT conteudo FROM textos_secoes WHERE id = 1";
+    $result_intro = mysqli_query($conn, $query_intro);
+    if ($result_intro && mysqli_num_rows($result_intro) > 0) {
+        $intro_row = mysqli_fetch_assoc($result_intro);
+        $intro_text = $intro_row['conteudo'];
     }
 }
-
-// Buscar o texto introdutório
-$query_intro = "SELECT conteudo FROM textos_secoes WHERE id = 1";
-$result_intro = mysqli_query($conn, $query_intro);
-$intro_text = "";
-if ($result_intro && mysqli_num_rows($result_intro) > 0) {
-    $intro_row = mysqli_fetch_assoc($result_intro);
-    $intro_text = $intro_row['conteudo'];
-}
+// Não precisamos de um else aqui - se a conexão falhar, 
+// os arrays vazios já estão inicializados e a página mostrará vazios
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -144,20 +151,78 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
 
         <?php
           // Buscar estatísticas do banco de dados
-          $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
-          $result_stats = mysqli_query($conn, $query_stats);
-          
-          if ($result_stats && mysqli_num_rows($result_stats) > 0) {
-              while ($stat = mysqli_fetch_assoc($result_stats)) {
+          if ($conn) {
+              $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
+              $result_stats = mysqli_query($conn, $query_stats);
+              
+              if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+                  while ($stat = mysqli_fetch_assoc($result_stats)) {
+                      ?>
+                      <div class="col-lg-3 col-md-6">
+                        <div class="stats-item text-center w-100 h-100">
+                          <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                          <p><?php echo $stat['descricao']; ?></p>
+                        </div>
+                      </div>
+                      <?php
+                  }
+              } else {
+                  // Exibir estatísticas estáticas se não houver dados no banco
                   ?>
                   <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                      <p><?php echo $stat['descricao']; ?></p>
+                      <span data-purecounter-start="0" data-purecounter-end="800000" data-purecounter-duration="1" class="purecounter"></span>
+                      <p>Exemplares Distribuídos</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="47" data-purecounter-duration="1" class="purecounter"></span>
+                      <p>Anos de Vida</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="115" data-purecounter-duration="1" class="purecounter"></span>
+                      <p>Volumes Publicados</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                      <span data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter"></span>
+                      <p>Série de Assuntos</p>
                     </div>
                   </div>
                   <?php
               }
+          } else {
+              // Exibir estatísticas estáticas se a conexão falhar
+              ?>
+              <div class="col-lg-3 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="800000" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Exemplares Distribuídos</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="47" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Anos de Vida</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="115" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Volumes Publicados</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Série de Assuntos</p>
+                </div>
+              </div>
+              <?php
           }
           ?>
 
@@ -179,7 +244,11 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
       <div class="container">
         <h2 class="section-title" data-aos="fade-up">Vida e Obra</h2>
         <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+          <?php if (empty($intro_text)): ?>
+          Bento de Jesus Caraça (1901-1948) foi um matemático, professor, pensador e ativista português cuja vida e obra deixaram um legado duradouro na educação, matemática e na luta pela democratização da cultura em Portugal. Nascido em uma família humilde, alcançou os mais altos patamares acadêmicos por seu brilhantismo intelectual, tornando-se Professor Catedrático aos 28 anos.
+          <?php else: ?>
           <?php echo $intro_text; ?>
+          <?php endif; ?>
         </p>
         <div class="timeline-container" data-aos="fade-up" data-aos-delay="100">
           <?php 
@@ -193,7 +262,11 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
           <!-- <?php echo $block['titulo']; ?> -->
           <div class="timeline-item <?php echo $position; ?>">
             <div class="timeline-image">
+              <?php if (!empty($block['imagem'])): ?>
               <img class="rounded-circle img-fluid" src="assets/images/timeline/<?php echo $block['imagem']; ?>?v=<?php echo time(); ?>" alt="<?php echo $block['titulo']; ?>">
+              <?php else: ?>
+              <img class="rounded-circle img-fluid" src="assets/img/index/about2.jpg" alt="<?php echo $block['titulo']; ?>">
+              <?php endif; ?>
             </div>
             <span class="timeline-date"><?php echo $block['data_periodo']; ?></span>
             <div class="timeline-content">
@@ -218,11 +291,42 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
           <?php 
               }
           } else {
+            // Se não houver blocos de timeline, exibe alguns estáticos para não deixar a página vazia
+            $fallback_blocks = [
+              [
+                'titulo' => 'O nascimento e os primeiros anos',
+                'data_periodo' => '1901',
+                'conteudo' => 'Nasce em Vila Viçosa, filho de trabalhadores rurais, Domingas da Conceição Espadinha e João António Caraça.'
+              ],
+              [
+                'titulo' => 'Formação académica',
+                'data_periodo' => '1919-1923',
+                'conteudo' => 'Licencia-se em Matemática no Instituto Superior de Comércio de Lisboa, hoje ISEG.'
+              ],
+              [
+                'titulo' => 'Carreira académica',
+                'data_periodo' => '1929',
+                'conteudo' => 'Torna-se Professor Catedrático aos 28 anos de idade.'
+              ]
+            ];
+            
+            $count = 0;
+            foreach ($fallback_blocks as $block) {
+              $count++;
+              $position = ($count % 2 == 0) ? 'left-item' : 'right-item';
           ?>
-          <div class="alert alert-info">
-            Nenhum bloco de timeline encontrado.
+          <div class="timeline-item <?php echo $position; ?>">
+            <div class="timeline-image">
+              <img class="rounded-circle img-fluid" src="assets/img/index/about2.jpg" alt="<?php echo $block['titulo']; ?>">
+            </div>
+            <span class="timeline-date"><?php echo $block['data_periodo']; ?></span>
+            <div class="timeline-content">
+              <h3><?php echo $block['titulo']; ?></h3>
+              <p><?php echo $block['conteudo']; ?></p>
+            </div>
           </div>
           <?php 
+            }
           }
           ?>
         </div>
@@ -250,7 +354,7 @@ if ($result_intro && mysqli_num_rows($result_intro) > 0) {
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
-  <!-- Main File -->
+  <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
 </body>
