@@ -757,8 +757,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             
             <div class="alert alert-info" role="alert">
-                <i class="bi bi-info-circle-fill me-2"></i> Para ícones, use os nomes do <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a>.
-                <br>Exemplos: <code>bi bi-facebook</code>, <code>bi bi-instagram</code>, <code>bi bi-linkedin</code>, <code>bi bi-youtube</code>
+                <i class="bi bi-lightbulb me-2"></i> Dica: Para identificar os ícones, use o padrão "bi bi-" seguido do nome do ícone desejado.
+                <br>Por exemplo: <code>bi bi-facebook</code>, <code>bi bi-instagram</code>, <code>bi bi-linkedin</code> ou <code>bi bi-youtube</code>.
             </div>
             
             <button type="submit" name="update_social" class="btn btn-primary">

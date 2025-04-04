@@ -4,18 +4,23 @@
  * Gerencia as escolas e instituições que fazem parte do legado de Bento de Jesus Caraça
  */
 
-// Incluir arquivos de configuração e funções
-require_once '../core/config.php';
-require_once '../core/functions.php';
+// Define o título da página
+$page_title = 'Legado';
+
+// Incluir configurações e funções
+require_once __DIR__ . '/../config/app-config.php';
+require_once __DIR__ . '/../core/functions.php';
 
 // Verificar se o usuário está logado
 require_login();
 
-// Definir título da página
-$page_title = "Gestão de Legado";
-$breadcrumbs = generate_breadcrumbs([
-    ['Admin', 'dashboard.php'],
-    ['Legado', '']
+// Incluir conexão com banco de dados
+$conn = require '../../ConfigBD.php';
+
+// Definir breadcrumbs
+echo generate_breadcrumbs([
+    'Dashboard' => ADMIN_URL . 'dashboard.php',
+    'Legado' => '#'
 ]);
 
 // Incluir o cabeçalho
