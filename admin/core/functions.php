@@ -182,4 +182,24 @@ function logout_user() {
     // Opcional: destruir a sessão completamente
     // session_destroy();
 }
+
+/**
+ * Centraliza conteúdo HTML de forma simplificada e eficiente
+ * 
+ * @param string $content O conteúdo HTML a ser centralizado
+ * @return string O conteúdo HTML com alinhamento centralizado
+ */
+function centralizar_conteudo($content) {
+    if (empty($content)) {
+        return $content;
+    }
+    
+    // Verificar se o conteúdo já tem um wrapper
+    if (strpos($content, '<div class="text-center"') === false) {
+        // Envolver todo o conteúdo em um div centralizado
+        return '<div class="text-center" style="text-align: center;">' . $content . '</div>';
+    }
+    
+    return $content;
+}
 ?> 

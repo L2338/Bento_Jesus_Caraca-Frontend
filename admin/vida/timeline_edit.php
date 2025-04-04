@@ -60,6 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "O conteúdo expandido é obrigatório.";
     }
     
+    // Centralizar conteúdos antes de salvar
+    $conteudo = centralizar_conteudo($conteudo);
+    $conteudo_expandido = centralizar_conteudo($conteudo_expandido);
+    
     // Processar upload de imagem se houver
     $imagem_nome = $block['imagem'] ?? ''; // Manter a imagem atual se não for atualizada
     $debug_image['original'] = $imagem_nome; // Debug - imagem original
@@ -531,24 +535,52 @@ include "../../admin/templates/header.php";
     </div>
 </div>
 
-<!-- Inclusão do CKEditor para melhorar a edição de conteúdo -->
+<!-- Scripts específicos para esta página -->
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/pt.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar editores de texto rico
-    ClassicEditor
-        .create(document.querySelector('#conteudo'))
-        .catch(error => {
-            console.error('Erro ao inicializar editor de conteúdo:', error);
-        });
+    // Configuração simplificada para ambos os editores
+    const editorConfig = {
+        language: 'pt',
+        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'alignment', '|', 'undo', 'redo'],
+        alignment: {
+            options: ['left', 'center', 'right', 'justify']
+        }
+    };
     
-    ClassicEditor
-        .create(document.querySelector('#conteudo_expandido'))
-        .catch(error => {
-            console.error('Erro ao inicializar editor de conteúdo expandido:', error);
-        });
+    // Função reutilizável para inicializar editores com centralização padrão
+    function initEditor(selector) {
+        ClassicEditor
+            .create(document.querySelector(selector), editorConfig)
+            .then(editor => {
+                // Centralizar todo o conteúdo ao iniciar o editor
+                editor.execute('alignment', { value: 'center' });
+                
+                // Adicionar handler para sempre centralizar texto novo
+                editor.model.document.on('change:data', () => {
+                    const selection = editor.model.document.selection;
+                    
+                    // Apenas aplicar se não tiver uma seleção específica (novo bloco)
+                    if (selection.getFirstPosition().parent.isEmpty) {
+                        editor.execute('alignment', { value: 'center' });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error(`Erro ao inicializar editor ${selector}:`, error);
+            });
+    }
     
+    // Inicializar os editores
+    initEditor('#conteudo');
+    initEditor('#conteudo_expandido');
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
     // Prévia da imagem simplificada
     const imageInput = document.getElementById('imagem');
     const imagePreview = document.getElementById('imagePreview');

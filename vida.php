@@ -275,7 +275,9 @@ if ($conn) {
               <h3><?php echo $block['titulo']; ?></h3>
               <p><?php echo $block['conteudo']; ?></p>
               <?php if (!empty($block['conteudo_expandido'])) { ?>
-              <button class="btn-more" data-bs-toggle="collapse" data-bs-target="#<?php echo $blockId; ?>">Saiba mais</button>
+              <div class="text-center">
+                <button class="btn-more" data-bs-toggle="collapse" data-bs-target="#<?php echo $blockId; ?>">Saiba mais</button>
+              </div>
               <div id="<?php echo $blockId; ?>" class="collapse timeline-more">
                 <?php 
                 // Dividir o conteúdo expandido em parágrafos
@@ -358,6 +360,31 @@ if ($conn) {
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    // Script simplificado para garantir centralização de conteúdo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Selecionar todos os conteúdos de timeline
+      document.querySelectorAll('.timeline-content, .timeline-more').forEach(container => {
+        // Garantir classe de centralização do Bootstrap
+        container.classList.add('text-center');
+      });
+      
+      // Para conteúdo carregado dinamicamente (ao expandir)
+      document.querySelectorAll('.btn-more').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Esperar o conteúdo expandir antes de aplicar centralização
+          setTimeout(() => {
+            const targetId = this.getAttribute('data-bs-target');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              targetElement.classList.add('text-center');
+            }
+          }, 50);
+        });
+      });
+    });
+  </script>
 
 </body>
 

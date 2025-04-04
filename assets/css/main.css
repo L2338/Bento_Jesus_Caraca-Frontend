@@ -3298,6 +3298,7 @@ section,
   border: none;
   color: white;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -3568,18 +3569,18 @@ section,
 .btn-more {
   background-color: transparent;
   border: none;
-  color: var(--primary-color);
+  color: var(--primary-color, #c91f2d);
   padding: 5px 0;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 15px;
   display: inline-block;
   border-bottom: 2px solid transparent;
+  margin: 0 auto;
 }
 
 .btn-more:hover {
-  border-bottom-color: var(--primary-color);
+  border-bottom-color: var(--primary-color, #c91f2d);
 }
 
 /* Conteúdo expandido */
@@ -3587,6 +3588,12 @@ section,
   margin-top: 15px;
   padding-top: 15px;
   border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.timeline-more p {
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 /* Responsividade - simplificada */
@@ -4074,6 +4081,7 @@ section,
   position: relative;
   transition: all 0.3s ease;
   z-index: 2;
+  text-align: center !important;
 }
 
 .timeline-content:hover {
@@ -4086,11 +4094,13 @@ section,
   margin-bottom: 15px;
   font-weight: 700;
   font-size: 20px;
+  text-align: center !important;
 }
 
 .timeline-content p {
   color: #6c757d;
   margin-bottom: 15px;
+  text-align: center !important;
 }
 
 /* Botão expandir */
@@ -4104,6 +4114,7 @@ section,
   transition: all 0.3s ease;
   display: inline-block;
   border-bottom: 2px solid transparent;
+  margin: 0 auto;
 }
 
 .btn-more:hover {
@@ -4115,6 +4126,12 @@ section,
   margin-top: 15px;
   padding-top: 15px;
   border-top: 1px solid #eee;
+  text-align: center !important;
+}
+
+.timeline-more p {
+  text-align: center !important;
+  margin-bottom: 15px;
 }
 
 /* Responsividade - simplificada */
@@ -4195,4 +4212,78 @@ section,
 .timeline-item.left-item .timeline-image::before,
 .timeline-image[data-year]::after {
   display: none;
+}
+
+/* Forçar centralização de todo HTML no conteúdo */
+.timeline-content div,
+.timeline-content p,
+.timeline-content ul,
+.timeline-content ol,
+.timeline-content h1,
+.timeline-content h2,
+.timeline-content h3,
+.timeline-content h4,
+.timeline-content h5,
+.timeline-content h6 {
+  text-align: center !important;
+}
+
+/* Forçar centralização no conteúdo expandido também */
+.timeline-more div,
+.timeline-more p,
+.timeline-more ul,
+.timeline-more ol,
+.timeline-more h1,
+.timeline-more h2,
+.timeline-more h3,
+.timeline-more h4,
+.timeline-more h5,
+.timeline-more h6,
+.collapse.timeline-more div,
+.collapse.timeline-more p {
+  text-align: center !important;
+}
+
+/* Forçar centralização de todo conteúdo da timeline com máxima prioridade */
+.timeline-content,
+.timeline-content *,
+.timeline-more,
+.timeline-more * {
+  text-align: center !important;
+}
+
+/* Reset para qualquer alinhamento inline */
+.timeline-content [style*="text-align"],
+.timeline-more [style*="text-align"] {
+  text-align: center !important;
+}
+
+/* Forçar centralização para elementos específicos */
+.timeline-content h1, .timeline-content h2, .timeline-content h3, 
+.timeline-content h4, .timeline-content h5, .timeline-content h6,
+.timeline-content p, .timeline-content div, .timeline-content span,
+.timeline-content ul, .timeline-content ol, .timeline-content li,
+.timeline-more h1, .timeline-more h2, .timeline-more h3, 
+.timeline-more h4, .timeline-more h5, .timeline-more h6,
+.timeline-more p, .timeline-more div, .timeline-more span,
+.timeline-more ul, .timeline-more ol, .timeline-more li {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Centralização da timeline - solução simplificada */
+.timeline-content,
+.timeline-more {
+  text-align: center !important;
+}
+
+/* Aplicar !important apenas aos elementos que costumam ter alinhamento próprio */
+.timeline-content h1, .timeline-content h2, .timeline-content h3, 
+.timeline-content h4, .timeline-content h5, .timeline-content h6,
+.timeline-content p, .timeline-content ul, .timeline-content ol,
+.timeline-more h1, .timeline-more h2, .timeline-more h3,
+.timeline-more h4, .timeline-more h5, .timeline-more h6,
+.timeline-more p, .timeline-more ul, .timeline-more ol {
+  text-align: center !important;
 }
