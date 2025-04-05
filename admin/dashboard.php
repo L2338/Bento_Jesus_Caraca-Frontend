@@ -15,7 +15,7 @@ $page_title = 'Dashboard';
 
 // Definir breadcrumbs
 $breadcrumbs = [
-    ['url' => 'dashboard.php', 'titulo' => 'Dashboard']
+    'Dashboard' => 'dashboard.php'
 ];
 
 // Obter totais para os cards de estatísticas
@@ -54,7 +54,7 @@ $atividadesQuery = "SELECT 'obra' as tipo, titulo as nome, data_atualizacao, id 
                     SELECT 'escola' as tipo, nome, data_cadastro as data_atualizacao, id as id_item 
                     FROM escolas_profissionais 
                     ORDER BY data_atualizacao DESC 
-                    LIMIT 8";
+                    LIMIT 5";
 $atividadesResult = $conn->query($atividadesQuery);
 $atividades = [];
 if ($atividadesResult && $atividadesResult->num_rows > 0) {
@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="collapse" id="collapseGuide">
                 <div class="card-body">
                     <div class="row mb-4">
-                        <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="bg-primary rounded-circle text-white p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         </div>
-        
+
         <!-- Atividades Recentes e Notificações -->
         <div class="card shadow mb-4 border-0 rounded-3">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
@@ -587,8 +587,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                             ?>
                             <a href="<?php echo $link; ?>" class="list-group-item px-4 py-3 list-group-item-action activity-item <?php echo $atividade['tipo']; ?> <?php echo $index < 3 ? 'fw-bold' : ''; ?>">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
                                         <h6 class="mb-1">
                                             <?php 
                                             if ($atividade['tipo'] === 'obra'):
@@ -611,9 +611,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                             echo 'Atualizado em: ' . date('d/m/Y H:i', strtotime($atividade['data_atualizacao']));
                                             ?>
                                         </p>
-                                    </div>
+                            </div>
                                     <i class="bi bi-chevron-right text-muted"></i>
-                                </div>
+                        </div>
                             </a>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -621,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </div>
-</div>
+            </div>
 
 <?php
 // Adicionar código para modificar o dropdown de notificações no header.php

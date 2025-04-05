@@ -114,7 +114,7 @@ include_once '../templates/header.php';
 
 // Gerar breadcrumbs
 $breadcrumbs = generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
+    'Dashboard' => '../dashboard.php',
     'Legado' => 'index.php?tab=toponimia',
     ($is_edit ? 'Editar Toponímia' : 'Nova Toponímia') => '#'
 ]);

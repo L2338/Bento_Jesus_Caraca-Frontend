@@ -129,6 +129,7 @@ if ($result_social && mysqli_num_rows($result_social) > 0) {
     </section><!-- /About Section -->
 
     <!-- Counts Section -->
+    <!-- Counts Section -->
     <section id="counts" class="section counts light-background">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">

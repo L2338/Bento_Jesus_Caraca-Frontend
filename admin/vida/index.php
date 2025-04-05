@@ -8,8 +8,14 @@ require_once "../../admin/core/functions.php";
 require_login();
 
 // Configuração da página
-$pageTitle = "Gerenciar Vida & Timeline";
+$page_title = "Gerenciador Vida & Timeline";
 $currentSection = "vida";
+
+// Definir breadcrumbs
+$breadcrumbs = [
+    'Dashboard' => '../dashboard.php',
+    'Vida & Timeline' => 'index.php'
+];
 
 // Ativar a exibição de erros para debugging
 ini_set('display_errors', 1);
@@ -160,7 +166,7 @@ include "../../admin/templates/header.php";
 <div class="container-fluid p-4">
     <!-- Cabeçalho da página com estilo melhorado -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800 fw-bold border-start border-primary ps-3" style="border-left-width: 4px!important;"><?php echo $pageTitle; ?></h1>
+        <h1 class="h3 mb-0 text-gray-800 fw-bold"><?php echo $page_title; ?></h1>
     </div>
     
     <!-- Alertas de feedback com estilo melhorado -->

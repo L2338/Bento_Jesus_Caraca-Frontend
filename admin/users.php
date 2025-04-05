@@ -11,12 +11,12 @@ require_once __DIR__ . '/core/functions.php';
 require_login();
 
 // Definir variáveis da página
-$page_title = 'Gerenciar Usuários';
+$page_title = 'Gerenciador Usuários';
 
 // Definir breadcrumbs
 $breadcrumbs = [
-    ['url' => 'dashboard.php', 'titulo' => 'Dashboard'],
-    ['url' => 'users.php', 'titulo' => 'Usuários']
+    'Dashboard' => 'dashboard.php',
+    'Usuários' => 'users.php'
 ];
 
 // Obter conexão com o banco de dados

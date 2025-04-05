@@ -11,12 +11,12 @@ require_once __DIR__ . '/core/functions.php';
 require_login();
 
 // Definir variáveis da página
-$page_title = 'Configurações';
+$page_title = 'Gerenciador Configurações';
 
 // Definir breadcrumbs
 $breadcrumbs = [
-    ['url' => 'dashboard.php', 'titulo' => 'Dashboard'],
-    ['url' => 'settings.php', 'titulo' => 'Configurações']
+    'Dashboard' => 'dashboard.php',
+    'Configurações' => 'settings.php'
 ];
 
 // Cores disponíveis

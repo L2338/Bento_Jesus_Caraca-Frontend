@@ -149,7 +149,7 @@ include_once '../templates/header.php';
 
 // Gerar breadcrumbs
 $breadcrumbs = generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
+    'Dashboard' => '../dashboard.php',
     'Legado' => 'index.php?tab=monumentos',
     ($is_edit ? 'Editar Monumento' : 'Novo Monumento') => '#'
 ]);

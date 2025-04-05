@@ -89,7 +89,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span>Notificações</span>
             <?php 
             // Mostrar contador na sidebar se houver notificações
-            $notification_count = function_exists('get_notification_count') ? get_notification_count() : 0;
+            $notification_count = 0;
+            if (function_exists('get_notification_count')) {
+                try {
+                    $notification_count = get_notification_count();
+                } catch (Exception $e) {
+                    // Ignora erro e mantém contador em 0
+                }
+            }
             if ($notification_count > 0): 
             ?>
             <span class="badge bg-danger rounded-pill ms-2"><?php echo $notification_count; ?></span>

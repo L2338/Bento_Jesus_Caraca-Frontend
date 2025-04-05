@@ -11,12 +11,12 @@ require_once __DIR__ . '/core/functions.php';
 require_login();
 
 // Definir variáveis da página
-$page_title = 'Notificações';
+$page_title = 'Gerenciador Notificações';
 
 // Definir breadcrumbs
 $breadcrumbs = [
-    ['url' => 'dashboard.php', 'titulo' => 'Dashboard'],
-    ['url' => 'notifications.php', 'titulo' => 'Notificações']
+    'Dashboard' => 'dashboard.php',
+    'Notificações' => 'notifications.php'
 ];
 
 // Obter conexão com o banco de dados

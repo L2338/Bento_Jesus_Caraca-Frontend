@@ -9,7 +9,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 // Define o título da página
-$page_title = 'Gestão de Obras';
+$page_title = 'Gerenciador Obras';
+
+// Define os breadcrumbs
+$breadcrumbs = [
+    'Dashboard' => '../dashboard.php',
+    'Obras' => 'index.php'
+];
 
 // Incluir configurações e funções
 require_once __DIR__ . '/../config/app-config.php';
@@ -362,12 +368,6 @@ if (isset($_SESSION['flash_message'])) {
 
 // Carregar o cabeçalho
 require_once __DIR__ . '/../templates/header.php';
-
-// Definir breadcrumbs
-echo generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
-    'Obras' => '#'
-]);
 
 // Exibir mensagem flash, se houver
 echo $mensagem;

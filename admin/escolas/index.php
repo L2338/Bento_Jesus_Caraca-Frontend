@@ -3,8 +3,8 @@
  * Gestão de Escolas - Página inicial
  */
 
-// Define o título da página
-$page_title = 'Gestão de Escolas e Informações do Site';
+// Definir variáveis da página
+$page_title = 'Gerenciador Escolas';
 
 // Incluir configurações e funções
 require_once __DIR__ . '/../config/app-config.php';
@@ -23,55 +23,68 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'escolas';
 $success_message = '';
 $error_message = '';
 
+// Buscar escolas
+$query_escolas = "SELECT id, nome, cidade, ordem, ativa, publicada_site, endereco, telefone, email, website, coordenador FROM escolas_profissionais ORDER BY ordem ASC";
+$result_escolas = mysqli_query($conn, $query_escolas);
+
+// Verificar se houve resultados
+if (!$result_escolas) {
+    $error_message = "Erro ao buscar escolas: " . mysqli_error($conn);
+}
+
 // Processar ações nas escolas
 if (isset($_POST['action'])) {
-    if ($_POST['action'] == 'update_school_status') {
-        $school_id = $_POST['school_id'];
-        $publicar = isset($_POST['publicar']) ? 1 : 0;
-        
-        // Atualizar apenas publicação no site
-        $sql = "UPDATE escolas_profissionais SET publicada_site = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ii", $publicar, $school_id);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            $success_message = "Status de publicação da escola atualizado com sucesso!";
-        } else {
-            $error_message = "Erro ao atualizar o status de publicação da escola: " . mysqli_error($conn);
-        }
-    } 
-    elseif ($_POST['action'] == 'update_escola') {
+    if ($_POST['action'] == 'update_escola') {
         // Processar atualização da escola do modal de edição
         $escola_id = $_POST['escola_id'];
         $nome = $_POST['escola_nome'];
         $cidade = $_POST['escola_cidade'];
         $ordem = $_POST['escola_ordem'];
         $publicada = isset($_POST['escola_publicada']) ? 1 : 0;
+        $endereco = $_POST['escola_endereco'];
+        $telefone = $_POST['escola_telefone'];
+        $email = $_POST['escola_email'];
+        $website = $_POST['escola_website'];
+        $coordenador = $_POST['escola_coordenador'];
         
-        // Atualizar escola (sem o campo ativa)
-        $sql = "UPDATE escolas_profissionais SET nome = ?, cidade = ?, ordem = ?, publicada_site = ? WHERE id = ?";
+        // Atualizar escola
+        $sql = "UPDATE escolas_profissionais SET 
+                nome = ?, 
+                cidade = ?, 
+                ordem = ?, 
+                publicada_site = ?, 
+                endereco = ?, 
+                telefone = ?, 
+                email = ?, 
+                website = ?, 
+                coordenador = ? 
+                WHERE id = ?";
+        
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ssiii", $nome, $cidade, $ordem, $publicada, $escola_id);
+        mysqli_stmt_bind_param($stmt, "sssisssssi", $nome, $cidade, $ordem, $publicada, $endereco, $telefone, $email, $website, $coordenador, $escola_id);
         
         if (mysqli_stmt_execute($stmt)) {
             $success_message = "Escola atualizada com sucesso!";
+            // Recarregar os dados após atualização
+            $result_escolas = mysqli_query($conn, $query_escolas);
         } else {
             $error_message = "Erro ao atualizar a escola: " . mysqli_error($conn);
         }
-    }
-    elseif ($_POST['action'] == 'remove_social') {
-        // Processar remoção de rede social
-        $social_id = $_POST['social_id'];
+    } else if ($_POST['action'] == 'toggle_status') {
+        // Processar alteração de status (publicado/não publicado)
+        $escola_id = $_POST['escola_id'];
+        $publicada = $_POST['publicada'] ? 1 : 0;
         
-        // Remover rede social
-        $sql = "DELETE FROM redes_sociais WHERE id = ?";
+        $sql = "UPDATE escolas_profissionais SET publicada_site = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $social_id);
+        mysqli_stmt_bind_param($stmt, "ii", $publicada, $escola_id);
         
         if (mysqli_stmt_execute($stmt)) {
-            $success_message = "Rede social removida com sucesso!";
+            $success_message = "Status da escola atualizado com sucesso!";
+            // Recarregar os dados após atualização
+            $result_escolas = mysqli_query($conn, $query_escolas);
         } else {
-            $error_message = "Erro ao remover rede social: " . mysqli_error($conn);
+            $error_message = "Erro ao atualizar status da escola: " . mysqli_error($conn);
         }
     }
 }
@@ -234,16 +247,27 @@ if (isset($_POST['update_course'])) {
     } else {
         $error_message = "Erro ao atualizar cursos: " . mysqli_error($conn);
     }
-}
-
-// Buscar escolas
-$query_escolas = "SELECT id, nome, cidade, ordem, ativa, publicada_site FROM escolas_profissionais ORDER BY ordem ASC";
-$result_escolas = mysqli_query($conn, $query_escolas);
-$escolas = [];
-
-if ($result_escolas && mysqli_num_rows($result_escolas) > 0) {
-    while ($row = mysqli_fetch_assoc($result_escolas)) {
-        $escolas[] = $row;
+} else if (isset($_POST['action']) && $_POST['action'] == 'toggle_curso_status') {
+    // Processar alteração de status do curso
+    $curso_id = $_POST['curso_id'];
+    $ativo = $_POST['ativo'] ? 1 : 0;
+    
+    $sql = "UPDATE cursos SET ativo = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $ativo, $curso_id);
+    
+    if (mysqli_stmt_execute($stmt)) {
+        $success_message = "Status do curso atualizado com sucesso!";
+        // Recarregar os dados após atualização
+        $result_cursos = mysqli_query($conn, $query_cursos);
+        $cursos = [];
+        if ($result_cursos && mysqli_num_rows($result_cursos) > 0) {
+            while ($row = mysqli_fetch_assoc($result_cursos)) {
+                $cursos[] = $row;
+            }
+        }
+    } else {
+        $error_message = "Erro ao atualizar status do curso: " . mysqli_error($conn);
     }
 }
 
@@ -295,11 +319,6 @@ if (!empty($redes_sociais)) {
 // Carregar o cabeçalho
 require_once __DIR__ . '/../templates/header.php';
 
-// Definir breadcrumbs
-echo generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
-    'Escolas e Informações' => '#'
-]);
 ?>
 
 <!-- Alertas de sucesso/erro -->
@@ -353,14 +372,14 @@ echo generate_breadcrumbs([
             <i class="bi bi-info-circle-fill me-2"></i> A plataforma permite cadastrar até 5 escolas.
         </div>
         
-        <?php if (empty($escolas)): ?>
+        <?php if (!$result_escolas || mysqli_num_rows($result_escolas) == 0): ?>
             <div class="text-center py-5">
                 <i class="bi bi-exclamation-circle text-muted" style="font-size: 3rem;"></i>
                 <p class="mt-3 mb-4 text-muted">Nenhuma escola cadastrada.</p>
             </div>
         <?php else: ?>
             <div class="row">
-                <?php foreach ($escolas as $escola): ?>
+                <?php while ($escola = mysqli_fetch_assoc($result_escolas)): ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="position-relative">
@@ -368,8 +387,8 @@ echo generate_breadcrumbs([
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="m-0 font-weight-bold">Ordem: <?php echo $escola['ordem']; ?></h5>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input escola-status" type="checkbox" 
-                                               data-id="<?php echo $escola['id']; ?>" 
+                                        <input class="form-check-input escola-status" type="checkbox"
+                                               data-id="<?php echo $escola['id']; ?>"
                                                <?php echo $escola['publicada_site'] ? 'checked' : ''; ?>>
                                         <label class="form-check-label">
                                             <?php echo $escola['publicada_site'] ? 'Publicada' : 'Não publicada'; ?>
@@ -384,6 +403,22 @@ echo generate_breadcrumbs([
                                 <span class="badge bg-secondary"><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($escola['cidade']); ?></span>
                             </p>
                             
+                            <?php if (!empty($escola['telefone']) || !empty($escola['email'])): ?>
+                            <div class="mt-2 small">
+                                <?php if (!empty($escola['telefone'])): ?>
+                                <p class="mb-1"><i class="bi bi-telephone"></i> <?php echo htmlspecialchars($escola['telefone']); ?></p>
+                                <?php endif; ?>
+                                
+                                <?php if (!empty($escola['email'])): ?>
+                                <p class="mb-1"><i class="bi bi-envelope"></i> <?php echo htmlspecialchars($escola['email']); ?></p>
+                                <?php endif; ?>
+                                
+                                <?php if (!empty($escola['website'])): ?>
+                                <p class="mb-1"><i class="bi bi-globe"></i> <a href="<?php echo htmlspecialchars($escola['website']); ?>" target="_blank">Website</a></p>
+                                <?php endif; ?>
+                            </div>
+                            <?php endif; ?>
+                            
                             <div class="d-flex justify-content-end align-items-center mt-3">
                                 <button type="button" class="btn btn-sm btn-primary" 
                                         data-bs-toggle="modal" 
@@ -394,70 +429,98 @@ echo generate_breadcrumbs([
                         </div>
                     </div>
                 </div>
-                <?php endforeach; ?>
-            </div>
-            
-            <form id="escolaStatusForm" method="post" action="?tab=escolas" style="display: none;">
-                <input type="hidden" name="action" value="update_school_status">
-                <input type="hidden" name="school_id" id="status_school_id" value="">
-                <input type="hidden" name="publicar" id="publicar_value" value="0">
-                <button type="submit" id="statusSubmitBtn"></button>
-            </form>
-            
-            <!-- Modais de Edição de Escola -->
-            <?php foreach ($escolas as $escola): ?>
-            <div class="modal fade" id="editEscolaModal<?php echo $escola['id']; ?>" tabindex="-1" 
-                 aria-labelledby="editEscolaModalLabel<?php echo $escola['id']; ?>" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <form method="post" action="?tab=escolas">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editEscolaModalLabel<?php echo $escola['id']; ?>">Editar Escola</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-8">
-                                        <label for="nome<?php echo $escola['id']; ?>" class="form-label">Nome da Escola</label>
-                                        <input type="text" class="form-control" id="nome<?php echo $escola['id']; ?>" name="escola_nome" 
-                                               value="<?php echo htmlspecialchars($escola['nome']); ?>" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="cidade<?php echo $escola['id']; ?>" class="form-label">Cidade</label>
-                                        <input type="text" class="form-control" id="cidade<?php echo $escola['id']; ?>" name="escola_cidade" 
-                                               value="<?php echo htmlspecialchars($escola['cidade']); ?>" required>
-                                    </div>
+                
+                <!-- Modal de Edição para esta escola -->
+                <div class="modal fade" id="editEscolaModal<?php echo $escola['id']; ?>" tabindex="-1" 
+                     aria-labelledby="editEscolaModalLabel<?php echo $escola['id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <form method="post" action="?tab=escolas">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editEscolaModalLabel<?php echo $escola['id']; ?>">Editar Escola</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="ordem<?php echo $escola['id']; ?>" class="form-label">Ordem</label>
-                                        <input type="number" class="form-control" id="ordem<?php echo $escola['id']; ?>" name="escola_ordem" 
-                                               value="<?php echo $escola['ordem']; ?>" min="1" required>
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
+                                            <label for="nome<?php echo $escola['id']; ?>" class="form-label">Nome da Escola</label>
+                                            <input type="text" class="form-control" id="nome<?php echo $escola['id']; ?>" name="escola_nome" 
+                                                value="<?php echo htmlspecialchars($escola['nome']); ?>" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="cidade<?php echo $escola['id']; ?>" class="form-label">Cidade</label>
+                                            <input type="text" class="form-control" id="cidade<?php echo $escola['id']; ?>" name="escola_cidade" 
+                                                value="<?php echo htmlspecialchars($escola['cidade']); ?>" required>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check form-switch mt-4">
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="endereco<?php echo $escola['id']; ?>" class="form-label">Endereço</label>
+                                            <input type="text" class="form-control" id="endereco<?php echo $escola['id']; ?>" name="escola_endereco" 
+                                                value="<?php echo htmlspecialchars($escola['endereco']); ?>">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ordem<?php echo $escola['id']; ?>" class="form-label">Ordem</label>
+                                            <input type="number" class="form-control" id="ordem<?php echo $escola['id']; ?>" name="escola_ordem" 
+                                                value="<?php echo $escola['ordem']; ?>" min="1" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="coordenador<?php echo $escola['id']; ?>" class="form-label">Coordenador</label>
+                                            <input type="text" class="form-control" id="coordenador<?php echo $escola['id']; ?>" name="escola_coordenador" 
+                                                value="<?php echo htmlspecialchars($escola['coordenador']); ?>">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="telefone<?php echo $escola['id']; ?>" class="form-label">Telefone</label>
+                                            <input type="text" class="form-control" id="telefone<?php echo $escola['id']; ?>" name="escola_telefone" 
+                                                value="<?php echo htmlspecialchars($escola['telefone']); ?>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="email<?php echo $escola['id']; ?>" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email<?php echo $escola['id']; ?>" name="escola_email" 
+                                                value="<?php echo htmlspecialchars($escola['email']); ?>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="website<?php echo $escola['id']; ?>" class="form-label">Website</label>
+                                            <input type="url" class="form-control" id="website<?php echo $escola['id']; ?>" name="escola_website" 
+                                                value="<?php echo htmlspecialchars($escola['website']); ?>" placeholder="https://">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="escola_publicada" 
-                                                   id="publicada<?php echo $escola['id']; ?>" value="1" 
-                                                   <?php echo $escola['publicada_site'] ? 'checked' : ''; ?>>
+                                                id="publicada<?php echo $escola['id']; ?>" value="1" 
+                                                <?php echo $escola['publicada_site'] ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="publicada<?php echo $escola['id']; ?>">
                                                 Publicar no site
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="hidden" name="escola_id" value="<?php echo $escola['id']; ?>">
-                                <input type="hidden" name="action" value="update_escola">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <input type="hidden" name="escola_id" value="<?php echo $escola['id']; ?>">
+                                    <input type="hidden" name="action" value="update_escola">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <?php endwhile; ?>
             </div>
-            <?php endforeach; ?>
+            
+            <!-- Formulário para atualização de status -->
+            <form id="statusForm" method="post" action="?tab=escolas" style="display: none;">
+                <input type="hidden" name="action" value="toggle_status">
+                <input type="hidden" name="escola_id" id="status_school_id">
+                <input type="hidden" name="publicada" id="publicar_value">
+                <button type="submit" id="statusSubmitBtn"></button>
+            </form>
         <?php endif; ?>
     </div>
 </div>
@@ -465,6 +528,21 @@ echo generate_breadcrumbs([
 <!-- Script para gerenciar status das escolas -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar estilo para hover nos switches de status
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-check-input.escola-status:hover {
+            cursor: pointer;
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+            transition: box-shadow 0.2s;
+        }
+        .form-check-input.escola-status + label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    `;
+    document.head.appendChild(style);
+
     // Monitorar switches de status nos cards
     const statusSwitches = document.querySelectorAll('.escola-status');
     statusSwitches.forEach(function(switchEl) {
@@ -516,6 +594,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <input class="form-check-input curso-status" type="checkbox" 
                                        data-id="<?php echo $curso['id']; ?>" 
                                        <?php echo $curso['ativo'] ? 'checked' : ''; ?>>
+                                <label class="form-check-label text-white">
+                                    <?php echo $curso['ativo'] ? 'Ativo' : 'Inativo'; ?>
+                                </label>
                             </div>
                         </div>
                         <div class="card-body">
@@ -563,7 +644,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 <?php endforeach; ?>
             </div>
             
-            <form id="cursoStatusForm" method="post" action="?tab=cursos" style="display: none;">
+            <!-- Formulário para atualização de status de curso -->
+            <form id="cursoStatusForm" method="post" action="?tab=cursos">
+                <input type="hidden" name="action" value="toggle_curso_status">
+                <input type="hidden" name="curso_id" id="status_curso_id">
+                <input type="hidden" name="ativo" id="status_curso_ativo">
+                <button type="submit" id="cursoStatusSubmitBtn" style="display: none;"></button>
+            </form>
+            
+            <!-- Formulário para submissão em massa (usado pelo modal) -->
+            <form id="cursoFormMassa" method="post" action="?tab=cursos" style="display: none;">
                 <input type="hidden" name="update_course" value="1">
                 <?php foreach ($cursos as $curso): ?>
                 <input type="hidden" name="course_id[]" value="<?php echo $curso['id']; ?>">
@@ -571,14 +661,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 <input type="hidden" name="categoria[]" value="<?php echo htmlspecialchars($curso['categoria']); ?>">
                 <input type="hidden" name="descricao[]" value="<?php echo htmlspecialchars($curso['descricao']); ?>">
                 <input type="hidden" name="imagem[]" value="<?php echo htmlspecialchars($curso['imagem']); ?>">
-                <input type="hidden" name="link[]" value="<?php echo htmlspecialchars($curso['link']); ?>">
+                <input type="hidden" name="link[]" value="<?php echo htmlspecialchars($curso['link'] ?? ''); ?>">
                 <input type="hidden" name="duracao[]" value="<?php echo htmlspecialchars($curso['duracao']); ?>">
                 <input type="hidden" name="avaliacao[]" value="<?php echo $curso['avaliacao']; ?>">
                 <?php endforeach; ?>
                 <div id="statusContainer">
                     <!-- Checkboxes serão adicionados via JavaScript -->
                 </div>
-                <button type="submit" id="statusSubmitBtn"></button>
+                <button type="submit" id="cursoFormMassaSubmitBtn"></button>
             </form>
             
             <!-- Modais de Edição de Curso -->
@@ -832,3 +922,62 @@ document.addEventListener('DOMContentLoaded', function() {
 // Carregar o rodapé
 require_once __DIR__ . '/../templates/footer.php';
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar estilo para hover nos switches de status
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-check-input.escola-status:hover,
+        .form-check-input.curso-status:hover {
+            cursor: pointer;
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+            transition: box-shadow 0.2s;
+        }
+        .form-check-input.escola-status + label:hover,
+        .form-check-input.curso-status + label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Monitorar switches de status nos cards de escolas
+    const statusSwitches = document.querySelectorAll('.escola-status');
+    statusSwitches.forEach(function(switchEl) {
+        switchEl.addEventListener('change', function() {
+            const escolaId = this.getAttribute('data-id');
+            document.getElementById('status_school_id').value = escolaId;
+            document.getElementById('publicar_value').value = this.checked ? 1 : 0;
+            
+            // Atualizar o texto da label
+            const label = this.nextElementSibling;
+            if (label) {
+                label.textContent = this.checked ? 'Publicada' : 'Não publicada';
+            }
+            
+            // Enviar formulário
+            document.getElementById('statusSubmitBtn').click();
+        });
+    });
+    
+    // Monitorar switches de status nos cards de cursos
+    const cursoStatusSwitches = document.querySelectorAll('.curso-status');
+    cursoStatusSwitches.forEach(function(switchEl) {
+        switchEl.addEventListener('change', function() {
+            const cursoId = this.getAttribute('data-id');
+            document.getElementById('status_curso_id').value = cursoId;
+            document.getElementById('status_curso_ativo').value = this.checked ? 1 : 0;
+            
+            // Atualizar o texto da label
+            const label = this.nextElementSibling;
+            if (label) {
+                label.textContent = this.checked ? 'Ativo' : 'Inativo';
+            }
+            
+            // Enviar formulário
+            document.getElementById('cursoStatusSubmitBtn').click();
+        });
+    });
+});
+</script>

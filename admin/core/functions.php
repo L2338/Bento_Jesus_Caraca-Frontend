@@ -212,49 +212,52 @@ function centralizar_conteudo($content) {
 function get_unread_notifications($limit = 5) {
     global $conn;
     
+    // Verificação de segurança para evitar erro quando $conn é nulo
+    if (!isset($conn) || $conn === null) {
+        return []; // Retorna array vazio quando não há conexão válida
+    }
+    
     if (!isset($_SESSION['user_id'])) {
         return [];
     }
     
     $user_id = (int)$_SESSION['user_id'];
     
-    // Verificar se a tabela existe
-    $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
-    if ($tableCheck->num_rows === 0) {
-        // Tabela não existe, criar
-        $conn->query("CREATE TABLE IF NOT EXISTS `Notificacoes` (
-            `id_notificacao` int(11) NOT NULL AUTO_INCREMENT,
-            `id_admin` int(11) NOT NULL,
-            `tipo` varchar(50) NOT NULL,
-            `titulo` varchar(100) NOT NULL,
-            `mensagem` text NOT NULL,
-            `link` varchar(255) DEFAULT NULL,
-            `lida` tinyint(1) NOT NULL DEFAULT 0,
-            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-            PRIMARY KEY (`id_notificacao`),
-            KEY `id_admin` (`id_admin`)
-          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+    try {
+        // Verificar se a tabela existe
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
+        if (!$tableCheck || $tableCheck->num_rows === 0) {
+            // Tabela não existe, retornar array vazio
+            return [];
+        }
+        
+        // Buscar notificações não lidas
+        $query = "SELECT * FROM Notificacoes 
+                WHERE (id_admin = ? OR id_admin = 0) 
+                AND lida = 0 
+                ORDER BY created_at DESC 
+                LIMIT ?";
+        
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            return []; // Falha ao preparar a declaração
+        }
+        
+        $stmt->bind_param("ii", $user_id, $limit);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $notifications = [];
+        while ($row = $result->fetch_assoc()) {
+            $notifications[] = $row;
+        }
+        
+        return $notifications;
+    } catch (Exception $e) {
+        // Em caso de qualquer erro, apenas retorna array vazio
+        return [];
     }
-    
-    // Buscar notificações não lidas
-    $query = "SELECT * FROM Notificacoes 
-              WHERE (id_admin = ? OR id_admin = 0) 
-              AND lida = 0 
-              ORDER BY created_at DESC 
-              LIMIT ?";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $user_id, $limit);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    
-    $notifications = [];
-    while ($row = $result->fetch_assoc()) {
-        $notifications[] = $row;
-    }
-    
-    return $notifications;
 }
 
 /**
@@ -265,31 +268,45 @@ function get_unread_notifications($limit = 5) {
 function get_notification_count() {
     global $conn;
     
+    // Verificação de segurança para evitar erro quando $conn é nulo
+    if (!isset($conn) || $conn === null) {
+        return 0; // Retorna 0 quando não há conexão válida
+    }
+    
     if (!isset($_SESSION['user_id'])) {
         return 0;
     }
     
     $user_id = (int)$_SESSION['user_id'];
     
-    // Verificar se a tabela existe
-    $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
-    if ($tableCheck->num_rows === 0) {
+    try {
+        // Verificar se a tabela existe
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
+        if (!$tableCheck || $tableCheck->num_rows === 0) {
+            return 0;
+        }
+        
+        // Contar notificações não lidas
+        $query = "SELECT COUNT(*) AS total FROM Notificacoes 
+                  WHERE (id_admin = ? OR id_admin = 0) 
+                  AND lida = 0";
+        
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            return 0; // Falha ao preparar a declaração
+        }
+        
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        
+        return (int)$row['total'];
+    } catch (Exception $e) {
+        // Em caso de qualquer erro, apenas retorna 0
         return 0;
     }
-    
-    // Contar notificações não lidas
-    $query = "SELECT COUNT(*) AS total FROM Notificacoes 
-              WHERE (id_admin = ? OR id_admin = 0) 
-              AND lida = 0";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    
-    return (int)$row['total'];
 }
 
 /**
@@ -301,21 +318,35 @@ function get_notification_count() {
 function mark_notification_read($notification_id) {
     global $conn;
     
+    // Verificação de segurança para evitar erro quando $conn é nulo
+    if (!isset($conn) || $conn === null) {
+        return false; // Falha quando não há conexão
+    }
+    
     if (!isset($_SESSION['user_id'])) {
         return false;
     }
     
-    $user_id = (int)$_SESSION['user_id'];
-    $notification_id = (int)$notification_id;
-    
-    $query = "UPDATE Notificacoes SET lida = 1 
-              WHERE id_notificacao = ? 
-              AND (id_admin = ? OR id_admin = 0)";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $notification_id, $user_id);
-    
-    return $stmt->execute();
+    try {
+        $user_id = (int)$_SESSION['user_id'];
+        $notification_id = (int)$notification_id;
+        
+        $query = "UPDATE Notificacoes SET lida = 1 
+                WHERE id_notificacao = ? 
+                AND (id_admin = ? OR id_admin = 0)";
+        
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            return false; // Falha ao preparar a declaração
+        }
+        
+        $stmt->bind_param("ii", $notification_id, $user_id);
+        
+        return $stmt->execute();
+    } catch (Exception $e) {
+        // Em caso de qualquer erro, retorna falso
+        return false;
+    }
 }
 
 /**
@@ -326,20 +357,34 @@ function mark_notification_read($notification_id) {
 function mark_all_notifications_read() {
     global $conn;
     
+    // Verificação de segurança para evitar erro quando $conn é nulo
+    if (!isset($conn) || $conn === null) {
+        return false; // Falha quando não há conexão
+    }
+    
     if (!isset($_SESSION['user_id'])) {
         return false;
     }
     
-    $user_id = (int)$_SESSION['user_id'];
-    
-    $query = "UPDATE Notificacoes SET lida = 1 
-              WHERE (id_admin = ? OR id_admin = 0) 
-              AND lida = 0";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    
-    return $stmt->execute();
+    try {
+        $user_id = (int)$_SESSION['user_id'];
+        
+        $query = "UPDATE Notificacoes SET lida = 1 
+                WHERE (id_admin = ? OR id_admin = 0) 
+                AND lida = 0";
+        
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            return false; // Falha ao preparar a declaração
+        }
+        
+        $stmt->bind_param("i", $user_id);
+        
+        return $stmt->execute();
+    } catch (Exception $e) {
+        // Em caso de qualquer erro, retorna falso
+        return false;
+    }
 }
 
 /**
@@ -355,15 +400,51 @@ function mark_all_notifications_read() {
 function add_notification($user_id, $tipo, $titulo, $mensagem, $link = null) {
     global $conn;
     
-    $user_id = (int)$user_id;
+    // Verificação de segurança para evitar erro quando $conn é nulo
+    if (!isset($conn) || $conn === null) {
+        return false; // Falha quando não há conexão
+    }
     
-    $query = "INSERT INTO Notificacoes (id_admin, tipo, titulo, mensagem, link) 
-              VALUES (?, ?, ?, ?, ?)";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("issss", $user_id, $tipo, $titulo, $mensagem, $link);
-    
-    return $stmt->execute();
+    try {
+        // Verificar se a tabela existe e criá-la se não existir
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'Notificacoes'");
+        if (!$tableCheck || $tableCheck->num_rows === 0) {
+            // Tabela não existe, criar
+            $createTableQuery = "CREATE TABLE IF NOT EXISTS `Notificacoes` (
+                `id_notificacao` int(11) NOT NULL AUTO_INCREMENT,
+                `id_admin` int(11) NOT NULL,
+                `tipo` varchar(50) NOT NULL,
+                `titulo` varchar(100) NOT NULL,
+                `mensagem` text NOT NULL,
+                `link` varchar(255) DEFAULT NULL,
+                `lida` tinyint(1) NOT NULL DEFAULT 0,
+                `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+                PRIMARY KEY (`id_notificacao`),
+                KEY `id_admin` (`id_admin`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            
+            if (!$conn->query($createTableQuery)) {
+                return false;
+            }
+        }
+        
+        $user_id = (int)$user_id;
+        
+        $query = "INSERT INTO Notificacoes (id_admin, tipo, titulo, mensagem, link) 
+                VALUES (?, ?, ?, ?, ?)";
+        
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            return false; // Falha ao preparar a declaração
+        }
+        
+        $stmt->bind_param("issss", $user_id, $tipo, $titulo, $mensagem, $link);
+        
+        return $stmt->execute();
+    } catch (Exception $e) {
+        // Em caso de qualquer erro, retorna falso
+        return false;
+    }
 }
 
 /**

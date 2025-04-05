@@ -5,7 +5,13 @@
  */
 
 // Define o título da página
-$page_title = 'Legado';
+$page_title = 'Gerenciador Legado';
+
+// Definir breadcrumbs
+$breadcrumbs = [
+    'Dashboard' => '../dashboard.php',
+    'Legado' => '#'
+];
 
 // Incluir configurações e funções
 require_once __DIR__ . '/../config/app-config.php';
@@ -64,19 +70,13 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
 
 // Incluir o cabeçalho
 include_once '../templates/header.php';
-
-// Gerar breadcrumbs
-$breadcrumbs = generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
-    'Legado' => '#'
-]);
 ?>
 
 <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
         <h1 class="mb-0"><?php echo $page_title; ?></h1>
         <nav class="small" aria-label="breadcrumb">
-    <?php echo $breadcrumbs; ?>
+    <?php echo generate_breadcrumbs($breadcrumbs); ?>
         </nav>
     </div>
     

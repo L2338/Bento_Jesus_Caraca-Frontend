@@ -100,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Definir breadcrumbs
 echo generate_breadcrumbs([
-    'Dashboard' => ADMIN_URL . 'dashboard.php',
-    'Legado' => ADMIN_URL . 'legado/index.php?tab=condecoracoes',
+    'Dashboard' => '../dashboard.php',
+    'Legado' => 'index.php?tab=condecoracoes',
     ($is_update ? 'Editar Condecoração' : 'Nova Condecoração') => '#'
 ]);
 

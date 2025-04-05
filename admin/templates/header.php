@@ -5,7 +5,7 @@
  */
 
 // Verificar se o título da página foi definido, senão usar um padrão
-$page_title = isset($page_title) ? $page_title . ' - Admin' : 'Painel Administrativo';
+$page_title = isset($page_title) ? $page_title : 'Painel Administrativo';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
