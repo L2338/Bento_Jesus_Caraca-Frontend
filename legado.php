@@ -549,24 +549,8 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
                     <div class="section-header" data-aos="fade-up">
                         <h2>Biblioteca Cosmos</h2>
                         <p>O legado literário que democratizou o conhecimento em Portugal</p>
-                    </div>
-                    
-                    <?php
-                    // Buscar valores estatísticos do banco de dados
-                    $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
-                    $result_stats = mysqli_query($conn, $query_stats);
-                    $stats = array();
-                    
-                    if ($result_stats && mysqli_num_rows($result_stats) > 0) {
-                        while ($stat = mysqli_fetch_assoc($result_stats)) {
-                            $stats[$stat['chave']] = array(
-                                'valor' => $stat['valor'],
-                                'descricao' => $stat['descricao']
-                            );
-                        }
-                    }
-                    ?>
-                    
+                    </div> 
+
                     <div class="row align-items-center biblioteca-cosmos-section">
                         <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
                             <img src="assets/img/LogoCosmos.png" class="img-fluid rounded shadow-sm" alt="Logo Biblioteca Cosmos">
@@ -591,37 +575,32 @@ $tab_ativa = isset($_GET['tab']) ? $_GET['tab'] : 'condecoracoes';
                         </div>
                     </div>
                     
-                    <!-- Estatísticas da Biblioteca Cosmos -->
-                    <div class="cosmos-stats mt-5" data-aos="fade-up">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-3 col-md-6 d-flex mb-4">
-                                    <div class="stats-item text-center w-100">
-                                        <span data-purecounter-start="0" data-purecounter-end="<?php echo $stats['titulos_publicados']['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p>Títulos Publicados</p>
+                    <section id="counts" class="section counts light-background">
+
+                        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                        <div class="row gy-4">
+
+                            <?php
+                            // Buscar estatísticas do banco de dados
+                            $query_stats = "SELECT chave, valor, descricao FROM estatisticas WHERE id IN (4, 5, 6) ORDER BY id ASC";
+                            $result_stats = mysqli_query($conn, $query_stats);
+                            
+                            if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+                                while ($stat = mysqli_fetch_assoc($result_stats)) {
+                                    ?>
+                                    <div class="col-lg-3 col-md-6">
+                                    <div class="stats-item text-center w-100 h-100">
+                                        <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                                        <p><?php echo $stat['descricao']; ?></p>
                                     </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 d-flex mb-4">
-                                    <div class="stats-item text-center w-100">
-                                        <span data-purecounter-start="0" data-purecounter-end="<?php echo $stats['exemplares_distribuidos']['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p>Exemplares Distribuídos</p>
                                     </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 d-flex mb-4">
-                                    <div class="stats-item text-center w-100">
-                                        <span data-purecounter-start="0" data-purecounter-end="<?php echo $stats['series_tematicas']['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p>Séries Temáticas</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 d-flex mb-4">
-                                    <div class="stats-item text-center w-100">
-                                        <span data-purecounter-start="0" data-purecounter-end="<?php echo $stats['anos_atividade']['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p>Anos de Atividade</p>
-                                    </div>
-                                </div>
-                            </div>
+                                    <?php
+                                }
+                            }
+                            ?>
+
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

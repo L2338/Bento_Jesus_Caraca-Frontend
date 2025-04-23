@@ -151,84 +151,50 @@ if ($conn) {
 
         <div class="row gy-4">
 
-        <?php
+          <?php
           // Buscar estatísticas do banco de dados
           if ($conn) {
-              $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
-              $result_stats = mysqli_query($conn, $query_stats);
-              
-              if ($result_stats && mysqli_num_rows($result_stats) > 0) {
-                  while ($stat = mysqli_fetch_assoc($result_stats)) {
-                      ?>
-                      <div class="col-lg-3 col-md-6">
-                        <div class="stats-item text-center w-100 h-100">
-                          <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
-                          <p><?php echo $stat['descricao']; ?></p>
-                        </div>
-                      </div>
-                      <?php
-                  }
-              } else {
-                  // Exibir estatísticas estáticas se não houver dados no banco
-                  ?>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="800000" data-purecounter-duration="1" class="purecounter"></span>
-                      <p>Exemplares Distribuídos</p>
-                    </div>
+            $query_stats = "SELECT chave, valor, descricao FROM estatisticas WHERE id IN (1, 2, 3) ORDER BY id ASC";
+            $result_stats = mysqli_query($conn, $query_stats);
+            
+            if ($result_stats && mysqli_num_rows($result_stats) > 0) {
+              while ($stat = mysqli_fetch_assoc($result_stats)) {
+          ?>
+                <div class="col-lg-3 col-md-6">
+                  <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="<?php echo $stat['valor']; ?>" data-purecounter-duration="1" class="purecounter"></span>
+                    <p><?php echo $stat['descricao']; ?></p>
                   </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="47" data-purecounter-duration="1" class="purecounter"></span>
-                      <p>Anos de Vida</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="115" data-purecounter-duration="1" class="purecounter"></span>
-                      <p>Volumes Publicados</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                      <span data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter"></span>
-                      <p>Série de Assuntos</p>
-                    </div>
-                  </div>
-                  <?php
+                </div>
+          <?php
               }
-          } else {
-              // Exibir estatísticas estáticas se a conexão falhar
-              ?>
+            } else {
+              // Mostrar estáticos
+          ?>
               <div class="col-lg-3 col-md-6">
                 <div class="stats-item text-center w-100 h-100">
-                  <span data-purecounter-start="0" data-purecounter-end="800000" data-purecounter-duration="1" class="purecounter"></span>
+                  <span data-purecounter-start="0" data-purecounter-end="114" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Títulos Publicados</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="793500" data-purecounter-duration="1" class="purecounter"></span>
                   <p>Exemplares Distribuídos</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="stats-item text-center w-100 h-100">
-                  <span data-purecounter-start="0" data-purecounter-end="47" data-purecounter-duration="1" class="purecounter"></span>
-                  <p>Anos de Vida</p>
+                  <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+                  <p>Livros Publicados</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
-                <div class="stats-item text-center w-100 h-100">
-                  <span data-purecounter-start="0" data-purecounter-end="115" data-purecounter-duration="1" class="purecounter"></span>
-                  <p>Volumes Publicados</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <div class="stats-item text-center w-100 h-100">
-                  <span data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter"></span>
-                  <p>Série de Assuntos</p>
-                </div>
-              </div>
-              <?php
+          <?php
+            }
           }
           ?>
 
-        </div>
+      </div> <!-- fim da row -->
 
       </div>
 

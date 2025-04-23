@@ -138,7 +138,7 @@ if ($result_social && mysqli_num_rows($result_social) > 0) {
 
           <?php
           // Buscar estatísticas do banco de dados
-          $query_stats = "SELECT chave, valor, descricao FROM estatisticas ORDER BY id ASC";
+          $query_stats = "SELECT chave, valor, descricao FROM estatisticas WHERE id IN (1, 2, 3) ORDER BY id ASC";
           $result_stats = mysqli_query($conn, $query_stats);
           
           if ($result_stats && mysqli_num_rows($result_stats) > 0) {
